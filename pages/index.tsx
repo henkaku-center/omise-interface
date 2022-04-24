@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useAccount } from 'wagmi'
-import { Button, Text, Container, Heading, Image, Box, Grid, GridItem } from '@chakra-ui/react'
+import { Button, Text, Container, Heading, Image, Box } from '@chakra-ui/react'
 
 const Home: NextPage = () => {
   const [{ data, error, loading }, disconnect] = useAccount()
@@ -9,13 +9,13 @@ const Home: NextPage = () => {
     <>
       <Box padding='4'>
         <Heading size='md'>Omise – HENKAKU</Heading>
-        <Container >
+        <Container>
           <Heading mt={50}>Quest</Heading>
-          <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-            <GridItem w='100%' h='10' bg='blue.500'>
+          <Box display={{ md: 'flex', xl: 'flex' }}>
+            <Box p={2} minW={300}>
               <Image src='/joi-ito-henkaku-podcast.png' alt='JOI ITO 変革への道' />
-            </GridItem>
-            <GridItem w='100%' h='10'>
+            </Box>
+            <Box p={2}>
               <Box bg='#ccc' w='100%' p={4}>
                 <Heading size='md'>Enter weekly keyword</Heading>
                 <Text>
@@ -26,8 +26,8 @@ const Home: NextPage = () => {
               <Button mt={10} backgroundColor='#3c859d' color='#fff' variant='solid' onClick={disconnect}>
                 Disconnect from {data?.connector?.name}
               </Button>
-            </GridItem>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
     </>
