@@ -1,13 +1,14 @@
-import { Box, Button, Text } from '@chakra-ui/react'
+import { Button, Text } from '@chakra-ui/react'
 import React from 'react'
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useIsMounted } from '../hooks'
 
 const Wallet = () => {
   const { data: account } = useAccount()
-  const { connect, connectors, error, isConnecting, pendingConnector } =
+  const { connect, connectors, error, isConnecting, pendingConnector, activeConnector } =
     useConnect()
   const { disconnect } = useDisconnect()
-  // const connector = connectors.filter((elem) => {return elem.name == 'MetaMask'})[0]
+  const isMounted = useIsMounted()
 
   if (account) {
     return (
@@ -20,7 +21,7 @@ const Wallet = () => {
 
   return (
     <>
-      {connectors.map((connector) => (
+      {connectors.filter((x) => isMounted && x.ready && x.id !== activeConnector?.id).map((connector) => (
         <Button
           mt={10}
           backgroundColor='#3c859d'
