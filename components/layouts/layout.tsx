@@ -23,8 +23,8 @@ const Layout = ({ children }: LayoutProps) => {
             </Link>
           </Box>
         </Flex>
-        <Container>{children}</Container>
       </Box>
+      <Container>{children}</Container>
     </>
   )
 }
