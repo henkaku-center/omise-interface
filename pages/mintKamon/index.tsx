@@ -1,16 +1,23 @@
 import type { NextPage } from 'next'
 import { useAccount } from 'wagmi'
-import { Button, Text, Heading } from '@chakra-ui/react'
+import { Button, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useConnect } from 'wagmi'
+
 import { Layout } from '@/components/layouts/layout'
 import { GenerateImageForm } from '@/components/mintKamon/GenerateImageForm'
+import { useMounted } from '@/hooks/useMounted'
 
 const MintKamon: NextPage = () => {
-  const [{ data, error, loading }, disconnect] = useAccount()
+  const mounted = useMounted()
+  const { connect, connectors, error } = useConnect()
+  const [metaMask] = connectors
+  const { data } = useAccount()
+
   const [tokenURI, setTokenURI] = useState('')
   const [approved, setApprove] = useState(false)
 
-  if (!tokenURI) {
+  if (false && !tokenURI) {
     return <GenerateImageForm />
   }
 
@@ -18,16 +25,24 @@ const MintKamon: NextPage = () => {
     <>
       <Layout>
         <Heading mt={50}>Henkaku kamon nft</Heading>
-        <Text fontSize='xs'>{data?.address}</Text>
-        {tokenURI && approved ? (
-          <Button mt={10} colorScheme='teal'>
-            Mint with 1000 henkaku
-          </Button>
-        ) : (
-          <Button mt={10} colorScheme='teal'>
-            enable to get kamon nft
+        {mounted && data?.address}
+        {mounted && !data?.address && (
+          <Button colorScheme='teal' onClick={() => connect(metaMask)}>
+            connect wallet
           </Button>
         )}
+
+        {error && <div>{error.message}</div>}
+        {mounted && data?.address &&
+          (tokenURI && approved ? (
+            <Button mt={10} colorScheme='teal'>
+              Mint with 1000 henkaku
+            </Button>
+          ) : (
+            <Button mt={10} colorScheme='teal'>
+              enable to get kamon nft
+            </Button>
+          ))}
       </Layout>
     </>
   )

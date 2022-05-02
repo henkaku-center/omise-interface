@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi'
 import { Button, Text, Container, Heading, Image, Box, Link, Flex, Spacer } from '@chakra-ui/react'
 
 const Quests: NextPage = () => {
-  const [{ data, error, loading }, disconnect] = useAccount()
+  const { data, isError, isLoading } = useAccount()
 
   return (
     <>
