@@ -1,3 +1,4 @@
+import { providers } from 'ethers'
 import { Provider, chain, createClient, defaultChains } from 'wagmi'
 import { ChakraProvider } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
@@ -18,7 +19,9 @@ const alchemyId = process.env.ALCHEMY_ID
 const chains = defaultChains
 const defaultChain = chain.mainnet
 
-// Set up connectors
+const isChainSupported = (chainId?: number) =>
+  chains.some((x) => x.id === chainId)
+
 const client = createClient({
   autoConnect: true,
   connectors({ chainId }: any) {
@@ -30,11 +33,16 @@ const client = createClient({
       new InjectedConnector(),
     ]
   },
-})
+  provider({ chainId }) {
+    return new providers.AlchemyProvider(
+      isChainSupported(chainId) ? chainId : defaultChain.id,
+      alchemyId,
+    )
+  },})
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <Provider>
+    <Provider client={client}>
       <ChakraProvider>
 >>>>>>> c52cd59 (First iteration: wagmi connector component for MetaMask)
         <Component {...pageProps} />
