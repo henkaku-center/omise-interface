@@ -7,8 +7,6 @@ import type { AppProps } from 'next/app'
 import { theme } from '@/components/layouts/theme'
 
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 
 import { ChakraProvider } from '@chakra-ui/react'
 
@@ -21,28 +19,9 @@ const isChainSupported = (chainId?: number) =>
 
 const client = createClient({
   autoConnect: true,
-  connectors({ chainId }: any) {
-    const chain = chains.find((x) => x.id === chainId) ?? defaultChain
-    const rpcUrl = chain.rpcUrls.infura
-      ? `${chain.rpcUrls.infura}/${infuraId}`
-      : chain.rpcUrls.default
+  connectors() {
     return [
       new InjectedConnector({ chains }),
-      new CoinbaseWalletConnector({
-        chains,
-        options: {
-          appName: 'wagmi',
-          chainId: chain.id,
-          jsonRpcUrl: rpcUrl,
-        },
-      }),
-      new WalletConnectConnector({
-        chains,
-        options: {
-          qrcode: true,
-          rpc: { [chain.id]: rpcUrl },
-        },    
-      }),
     ]
   },
   provider({ chainId }) {
