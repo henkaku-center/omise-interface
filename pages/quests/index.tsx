@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import NextLink from 'next/link'
 import { useAccount } from 'wagmi'
-import { Button, Text, Container, Heading, Image, Box, Link, Flex, Spacer } from '@chakra-ui/react'
+import { Text, Container, Heading, Image, Box, Link, Flex, Spacer } from '@chakra-ui/react'
 
 const Quests: NextPage = () => {
   const { data, isError, isLoading } = useAccount()
@@ -41,9 +41,6 @@ const Quests: NextPage = () => {
                 </Text>
               </Box>
               <Text fontSize='xs'>{data?.address}</Text>
-              <Button mt={10} backgroundColor='#3c859d' color='#fff' variant='solid' onClick={disconnect}>
-                Disconnect from {data?.connector?.name}
-              </Button>
             </Box>
           </Box>
         </Container>
