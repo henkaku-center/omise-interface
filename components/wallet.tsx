@@ -1,26 +1,21 @@
-import { Button, Text } from '@chakra-ui/react'
-import React from 'react'
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useConnect, useDisconnect } from 'wagmi'
 import { useIsMounted } from '../hooks'
 
+import { Button, Text } from '@chakra-ui/react'
+
 const Wallet = () => {
-  const { data: account } = useAccount()
-  const { connect, connectors, error, isConnecting, pendingConnector, activeConnector } =
+  const isMounted = useIsMounted()
+  const { activeConnector, connect, connectors, error, isConnecting, pendingConnector } =
     useConnect()
   const { disconnect } = useDisconnect()
-  const isMounted = useIsMounted()
-
-  if (account) {
-    return (
-      <>
-        <Text mt={5} fontSize='xs'>{account.address}</Text>
-        <Button mt={5} onClick={() => disconnect()}>Disconnect</Button>
-      </>
-    )
-  }
 
   return (
     <>
+      {activeConnector && (
+        <Button mt={5} onClick={() => disconnect()}>
+          Disconnect
+        </Button>
+      )}
       {connectors.filter((x) => isMounted && x.ready && x.id !== activeConnector?.id).map((connector) => (
         <Button
           mt={10}

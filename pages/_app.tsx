@@ -1,21 +1,18 @@
+import type { AppProps } from 'next/app'
 import { providers } from 'ethers'
+
 import { Provider, chain, createClient, defaultChains } from 'wagmi'
 import { ChakraProvider } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
-<<<<<<< HEAD
 import { theme } from '@/components/layouts/theme'
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-  return (
-    <Provider autoConnect>
-      <ChakraProvider theme={theme}>
-=======
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 
-// API key for Ethereum node
-// Two popular services are Alchemy (alchemy.com) and Infura (infura.io)
-const alchemyId = process.env.ALCHEMY_ID
+import { ChakraProvider } from '@chakra-ui/react'
 
+const infuraId = process.env.NEXT_PUBLIC_INFURA_ID
 const chains = defaultChains
 const defaultChain = chain.mainnet
 
@@ -26,25 +23,39 @@ const client = createClient({
   autoConnect: true,
   connectors({ chainId }: any) {
     const chain = chains.find((x) => x.id === chainId) ?? defaultChain
-    const rpcUrl = chain.rpcUrls.alchemy
-      ? `${chain.rpcUrls.alchemy}/${alchemyId}`
+    const rpcUrl = chain.rpcUrls.infura
+      ? `${chain.rpcUrls.infura}/${infuraId}`
       : chain.rpcUrls.default
     return [
-      new InjectedConnector(),
+      new InjectedConnector({ chains }),
+      new CoinbaseWalletConnector({
+        chains,
+        options: {
+          appName: 'wagmi',
+          chainId: chain.id,
+          jsonRpcUrl: rpcUrl,
+        },
+      }),
+      new WalletConnectConnector({
+        chains,
+        options: {
+          qrcode: true,
+          rpc: { [chain.id]: rpcUrl },
+        },    
+      }),
     ]
   },
   provider({ chainId }) {
-    return new providers.AlchemyProvider(
+    return new providers.InfuraProvider(
       isChainSupported(chainId) ? chainId : defaultChain.id,
-      alchemyId,
+      infuraId,
     )
   },})
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <Provider client={client}>
-      <ChakraProvider>
->>>>>>> c52cd59 (First iteration: wagmi connector component for MetaMask)
+      <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
     </Provider>
