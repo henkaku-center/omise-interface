@@ -1,14 +1,14 @@
 import type { NextPage } from 'next'
 import { Heading } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
-import Wallet from '@/components/wallet'
+import Connect from '@/components/connect'
 
 const Home: NextPage = () => {
   return (
     <>
       <Layout>
         <Heading mt={50}>Front page</Heading>
-        <Wallet />
+        <Connect />
       </Layout>
     </>
   )

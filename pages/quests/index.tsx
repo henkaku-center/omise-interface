@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { Text, Heading, Image, Box } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
-import Wallet from '../../components/wallet'
+import Connect from '../../components/connect'
 
 const Quests: NextPage = () => {
   return (
@@ -19,7 +19,7 @@ const Quests: NextPage = () => {
                 By answering this question, you will earn 100 points which can be exchanged to $HENKAKU tokens.
               </Text>
             </Box>
-            <Wallet />
+            <Connect />
           </Box>
         </Box>
       </Layout>

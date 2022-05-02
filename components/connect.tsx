@@ -3,7 +3,7 @@ import { useIsMounted } from '../hooks'
 
 import { Button, Text } from '@chakra-ui/react'
 
-const Wallet = () => {
+const Connect = () => {
   const isMounted = useIsMounted()
   const { activeConnector, connect, connectors, error, isConnecting, pendingConnector } =
     useConnect()
@@ -41,4 +41,4 @@ const Wallet = () => {
   )
 }
 
-export default Wallet
+export default Connect
