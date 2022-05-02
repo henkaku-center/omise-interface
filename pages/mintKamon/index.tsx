@@ -2,8 +2,8 @@ import type { NextPage } from 'next'
 import { useAccount } from 'wagmi'
 import { Button, Text, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
-import { Layout } from '../../components/layouts/layout'
-import { GenerateImageForm } from '../../components/mintKamon/GenerateImageForm'
+import { Layout } from '@/components/layouts/layout'
+import { GenerateImageForm } from '@/components/mintKamon/GenerateImageForm'
 
 const MintKamon: NextPage = () => {
   const [{ data, error, loading }, disconnect] = useAccount()

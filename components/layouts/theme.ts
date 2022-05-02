@@ -8,7 +8,7 @@ export const theme = extendTheme({
           linear-gradient(123.35deg, #EBF3D0 0%, rgba(235, 243, 208, 0) 18.4%),
           radial-gradient(29.9% 70.94% at 44.25% 86.96%, #fafafa 0%, rgba(220, 141, 220, 0) 100%),
           radial-gradient(33.83% 53.57% at 35.87% 100%, #c177c1 0%, rgba(220, 141, 220, 0) 100%),
-          radial-gradient(42.66% 49.72% at 45.56% 44.65%, #CBADEB 0%, rgba(194, 166, 241, 0) 100%),
+          radial-gradient(42.66% 49.72% at 45.56% 44.65%, #fafafa 0%, rgba(194, 166, 241, 0) 100%),
           linear-gradient(134.59deg, #ffffff 20.63%, rgba(205, 249, 232, 0) 47.84%),
           linear-gradient(216.44deg, rgba(192, 169, 240, 0) -16.52%, #C0A9F0 -1.04%,
            rgba(192, 169, 240, 0) 16.99%),

@@ -1,5 +1,5 @@
 import { Button, Heading } from "@chakra-ui/react"
-import { Layout } from "../layouts/layout"
+import { Layout } from "@/components/layouts/layout"
 
 const GenerateImageForm = () => {
   return (

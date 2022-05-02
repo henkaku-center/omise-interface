@@ -14,11 +14,10 @@ const Layout = ({ children }: LayoutProps) => {
           </Box>
           <Spacer />
           <Box p={2}>
-            <Link href='/' p={4} color='#3c859d' _hover={{}} borderBottom='1px'>
+            <Link href='/' p={4}>
               Home
             </Link>
-            <Link href='/quests' p={4} _hover={{}}>
-              {/* Override the default text-decoration: underline on hover */}
+            <Link href='/quests' p={4}>
               Quests
             </Link>
           </Box>
