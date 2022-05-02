@@ -13,8 +13,8 @@ const Wallet = () => {
   if (account) {
     return (
       <>
-        {/* <Text mt={5}>{ account.address }</Text> */}
-        <Button mt={10} onClick={() => disconnect()}>Disconnect</Button>
+        <Text mt={5} fontSize='xs'>{account.address}</Text>
+        <Button mt={5} onClick={() => disconnect()}>Disconnect</Button>
       </>
     )
   }

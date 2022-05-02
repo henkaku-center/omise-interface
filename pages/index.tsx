@@ -1,19 +1,16 @@
 import type { NextPage } from 'next'
 import { useAccount } from 'wagmi'
 import { Button, Text, Heading } from '@chakra-ui/react'
+import { Button, Text, Container, Heading, Box, Link, Flex, Spacer } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
+import Wallet from '@/components/wallet'
 
 const Home: NextPage = () => {
-  const [{ data, error, loading }, disconnect] = useAccount()
-
   return (
     <>
       <Layout>
         <Heading mt={50}>Front page</Heading>
-        <Text fontSize='xs'>{data?.address}</Text>
-        <Button mt={10} colorScheme='teal' onClick={disconnect}>
-          Disconnect from {data?.connector?.name}
-        </Button>
+        <Wallet />
       </Layout>
     </>
   )
