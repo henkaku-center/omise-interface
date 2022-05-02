@@ -1,11 +1,9 @@
 import type { NextPage } from 'next'
 import NextLink from 'next/link'
-import { useAccount } from 'wagmi'
-import { Button, Text, Container, Heading, Image, Box, Link, Flex, Spacer } from '@chakra-ui/react'
+import { Text, Container, Heading, Image, Box, Link, Flex, Spacer } from '@chakra-ui/react'
+import Wallet from '../../components/wallet'
 
 const Quests: NextPage = () => {
-  const [{ data, error, loading }, disconnect] = useAccount()
-
   return (
     <>
       <Box padding='4'>
@@ -40,10 +38,7 @@ const Quests: NextPage = () => {
                   By answering this question you will earn 100 points, which you can exchange to $HENKAKU tokens.
                 </Text>
               </Box>
-              <Text fontSize='xs'>{data?.address}</Text>
-              <Button mt={10} backgroundColor='#3c859d' color='#fff' variant='solid' onClick={disconnect}>
-                Disconnect from {data?.connector?.name}
-              </Button>
+              <Wallet />
             </Box>
           </Box>
         </Container>
