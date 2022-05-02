@@ -1,9 +1,15 @@
 import type { NextPage } from 'next'
+import { useAccount } from 'wagmi'
 import { Text, Heading, Image, Box } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
-import Connect from '../../components/connect'
+import Connect from '@/components/Connect'
+import Account from '@/components/Account'
+import { useIsMounted } from '@/hooks'
 
 const Quests: NextPage = () => {
+  const isMounted = useIsMounted()
+  const { data } = useAccount()
+
   return (
     <>
       <Layout>
@@ -20,6 +26,11 @@ const Quests: NextPage = () => {
               </Text>
             </Box>
             <Connect />
+            {isMounted && data && (
+              <>
+                <Account />
+              </>
+            )}
           </Box>
         </Box>
       </Layout>

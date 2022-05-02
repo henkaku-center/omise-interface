@@ -1,5 +1,5 @@
 import { useConnect, useDisconnect } from 'wagmi'
-import { useIsMounted } from '../hooks'
+import { useIsMounted } from '@/hooks'
 
 import { Button, Text } from '@chakra-ui/react'
 
