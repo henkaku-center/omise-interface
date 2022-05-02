@@ -1,5 +1,4 @@
 import type { NextPage } from 'next'
-import { useAccount } from 'wagmi'
 import { Heading } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
 import Wallet from '@/components/wallet'

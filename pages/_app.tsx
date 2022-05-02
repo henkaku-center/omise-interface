@@ -8,8 +8,6 @@ import { theme } from '@/components/layouts/theme'
 
 import { InjectedConnector } from 'wagmi/connectors/injected'
 
-import { ChakraProvider } from '@chakra-ui/react'
-
 const infuraId = process.env.NEXT_PUBLIC_INFURA_ID
 const chains = defaultChains
 const defaultChain = chain.mainnet

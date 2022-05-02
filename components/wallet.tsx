@@ -12,16 +12,18 @@ const Wallet = () => {
   return (
     <>
       {activeConnector && (
-        <Button mt={5} onClick={() => disconnect()}>
+        <Button
+          mt={10}
+          colorScheme='gray'
+          onClick={() => disconnect()}
+        >
           Disconnect
         </Button>
       )}
       {connectors.filter((x) => isMounted && x.ready && x.id !== activeConnector?.id).map((connector) => (
         <Button
           mt={10}
-          backgroundColor='#3c859d'
-          color='#fff'
-          variant='solid'
+          colorScheme='teal'
           disabled={!connector.ready}
           key={connector.id}
           onClick={() => connect(connector)}
