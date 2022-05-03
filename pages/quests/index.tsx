@@ -1,14 +1,24 @@
 import type { NextPage } from 'next'
-import { Text, Heading, Image, Box, Button } from '@chakra-ui/react'
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import {
+  Text,
+  Heading,
+  Image,
+  Box,
+  Button,
+  Input,
+  Stack
+} from '@chakra-ui/react'
+import { useAccount, useConnect } from 'wagmi'
 import { Layout } from '@/components/layouts/layout'
 import { useMounted } from '@/hooks/useMounted'
+import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
 
 const Quests: NextPage = () => {
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
   const { data } = useAccount()
+  const { keyword, inputChange, submit, isLoading } = useKeywordSubmit()
 
   return (
     <>
@@ -29,7 +39,7 @@ const Quests: NextPage = () => {
                 can exchange to $HENKAKU tokens.
               </Text>
             </Box>
-            {mounted && !data?.address && (
+            {mounted && !data?.address ? (
               <Button
                 mt={10}
                 w="100%"
@@ -38,8 +48,28 @@ const Quests: NextPage = () => {
               >
                 connect wallet
               </Button>
+            ) : (
+              <Box mt={4}>
+                <Stack>
+                  <Input
+                    bg="white"
+                    placeholder="Keyword"
+                    onChange={inputChange}
+                  />
+
+                  <Button
+                    mt={10}
+                    w="100%"
+                    colorScheme="teal"
+                    onClick={submit}
+                    isLoading={isLoading}
+                    disabled={keyword == ''}
+                  >
+                    Submit Keyword
+                  </Button>
+                </Stack>
+              </Box>
             )}
-            {/*TODO: Add form component */}
           </Box>
         </Box>
       </Layout>
