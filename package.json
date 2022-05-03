@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen:typing": "typechain --target ethers-v5 --out-dir contracts/types './contracts/PodCastNFT.json'",
+    "postinstall": "yarn gen:typing"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.8",
@@ -20,12 +22,14 @@
     "wagmi": "0.3.2"
   },
   "devDependencies": {
+    "@typechain/ethers-v5": "^10.0.0",
     "@types/node": "17.0.24",
     "@types/react": "18.0.5",
     "@types/react-dom": "18.0.1",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.5",
     "prettier": "^2.6.2",
+    "typechain": "^8.0.0",
     "typescript": "4.6.3"
   }
 }
