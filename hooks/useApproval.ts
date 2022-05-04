@@ -32,7 +32,7 @@ const useApprove = (contractAddress: string, sepnder: string) => {
         setStatus(APPROVE_CALLBACK_STATUS.FINISH)
       })
     }
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.address, signer, isReady])
 
   return {
@@ -76,8 +76,8 @@ const useApproval = (contractAddress: string) => {
         setApprove(value.gt(1000) ? true : false)
       })
     }
-
-  }, [contract, contractAddress, data?.address, signer, isReady])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.address, signer, isReady])
 
   return approved
 }
