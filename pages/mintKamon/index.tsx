@@ -31,10 +31,10 @@ const MintKamon: NextPage = () => {
   const [tokenURI, setTokenURI] = useState('')
 
   useEffect(() => {
-    setTokenURI('httsp://yourtokenURI') // TODO: for enable and mintWithHenkaku method
+    // setTokenURI('httsp://yourtokenURI') // TODO: for enable and mintWithHenkaku method
   }, [])
 
-  if (false && !tokenURI) {
+  if (mounted && data?.address && !tokenURI) {
     return <GenerateImageForm />
   }
 
