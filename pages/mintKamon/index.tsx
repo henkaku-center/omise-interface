@@ -27,7 +27,7 @@ const MintKamon: NextPage = () => {
     chainId: activeChain?.id,
   })
   const { status, approve } = useApprove(henkakuErc20, kamonNFT)
-  const approved = useApproval(henkakuErc20)
+  const approved = useApproval(henkakuErc20, kamonNFT)
   const [tokenURI, setTokenURI] = useState('')
 
   useEffect(() => {

@@ -8,37 +8,19 @@ const APPROVE_CALLBACK_STATUS = {
   FINISH: 3,
 }
 
-const useApprove = (contractAddress: string, sepnder: string) => {
+const useApprove = (erc20: string, spender: string) => {
   const [status, setStatus] = useState<number>()
-  const [isReady, setReady] = useState<boolean>(false)
-  const { data } = useAccount()
-  const { data: signer } = useSigner(
-    {
-      onSuccess() {
-        setReady(true)
-      },
-    }
-  )
+  const { data: signer } = useSigner()
   const contract = useContract({
-    addressOrName: contractAddress,
+    addressOrName: erc20,
     contractInterface: erc20ABI,
     signerOrProvider: signer,
   })
 
-  useEffect(() => {
-    if (signer && data?.address && isReady) {
-      const filter = contract.filters.Approval(data?.address, contractAddress, null);
-      contract.on(filter, (address: string, sepnder: string, value: ethers.BigNumber) => {
-        setStatus(APPROVE_CALLBACK_STATUS.FINISH)
-      })
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.address, signer, isReady])
-
   return {
     status: status,
     approve: () => contract.approve(
-      sepnder,
+      spender,
       ethers.constants.MaxUint256
     )
       .then(() => { setStatus(APPROVE_CALLBACK_STATUS.PENDING) })
@@ -46,8 +28,8 @@ const useApprove = (contractAddress: string, sepnder: string) => {
   }
 }
 
-const useApproval = (contractAddress: string) => {
-  const [approved, setApprove] = useState(false)
+const useApproval = (erc20: string, spenderAddress: string) => {
+  const [approved, setApprove] = useState<boolean>()
   const [isReady, setReady] = useState<boolean>(false)
   const { data } = useAccount()
   const { data: signer } = useSigner(
@@ -58,7 +40,7 @@ const useApproval = (contractAddress: string) => {
     }
   )
   const contract = useContract({
-    addressOrName: contractAddress,
+    addressOrName: erc20,
     contractInterface: erc20ABI,
     signerOrProvider: signer,
   })
@@ -66,13 +48,13 @@ const useApproval = (contractAddress: string) => {
   useEffect(() => {
     if (signer && isReady) {
       contract
-        .allowance(data?.address, contractAddress)
+        .allowance(data?.address, spenderAddress)
         .then((allowance: ethers.BigNumber) => {
           setApprove(allowance.gt(1000) ? true : false)
         })
 
-      const filter = contract.filters.Approval(data?.address, contractAddress, null)
-      contract.on(filter, (address: string, sepnder: string, value: ethers.BigNumber) => {
+      const filter = contract.filters.Approval(data?.address, spenderAddress, null)
+      contract.on(filter, (address: string, spender: string, value: ethers.BigNumber) => {
         setApprove(value.gt(1000) ? true : false)
       })
     }
