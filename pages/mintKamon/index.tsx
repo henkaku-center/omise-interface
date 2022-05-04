@@ -15,9 +15,9 @@ import { getContractAddress } from 'utils/contractAddress'
 const MintKamon: NextPage = () => {
   const mounted = useMounted()
   const { activeChain } = useNetwork()
-  const { connect, connectors, error } = useConnect()
-  const [metaMask] = connectors
   const { data } = useAccount()
+  const { connect, connectors, error} = useConnect()
+  const [metaMask] = connectors
   const henkakuErc20 = getContractAddress({
     name: 'henkakuErc20',
     chainId: activeChain?.id,
