@@ -59,7 +59,7 @@ const MintKamon: NextPage = () => {
     setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
   }, [])
 
-  if (false && !tokenURI) {
+  if (mounted && data?.address && !tokenURI) {
     return <GenerateImageForm />
   }
 
