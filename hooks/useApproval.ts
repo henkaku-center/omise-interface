@@ -1,6 +1,6 @@
-import { ethers } from "ethers"
+import { ethers, Signer } from "ethers"
 import { useEffect, useState } from "react"
-import { erc20ABI, useAccount, useContract, useNetwork, useSigner } from "wagmi"
+import { erc20ABI, useAccount, useConnect, useContract, useNetwork, useProvider, useSigner, useWebSocketProvider } from "wagmi"
 
 const APPROVE_CALLBACK_STATUS = {
   PENDING: 1,
@@ -10,8 +10,15 @@ const APPROVE_CALLBACK_STATUS = {
 
 const useApprove = (contractAddress: string, sepnder: string) => {
   const [status, setStatus] = useState<number>()
+  const [isReady, setReady] = useState<boolean>(false)
   const { data } = useAccount()
-  const { data: signer } = useSigner()
+  const { data: signer } = useSigner(
+    {
+      onSuccess() {
+        setReady(true)
+      },
+    }
+  )
   const contract = useContract({
     addressOrName: contractAddress,
     contractInterface: erc20ABI,
@@ -19,14 +26,14 @@ const useApprove = (contractAddress: string, sepnder: string) => {
   })
 
   useEffect(() => {
-    if (signer) {
-      const filter = contract.filters.Approval(data?.address, contractAddress, null)
+    if (signer && data?.address && isReady) {
+      const filter = contract.filters.Approval(data?.address, contractAddress, null);
       contract.on(filter, (address: string, sepnder: string, value: ethers.BigNumber) => {
         setStatus(APPROVE_CALLBACK_STATUS.FINISH)
       })
     }
 
-  }, [contract, contractAddress, data?.address, signer])
+  }, [data?.address, signer, isReady])
 
   return {
     status: status,
@@ -41,8 +48,15 @@ const useApprove = (contractAddress: string, sepnder: string) => {
 
 const useApproval = (contractAddress: string) => {
   const [approved, setApprove] = useState(false)
+  const [isReady, setReady] = useState<boolean>(false)
   const { data } = useAccount()
-  const { data: signer } = useSigner()
+  const { data: signer } = useSigner(
+    {
+      onSuccess() {
+        setReady(true)
+      },
+    }
+  )
   const contract = useContract({
     addressOrName: contractAddress,
     contractInterface: erc20ABI,
@@ -50,7 +64,7 @@ const useApproval = (contractAddress: string) => {
   })
 
   useEffect(() => {
-    if (signer) {
+    if (signer && isReady) {
       contract
         .allowance(data?.address, contractAddress)
         .then((allowance: ethers.BigNumber) => {
@@ -63,7 +77,7 @@ const useApproval = (contractAddress: string) => {
       })
     }
 
-  }, [contract, contractAddress, data?.address, signer])
+  }, [contract, contractAddress, data?.address, signer, isReady])
 
   return approved
 }
