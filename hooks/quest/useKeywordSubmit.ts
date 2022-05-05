@@ -1,7 +1,7 @@
 import { ChangeEventHandler, useCallback, useState } from 'react'
 import { useToast } from '@/hooks/useToast'
 import { useContractWrite, useNetwork } from 'wagmi'
-import contractInterface from '@/abis/PodCastNFT.json'
+import kamonNFTContract from '@/utils/abis/kamonNFT.json'
 import { getContractAddress } from '@/utils/contractAddress'
 import { getErrorMessageFromRaw } from '@/utils/handleError'
 
@@ -16,7 +16,7 @@ export const useKeywordSubmit = () => {
   const { write: submit, isLoading: isSubmitting } = useContractWrite(
     {
       addressOrName: kamonNFT,
-      contractInterface: contractInterface.abi
+      contractInterface: kamonNFTContract.abi
     },
     'checkAnswer',
     {
