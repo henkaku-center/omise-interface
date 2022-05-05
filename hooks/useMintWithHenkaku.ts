@@ -14,7 +14,7 @@ export const useMintWithHenkaku = (tokenUri: string, amount: number) => {
     data: mintData,
     isError,
     isLoading: isMinting,
-    write: mint
+    writeAsync: mint
   } = useContractWrite(
     {
       addressOrName: kamonNFT,

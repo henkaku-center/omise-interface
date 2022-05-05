@@ -1,7 +1,8 @@
 import type { NextPage } from 'next'
 import { useAccount, useNetwork, useConnect } from 'wagmi'
 import { Button, Heading, Link, Center } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
 import { GenerateImageForm } from '@/components/mintKamon/GenerateImageForm'
 import { useMounted } from '@/hooks/useMounted'
@@ -27,7 +28,6 @@ const MintKamon: NextPage = () => {
     name: 'kamonNFT',
     chainId: activeChain?.id
   })
-
   const openSeaTokenBaseUrl = `https://testnets.opensea.io/assets/${kamonNFT}/`
 
   // useState
@@ -45,16 +45,19 @@ const MintKamon: NextPage = () => {
   // mint
   const mintPrice = 1000
   const { isMinting, mint } = useMintWithHenkaku(tokenURI, mintPrice)
+  const mintWithHenkaku = useCallback(async () => {
+    const data = await mint()
+    if (data) {
+      setHasNFT(true)
+    }
+  }, [mint, setHasNFT])
   const { balanceOf } = useBalanceOf(data?.address)
   const { totalSupply } = useTotalSupply()
 
   useEffect(() => {
     setTokenURI('httsp://yourtokenURI') // TODO: for enable and mintWithHenkaku method
-  }, [])
-
-  useEffect(() => {
     setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
-  }, [isMinting])
+  }, [])
 
   if (false && !tokenURI) {
     return <GenerateImageForm />
@@ -75,12 +78,12 @@ const MintKamon: NextPage = () => {
 
         {hasNFT && (
           <>
-            <Heading mt={50} size='2xl'>
+            <Heading mt={50} size="2xl">
               🎉 Your nft is minted !! 🎉
             </Heading>
-            <Center>
+            <Center mt={5}>
               <Link href={`${openSeaTokenBaseUrl}${totalSupply}`} isExternal>
-                Check with OpenSea
+                Check with OpenSea <ExternalLinkIcon mx="2px" />
               </Link>
             </Center>
           </>
@@ -93,7 +96,7 @@ const MintKamon: NextPage = () => {
             <Button
               mt={10}
               colorScheme="teal"
-              onClick={() => mint()}
+              onClick={() => mintWithHenkaku()}
               isLoading={isMinting}
             >
               Mint with 1000 henkaku
