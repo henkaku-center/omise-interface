@@ -7,12 +7,14 @@ const GenerateImageForm = () => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
   const { data } = useAccount()
   const [input, setInput] = useState('')
+  const [disabled, setDisabled] = useState(false);
   const handleInputChange = (e: any) => setInput(e.target.value)
   const handleFileChange = (e: any) => setInput(e.target.files[0])
   const isError = input === ''
 
   const submitGenerateImage = async (event: any) => {
     event.preventDefault()
+    setDisabled(true)
     const imageFile = event.target.profilePicture.files[0]
     const blobToBase64 = (blob: any): Promise<string> => {
       return new Promise<string>((resolve, _) => {
@@ -84,6 +86,7 @@ const GenerateImageForm = () => {
           mt={10}
           colorScheme='teal'
           type='submit'
+          isDisabled={disabled}
         >
           Generate Image
         </Button>
