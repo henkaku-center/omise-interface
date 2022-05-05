@@ -1,14 +1,18 @@
 import type { NextPage } from 'next'
 import { useAccount } from 'wagmi'
-import { Button, Text, Heading, Image, SimpleGrid, Box, useDisclosure } from '@chakra-ui/react'
+import { Button, Text, Heading, Image, SimpleGrid, Box } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
+import { useMounted } from '@/hooks/useMounted'
+import { MetaMaskLeadBanner } from '@/components/metaMaskAlert/MetaMaskLeadBanner'
 
 const Home: NextPage = () => {
-  const { data, isError, isLoading } = useAccount()
+  const { data } = useAccount()
+  const mounted = useMounted()
 
   return (
     <>
       <Layout>
+        <MetaMaskLeadBanner />
         <Heading as='h2' color='gray.600'>
           Mint your Kamon - 家紋{' '}
         </Heading>
@@ -26,7 +30,11 @@ const Home: NextPage = () => {
               <Button as='a' href='/mintKamon' size='lg' colorScheme='teal'>
                 Go and Mint your NFT
               </Button>
-              {mounted && <Text fontSize='xs' mt='10px' >{data?.address}</Text>}
+              {mounted && (
+                <Text fontSize='xs' mt='10px'>
+                  {data?.address}
+                </Text>
+              )}
             </Box>
           </div>
         </SimpleGrid>
