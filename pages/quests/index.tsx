@@ -18,7 +18,7 @@ const Quests: NextPage = () => {
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
   const { data } = useAccount()
-  const { keyword, inputChange, submit, isLoading } = useKeywordSubmit()
+  const { keyword, inputChange, submit, isSubmitting } = useKeywordSubmit()
 
   return (
     <>
@@ -61,8 +61,8 @@ const Quests: NextPage = () => {
                     mt={10}
                     w="100%"
                     colorScheme="teal"
-                    onClick={submit}
-                    isLoading={isLoading}
+                    onClick={() => submit()}
+                    isLoading={isSubmitting}
                     disabled={keyword == ''}
                   >
                     Submit Keyword
