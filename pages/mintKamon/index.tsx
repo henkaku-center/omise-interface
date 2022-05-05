@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useAccount, useNetwork, useConnect } from 'wagmi'
-import { Button, Heading } from '@chakra-ui/react'
+import { Button, Heading, Link, Center } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
 import { GenerateImageForm } from '@/components/mintKamon/GenerateImageForm'
@@ -13,6 +13,7 @@ import {
 import { getContractAddress } from 'utils/contractAddress'
 import { useMintWithHenkaku } from '@/hooks/useMintWithHenkaku'
 import { useBalanceOf } from '@/hooks/useBalanceOf'
+import { useTotalSupply } from '@/hooks/useTotalSupply'
 
 const MintKamon: NextPage = () => {
   const mounted = useMounted()
@@ -27,8 +28,11 @@ const MintKamon: NextPage = () => {
     chainId: activeChain?.id
   })
 
+  const openSeaTokenBaseUrl = `https://testnets.opensea.io/assets/${kamonNFT}/`
+
   // useState
   const [tokenURI, setTokenURI] = useState('')
+  const [hasNFT, setHasNFT] = useState(false)
 
   /// connect
   const { connect, connectors, error } = useConnect()
@@ -42,11 +46,15 @@ const MintKamon: NextPage = () => {
   const mintPrice = 1000
   const { isMinting, mint } = useMintWithHenkaku(tokenURI, mintPrice)
   const { balanceOf } = useBalanceOf(data?.address)
-  const hasNFT = balanceOf && Number(balanceOf.toString()) > 0 ? true : false
+  const { totalSupply } = useTotalSupply()
 
   useEffect(() => {
     setTokenURI('httsp://yourtokenURI') // TODO: for enable and mintWithHenkaku method
   }, [])
+
+  useEffect(() => {
+    setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
+  }, [isMinting])
 
   if (false && !tokenURI) {
     return <GenerateImageForm />
@@ -65,8 +73,22 @@ const MintKamon: NextPage = () => {
           </Button>
         )}
 
+        {hasNFT && (
+          <>
+            <Heading mt={50} size='2xl'>
+              🎉 Your nft is minted !! 🎉
+            </Heading>
+            <Center>
+              <Link href={`${openSeaTokenBaseUrl}${totalSupply}`} isExternal>
+                Check with OpenSea
+              </Link>
+            </Center>
+          </>
+        )}
+
         {mounted &&
           data?.address &&
+          !hasNFT &&
           (tokenURI && approved ? (
             <Button
               mt={10}
