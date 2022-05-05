@@ -7,10 +7,9 @@ interface ContractAddress {
 }
 
 interface getContractAddressArg {
-  name: keyof ContractAddress;
-  chainId: number | undefined;
+  name: keyof ContractAddress
+  chainId: number | undefined
 }
-
 
 const contractAddress: ContractAddress = {
   henkakuErc20: {
@@ -21,10 +20,12 @@ const contractAddress: ContractAddress = {
   }
 }
 
-const defaultChainID = process.env.production ? chainId.polygon : chainId.rinkeby
+const defaultChainID = process.env.production
+  ? chainId.polygon
+  : chainId.rinkeby
 
-const getContractAddress = ({name, chainId}: getContractAddressArg) => {
+const getContractAddress = ({ name, chainId }: getContractAddressArg) => {
   return contractAddress[name][chainId || defaultChainID]
 }
 
-export { contractAddress, defaultChainID, getContractAddress}
+export { contractAddress, defaultChainID, getContractAddress }

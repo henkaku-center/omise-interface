@@ -12,13 +12,12 @@ import {
 } from '@/hooks/useApproval'
 import { getContractAddress } from 'utils/contractAddress'
 import { useMintWithHenkaku } from '@/hooks/useMintWithHenkaku'
+import { useBalanceOf } from '@/hooks/useBalanceOf'
 
 const MintKamon: NextPage = () => {
   const mounted = useMounted()
   const { activeChain } = useNetwork()
   const { data } = useAccount()
-  const { connect, connectors, error } = useConnect()
-  const [metaMask] = connectors
   const henkakuErc20 = getContractAddress({
     name: 'henkakuErc20',
     chainId: activeChain?.id
@@ -27,11 +26,23 @@ const MintKamon: NextPage = () => {
     name: 'kamonNFT',
     chainId: activeChain?.id
   })
+
+  // useState
+  const [tokenURI, setTokenURI] = useState('')
+
+  /// connect
+  const { connect, connectors, error } = useConnect()
+  const [metaMask] = connectors
+
+  // approve
   const { status, approve } = useApprove(henkakuErc20, kamonNFT)
   const approved = useApproval(henkakuErc20, kamonNFT)
-  const [tokenURI, setTokenURI] = useState('')
+
+  // mint
   const mintPrice = 1000
   const { isMinting, mint } = useMintWithHenkaku(tokenURI, mintPrice)
+  const { balanceOf } = useBalanceOf(data?.address)
+  const hasNFT = balanceOf && Number(balanceOf.toString()) > 0 ? true : false
 
   useEffect(() => {
     setTokenURI('httsp://yourtokenURI') // TODO: for enable and mintWithHenkaku method
@@ -45,14 +56,15 @@ const MintKamon: NextPage = () => {
     <>
       <Layout>
         <Heading mt={50}>Henkaku kamon nft</Heading>
+        {error && <div>{error.message}</div>}
         {mounted && data?.address}
+
         {mounted && !data?.address && (
           <Button colorScheme="teal" onClick={() => connect(metaMask)}>
             connect wallet
           </Button>
         )}
 
-        {error && <div>{error.message}</div>}
         {mounted &&
           data?.address &&
           (tokenURI && approved ? (

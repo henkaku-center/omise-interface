@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
 import { useNetwork, useContractWrite } from 'wagmi'
-import { useCallback } from 'react'
-import kamonNFTContract from '@/abis/kamonNFT.json'
+import kamonNFTContract from 'utils/abis/kamonNFT.json'
 import { getContractAddress } from 'utils/contractAddress'
 
 export const useMintWithHenkaku = (tokenUri: string, amount: number) => {
