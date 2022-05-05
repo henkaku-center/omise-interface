@@ -8,27 +8,30 @@ import { useMounted } from '@/hooks/useMounted'
 import {
   APPROVE_CALLBACK_STATUS,
   useApproval,
-  useApprove,
+  useApprove
 } from '@/hooks/useApproval'
-import { getContractAddress } from '@/utils/contractAddress'
+import { getContractAddress } from 'utils/contractAddress'
+import { useMintWithHenkaku } from '@/hooks/useMintWithHenkaku'
 
 const MintKamon: NextPage = () => {
   const mounted = useMounted()
   const { activeChain } = useNetwork()
   const { data } = useAccount()
-  const { connect, connectors, error} = useConnect()
+  const { connect, connectors, error } = useConnect()
   const [metaMask] = connectors
   const henkakuErc20 = getContractAddress({
     name: 'henkakuErc20',
-    chainId: activeChain?.id,
+    chainId: activeChain?.id
   })
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
-    chainId: activeChain?.id,
+    chainId: activeChain?.id
   })
   const { status, approve } = useApprove(henkakuErc20, kamonNFT)
   const approved = useApproval(henkakuErc20, kamonNFT)
   const [tokenURI, setTokenURI] = useState('')
+  const mintPrice = 1000
+  const { isMinting, mint } = useMintWithHenkaku(tokenURI, mintPrice)
 
   useEffect(() => {
     setTokenURI('httsp://yourtokenURI') // TODO: for enable and mintWithHenkaku method
@@ -44,7 +47,7 @@ const MintKamon: NextPage = () => {
         <Heading mt={50}>Henkaku kamon nft</Heading>
         {mounted && data?.address}
         {mounted && !data?.address && (
-          <Button colorScheme='teal' onClick={() => connect(metaMask)}>
+          <Button colorScheme="teal" onClick={() => connect(metaMask)}>
             connect wallet
           </Button>
         )}
@@ -53,13 +56,18 @@ const MintKamon: NextPage = () => {
         {mounted &&
           data?.address &&
           (tokenURI && approved ? (
-            <Button mt={10} colorScheme='teal'>
+            <Button
+              mt={10}
+              colorScheme="teal"
+              onClick={() => mint()}
+              isLoading={isMinting}
+            >
               Mint with 1000 henkaku
             </Button>
           ) : (
             <Button
               mt={10}
-              colorScheme='teal'
+              colorScheme="teal"
               onClick={approve}
               isLoading={status == APPROVE_CALLBACK_STATUS.PENDING}
             >
