@@ -54,7 +54,12 @@ const MetaMaskLeadBanner = () => {
             {modal?.body}
           </ModalBody>
           <ModalFooter>
-            <Button as='a' href={modal?.link} colorScheme='teal'>
+            <Button
+              as='a'
+              href={modal?.link}
+              colorScheme='teal'
+              target='_blank'
+            >
               {modal?.cta}
             </Button>
             <Button variant='ghost' mr={3} onClick={onClose}>
