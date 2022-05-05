@@ -5,17 +5,16 @@ import { theme } from '@/components/layouts/theme'
 import { chain } from 'wagmi'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 
-  const connector = new MetaMaskConnector({
-    chains: [chain.polygon, chain.rinkeby],
-  })
+const connector = new MetaMaskConnector({
+  chains: [chain.polygon, chain.rinkeby],
+})
 
-  const client = createClient({
-    autoConnect: true,
-    connectors: [connector],
-  })
+const client = createClient({
+  autoConnect: true,
+  connectors: [connector],
+})
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-
   return (
     <Provider client={client}>
       <ChakraProvider theme={theme}>
