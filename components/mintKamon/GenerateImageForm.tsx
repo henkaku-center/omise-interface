@@ -4,6 +4,7 @@ import { Button, Heading, Text, FormControl, FormLabel, Input } from '@chakra-ui
 import { Layout } from '@/components/layouts/layout'
 
 const GenerateImageForm = () => {
+  const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
   const { data } = useAccount()
   const [input, setInput] = useState('')
   const handleInputChange = (e: any) => setInput(e.target.value)
@@ -36,7 +37,7 @@ const GenerateImageForm = () => {
     }
 
     const res = await fetch(
-      'http://localhost:4100/ipfs',
+      ipfsApiEndpoint,
       {
         body: JSON.stringify(payLoad),
         headers: {
