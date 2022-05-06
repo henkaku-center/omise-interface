@@ -32,7 +32,7 @@ const Quests: NextPage = () => {
             />
           </Box>
           <Box p={2}>
-            <Box bg="lightgray" w="100%" p={4}>
+            <Box w="100%" p={4}>
               <Heading size="md">Enter weekly keyword</Heading>
               <Text>
                 By answering this question you will earn 100 points, which you
