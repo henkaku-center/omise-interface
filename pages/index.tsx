@@ -6,9 +6,6 @@ import { useMounted } from '@/hooks/useMounted'
 import { MetaMaskLeadBanner } from '@/components/metaMaskAlert/MetaMaskLeadBanner'
 
 const Home: NextPage = () => {
-  const { data } = useAccount()
-  const mounted = useMounted()
-
   return (
     <>
       <Layout>
@@ -30,11 +27,6 @@ const Home: NextPage = () => {
               <Button as='a' href='/mintKamon' size='lg' colorScheme='teal'>
                 Go and Mint your NFT
               </Button>
-              {mounted && (
-                <Text fontSize='xs' mt='10px'>
-                  {data?.address}
-                </Text>
-              )}
             </Box>
           </div>
         </SimpleGrid>
