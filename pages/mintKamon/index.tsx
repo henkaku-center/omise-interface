@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useAccount, useNetwork, useConnect } from 'wagmi'
-import { Button, Heading, Link, Center } from '@chakra-ui/react'
+import { Button, Heading, Link, Center, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
@@ -85,6 +85,9 @@ const MintKamon: NextPage = () => {
               <Link href={`${openSeaTokenBaseUrl}${totalSupply}`} isExternal>
                 Check with OpenSea <ExternalLinkIcon mx="2px" />
               </Link>
+            </Center>
+            <Center>
+              <Text>It takes a little time for the NFT to appear</Text>
             </Center>
           </>
         )}
