@@ -23,7 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
           </Box>
         </Flex>
       </Box>
-      <Container>{children}</Container>
+      <Container maxW='4xl'>{children}</Container>
     </>
   )
 }
