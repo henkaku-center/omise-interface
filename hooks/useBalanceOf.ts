@@ -1,6 +1,6 @@
 import { useNetwork, useContractRead } from 'wagmi'
-import kamonNFTContract from 'utils/abis/kamonNFT.json'
-import { getContractAddress } from 'utils/contractAddress'
+import kamonNFTContract from '@/utils/abis/kamonNFT.json'
+import { getContractAddress } from '@/utils/contractAddress'
 
 export const useBalanceOf = (owner: string | undefined) => {
   const { activeChain } = useNetwork()

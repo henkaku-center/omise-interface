@@ -11,7 +11,7 @@ import {
   useApproval,
   useApprove
 } from '@/hooks/useApproval'
-import { getContractAddress } from 'utils/contractAddress'
+import { getContractAddress } from '@/utils/contractAddress'
 import { useMintWithHenkaku } from '@/hooks/useMintWithHenkaku'
 import { useBalanceOf } from '@/hooks/useBalanceOf'
 import { useTotalSupply } from '@/hooks/useTotalSupply'
@@ -67,8 +67,8 @@ const MintKamon: NextPage = () => {
     <>
       <Layout>
         <Heading mt={50}>Henkaku kamon nft</Heading>
-        {error && <div>{error.message}</div>}
-        {mounted && data?.address}
+        {error && <Text>{error.message}</Text>}
+        {mounted && <Text>{data?.address}</Text>}
 
         {mounted && !data?.address && (
           <Button colorScheme="teal" onClick={() => connect(metaMask)}>
@@ -78,9 +78,11 @@ const MintKamon: NextPage = () => {
 
         {hasNFT && (
           <>
-            <Heading mt={50} size="2xl">
-              🎉 Your nft is minted !! 🎉
-            </Heading>
+            <Center>
+              <Heading mt={50} size="2xl">
+                🎉 Your nft is minted !! 🎉
+              </Heading>
+            </Center>
             <Center mt={5}>
               <Link href={`${openSeaTokenBaseUrl}${totalSupply}`} isExternal>
                 Check with OpenSea <ExternalLinkIcon mx="2px" />
