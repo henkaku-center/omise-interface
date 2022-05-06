@@ -10,7 +10,7 @@ import {
   useApproval,
   useApprove,
 } from '@/hooks/useApproval'
-import { getContractAddress } from 'utils/contractAddress'
+import { getContractAddress } from '@/utils/contractAddress'
 
 const MintKamon: NextPage = () => {
   const mounted = useMounted()
