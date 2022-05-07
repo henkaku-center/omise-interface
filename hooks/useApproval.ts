@@ -74,7 +74,7 @@ const useApproval = (erc20: string, spenderAddress: string) => {
         }
       }
     )
-  } catch (e) {
+  } catch (e: any) {
     console.error(e) // with different chain it occurs
     if (e?.code != ethers.errors.INVALID_ARGUMENT) {
       throw e

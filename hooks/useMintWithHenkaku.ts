@@ -19,7 +19,7 @@ export const useMintWithHenkaku = (tokenUri: string, amount: number) => {
       'BoughtMemberShipNFT',
       (event) => console.log(event)
     )
-  } catch (e) {
+  } catch (e: any) {
     console.error(e) // with different chain it occurs
     if (e?.code != ethers.errors.INVALID_ARGUMENT) {
       throw e
