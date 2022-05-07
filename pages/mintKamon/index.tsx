@@ -35,7 +35,7 @@ const MintKamon: NextPage = () => {
   const [hasNFT, setHasNFT] = useState(false)
 
   /// connect
-  const { connect, connectors, error } = useConnect()
+  const { connect, connectors, error, isConnected } = useConnect()
   const [metaMask] = connectors
 
   // approve
@@ -58,29 +58,30 @@ const MintKamon: NextPage = () => {
     setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
   }, [])
 
-  if (mounted && data?.address && !tokenURI) {
+  if (mounted && isConnected && !hasNFT && !tokenURI) {
     return <GenerateImageForm onSetTokenURI={setTokenURI}/>
   }
-  console.log('hi from iindex', tokenURI)
 
   return (
     <>
       <Layout>
-        <Heading mt={50}>Henkaku kamon nft</Heading>
-        <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing='10px'>
+      <Heading as='h2' color='gray.600'>
+          Mint your Kamon - 家紋{' '}
+        </Heading>
+        <Text m='1rem'>kamon NFT is membership of henkaku community</Text>
+        <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing='10px' color='gray.600'>
           <div>
             <Image src={tokenURI} alt='' />
+            {!isConnected && (
+              <>
+                <Text mb='1rem'>To mint your Kamon NFT- 家紋 connenct your wallet</Text>
+                <Button colorScheme="teal" onClick={() => connect(metaMask)}>
+                connect wallet
+                </Button>
+              </>
+            )}
           </div>
           <div>
-            {error && <Text>{error.message}</Text>}
-            {mounted && <Text>{data?.address}</Text>}
-
-            {mounted && !data?.address && (
-              <Button colorScheme="teal" onClick={() => connect(metaMask)}>
-                connect wallet
-              </Button>
-            )}
-
             {hasNFT && (
               <>
                 <Center>
@@ -99,8 +100,7 @@ const MintKamon: NextPage = () => {
               </>
             )}
 
-            {mounted &&
-              data?.address &&
+            {mounted && isConnected &&
               !hasNFT &&
               (tokenURI && approved ? (
                 <Button
