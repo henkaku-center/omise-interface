@@ -3,7 +3,6 @@ import { useAccount } from 'wagmi'
 import { Button, Text, Heading, Image, SimpleGrid, Box } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
 import { useMounted } from '@/hooks/useMounted'
-import { MetaMaskLeadBanner } from '@/components/metaMaskAlert/MetaMaskLeadBanner'
 
 const Home: NextPage = () => {
   return (

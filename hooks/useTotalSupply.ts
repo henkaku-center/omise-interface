@@ -1,17 +1,10 @@
-import { useNetwork, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
-import { getContractAddress } from '@/utils/contractAddress'
 
-export const useTotalSupply = () => {
-  const { activeChain } = useNetwork()
-  const kamonNFT = getContractAddress({
-    name: 'kamonNFT',
-    chainId: activeChain?.id
-  })
-
+export const useTotalSupply = (contract: string) => {
   const { data: totalSupply, isError } = useContractRead(
     {
-      addressOrName: kamonNFT,
+      addressOrName: contract,
       contractInterface: kamonNFTContract.abi
     },
     'totalSupply'

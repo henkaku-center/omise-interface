@@ -7,12 +7,12 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Button,
+  Button
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 
-interface ModalPorps {
+interface ModalProps {
   body: string
   link: string
   cta: string
@@ -20,7 +20,7 @@ interface ModalPorps {
 
 const MetaMaskLeadBanner = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [modal, setModal] = useState<ModalPorps>()
+  const [modal, setModal] = useState<ModalProps>()
 
   useEffect(() => {
     if (!window.ethereum) {
@@ -28,12 +28,12 @@ const MetaMaskLeadBanner = () => {
         ? setModal({
             body: 'Go or Install MetaMask App',
             link: 'https://metamask.app.link/dapp/henkaku-membership.vercel.app/',
-            cta: 'open MetaMask App',
+            cta: 'open MetaMask App'
           })
         : setModal({
             body: 'Install Chrome extension for MetaMask',
             link: 'https://metamask.io/download',
-            cta: 'Install Metamask',
+            cta: 'Install Metamask'
           })
 
       onOpen()
