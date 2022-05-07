@@ -1,4 +1,3 @@
-import { useAccount } from 'wagmi'
 import { useEffect, useState } from 'react'
 import {
   Button,
@@ -29,12 +28,12 @@ interface EventProps {
 
 interface Prop {
   onSetTokenURI: (value: string) => void
+  address: string | undefined
 }
 
-const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
+const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI, address }) => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
   const { toast } = useToast()
-  const { data } = useAccount()
   const [name, setName] = useState<string>()
   const [imageFile, setImageFile] = useState<string>()
   const [imageFileObject, setImageFileObject] = useState<any>()
@@ -81,7 +80,7 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
 
     const payLoad = {
       name,
-      address: data?.address,
+      address: address,
       roles: ['Community member'],
       points: 100,
       date: ~~(new Date().getTime() / 1000),
@@ -174,7 +173,7 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
       <Box bg="whiteAlpha.900" p={6} borderRadius="lg" borderWidth="3px">
         <FormControl color="gray.700">
           <FormLabel>wallet address: </FormLabel>
-          <Text fontSize="xs"> {data?.address} </Text>
+          <Text fontSize="xs"> {address} </Text>
           <FormControl isRequired mt={5}>
             <FormLabel htmlFor="name">Your name or nickname</FormLabel>
             <Input

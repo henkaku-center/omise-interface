@@ -1,5 +1,5 @@
-import { ethers } from "ethers"
-import { useState } from "react"
+import { ethers } from 'ethers'
+import { useState } from 'react'
 import {
   erc20ABI,
   useAccount,
@@ -7,12 +7,12 @@ import {
   useContractWrite,
   useContractEvent,
   useSigner
-} from "wagmi"
+} from 'wagmi'
 
 const APPROVE_CALLBACK_STATUS = {
   PENDING: 1,
   FAIL: 2,
-  FINISH: 3,
+  FINISH: 3
 }
 
 const useApprove = (erc20: string, spender: string) => {
@@ -34,7 +34,8 @@ const useApprove = (erc20: string, spender: string) => {
       onSuccess(data) {
         setStatus(APPROVE_CALLBACK_STATUS.PENDING)
       }
-    })
+    }
+  )
 
   return {
     status: status,
@@ -42,32 +43,36 @@ const useApprove = (erc20: string, spender: string) => {
   }
 }
 
-const useApproval = (erc20: string, spenderAddress: string) => {
+const useApproval = (
+  erc20: string,
+  spenderAddress: string,
+  address: string | undefined
+) => {
   const [approved, setApprove] = useState<boolean>()
-  const { data } = useAccount()
-  useContractRead({
-    addressOrName: erc20,
-    contractInterface: erc20ABI,
-  },
+  useContractRead(
+    {
+      addressOrName: erc20,
+      contractInterface: erc20ABI
+    },
     'allowance',
     {
-      args: [data?.address, spenderAddress],
+      args: [address || ethers.constants.AddressZero, spenderAddress],
       onSuccess(data) {
         setApprove(data?.gt(1000) ? true : false)
       }
-    },
+    }
   )
 
   try {
     useContractEvent(
       {
         addressOrName: erc20,
-        contractInterface: erc20ABI,
+        contractInterface: erc20ABI
       },
       'Approval ',
       (event) => {
-        const [owner, address, value] = event
-        if (owner == data?.address && address == spenderAddress) {
+        const [owner, eventAddress, value] = event
+        if (owner == address && eventAddress == spenderAddress) {
           setApprove(value?.gt(1000) ? true : false)
         }
       }

@@ -1,22 +1,16 @@
-import { useNetwork, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
-import { getContractAddress } from '@/utils/contractAddress'
+import { ethers } from 'ethers'
 
-export const useBalanceOf = (owner: string | undefined) => {
-  const { activeChain } = useNetwork()
-  const kamonNFT = getContractAddress({
-    name: 'kamonNFT',
-    chainId: activeChain?.id
-  })
-
+export const useBalanceOf = (contract: string, owner: string | undefined) => {
   const { data: balanceOf, isError } = useContractRead(
     {
-      addressOrName: kamonNFT,
+      addressOrName: contract,
       contractInterface: kamonNFTContract.abi
     },
     'balanceOf',
     {
-      args: owner
+      args: owner || ethers.constants.AddressZero
     }
   )
 
