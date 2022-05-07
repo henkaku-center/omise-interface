@@ -7,9 +7,9 @@ const GenerateImageForm = () => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
   const { data } = useAccount()
   const [input, setInput] = useState('')
-  const [disabled, setDisabled] = useState(false);
-  const handleInputChange = (e: any) => setInput(e.target.value)
-  const handleFileChange = (e: any) => setInput(e.target.files[0])
+  const [disabled, setDisabled] = useState(false)
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.files[0])
   const isError = input === ''
 
   const submitGenerateImage = async (event: any) => {
@@ -38,7 +38,7 @@ const GenerateImageForm = () => {
       profilePicture: await blobToBase64(imageFile),
     }
 
-    const res = await fetch(
+    const ipfsApiEndpointRequest = await fetch(
       ipfsApiEndpoint,
       {
         body: JSON.stringify(payLoad),
@@ -48,9 +48,15 @@ const GenerateImageForm = () => {
         method: 'POST',
       },
     )
-    const result = await res.json()
-    const tokenURI = result.tokenUri
-    console.log(tokenURI)
+    const ipfsApiEndpointResponse = await ipfsApiEndpointRequest.json()
+    const tokenURI = ipfsApiEndpointResponse.tokenUri
+    console.log('tokenURI', tokenURI)
+
+    const pinataTokenUriRequest = await fetch(tokenURI)
+    const tokenJson = await pinataTokenUriRequest.json()
+    const tokenImageURI = tokenJson.image
+    console.log('tokenJson', tokenJson)
+    console.log('tokenImageURI', tokenImageURI)
   }
 
   return (
