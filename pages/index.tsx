@@ -9,7 +9,6 @@ const Home: NextPage = () => {
   return (
     <>
       <Layout>
-        <MetaMaskLeadBanner />
         <Heading as='h2' color='gray.600'>
           Mint your Kamon - 家紋{' '}
         </Heading>
