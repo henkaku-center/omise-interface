@@ -87,14 +87,27 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
       profilePicture: await blobToBase64(imageFileObject)
     }
 
-    const ipfsApiEndpointRequest = await fetch(ipfsApiEndpoint, {
-      body: JSON.stringify(payLoad),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST'
-    })
-
+    let ipfsApiEndpointRequest
+    try{
+      ipfsApiEndpointRequest = await fetch(ipfsApiEndpoint, {
+        body: JSON.stringify(payLoad),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'POST'
+      })
+      .then((response) => {
+        // 413 crashes before we can check ipfsApiEndpointRequest.status,
+        // so it's dealt with here
+        if (response.status == 413) throw new Error(response.status.toString())
+        return response
+      })
+    } catch (error) {
+      processHttpError(413)
+      setIsLoading(false)
+      return
+    }
+    processHttpError(ipfsApiEndpointRequest.status)
     const ipfsApiEndpointResponse = await ipfsApiEndpointRequest.json()
     const tokenURI = await ipfsApiEndpointResponse.tokenUri
 
@@ -108,6 +121,37 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
     setIsLoading(false)
   }
 
+  const processHttpError = (status: number) => {
+    const httpErrorMsd: number = ~~(status/100)
+    const httpErrorMessages = {
+      error4: 'There was a problem with the request',
+      error400: 'There probably was an error with the data you submitted.',
+      error403: 'The server did not allow the request.',
+      error404: 'The server did not know what to do with the request.',
+      error413: 'The request payload was too large. Please choose an image below 30 megabytes.',
+      error5: 'The server could not fulfill the request. Please try again later.',
+      error500: 'The server crashed and could not fulfill the request. Please try again later.',
+    }
+    if (httpErrorMsd > 3) {
+      const propA: string = 'error' + status
+      const propB: string = 'error' + httpErrorMsd
+      let toastDescription: string
+      if (httpErrorMessages.hasOwnProperty(propA)) {
+        toastDescription = httpErrorMessages[propA]
+      } else if (httpErrorMessages.hasOwnProperty(propB)) {
+        toastDescription = httpErrorMessages[propB]
+      } else {
+        toastDescription = httpErrorMessages['error4']
+      }
+      toast({
+        title: 'Error ' + status,
+        description: toastDescription,
+        status: 'error'
+      })
+      setIsLoading(false)
+      return
+    }
+  }
   useEffect(() => {
     if (tokenURIImage) {
       onSetTokenURI(tokenURIImage)
