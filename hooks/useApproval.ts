@@ -56,23 +56,30 @@ const useApproval = (erc20: string, spenderAddress: string) => {
       args: [data?.address, spenderAddress],
       onSuccess(data) {
         setApprove(data?.gt(1000) ? true : false)
-      },
+      }
     },
   )
 
-  useContractEvent(
-    {
-      addressOrName: erc20,
-      contractInterface: erc20ABI,
-    },
-    'Approval ',
-    (event) => {
-      const [owner, address, value] = event
-      if (owner == data?.address && address == spenderAddress) {
-        setApprove(value?.gt(1000) ? true : false)
+  try {
+    useContractEvent(
+      {
+        addressOrName: erc20,
+        contractInterface: erc20ABI,
+      },
+      'Approval ',
+      (event) => {
+        const [owner, address, value] = event
+        if (owner == data?.address && address == spenderAddress) {
+          setApprove(value?.gt(1000) ? true : false)
+        }
       }
+    )
+  } catch (e) {
+    console.error(e) // with different chain it occurs
+    if (e?.code != ethers.errors.INVALID_ARGUMENT) {
+      throw e
     }
-  )
+  }
 
   return approved
 }
