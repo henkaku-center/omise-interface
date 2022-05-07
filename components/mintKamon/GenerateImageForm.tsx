@@ -1,16 +1,20 @@
 import { useAccount } from 'wagmi'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Heading, Text, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
 
-interface Token { 
-  name: string, 
-  description: string, 
+interface Token {
+  name: string,
+  description: string,
   image: string,
   attributes: any[],
 }
 
-const GenerateImageForm = () => {
+interface Prop {
+  onSetTokenURI: (value: string) => void
+}
+
+const GenerateImageForm: React.FC<Prop> = ({onSetTokenURI}) => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
   const { data } = useAccount()
   const [input, setInput] = useState('')
@@ -18,7 +22,9 @@ const GenerateImageForm = () => {
   const [tokenJson, setTokenJson] = useState<Token>()
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.files[0])
+  const [tokenURIImage, setTokenImageURI] = useState<string>()
   const isError = input === ''
+
 
   const submitGenerateImage = async (event: any) => {
     event.preventDefault()
@@ -56,6 +62,7 @@ const GenerateImageForm = () => {
         method: 'POST',
       },
     )
+
     const ipfsApiEndpointResponse = await ipfsApiEndpointRequest.json()
     const tokenURI = await ipfsApiEndpointResponse.tokenUri
     console.log('tokenURI', tokenURI)
@@ -64,11 +71,18 @@ const GenerateImageForm = () => {
     const responseJson = await pinataTokenUriRequest.json()
     setTokenJson(responseJson)
     const tokenImageURI = await responseJson.image
-    console.log('responseJson', responseJson)
-    console.log('tokenImageURI', tokenImageURI)
-    console.log('tokenJson', tokenJson)
+    if ( tokenImageURI) {
+      setTokenImageURI(tokenImageURI)
+    }
+
   }
 
+  useEffect(() => {
+    if (tokenURIImage) {
+      console.log('yay', tokenURIImage)
+      onSetTokenURI(tokenURIImage)
+    }
+  }, [tokenURIImage])
   return (
     <Layout>
       <Heading mt={50}>Henkaku Kamon NFT</Heading>
