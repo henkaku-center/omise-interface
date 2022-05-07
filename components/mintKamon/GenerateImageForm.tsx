@@ -50,7 +50,8 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
       if (!imageFile) {
         toastDescription += 'Please choose a profile picture. '
       } else if (!imageFileObject) {
-        toastDescription += 'Your profile picture could not be correctly processed. '
+        toastDescription +=
+          'Your profile picture could not be correctly processed. '
       }
       toast({
         title: 'All fields are required',
@@ -88,15 +89,14 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
     }
 
     let ipfsApiEndpointRequest
-    try{
+    try {
       ipfsApiEndpointRequest = await fetch(ipfsApiEndpoint, {
         body: JSON.stringify(payLoad),
         headers: {
           'Content-Type': 'application/json'
         },
         method: 'POST'
-      })
-      .then((response) => {
+      }).then((response) => {
         // 413 crashes before we can check ipfsApiEndpointRequest.status,
         // so it's dealt with here
         if (response.status == 413) throw new Error(response.status.toString())
@@ -123,15 +123,21 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
   }
 
   const processHttpError = (status: number) => {
-    const httpErrorMsd: number = ~~(status/100)
-    const httpErrorMessages = {
+    const httpErrorMsd: number = ~~(status / 100)
+    interface errorMessages {
+      [key: string]: string
+    }
+    const httpErrorMessages: errorMessages = {
       error4: 'There was a problem with the request',
       error400: 'There probably was an error with the data you submitted.',
       error403: 'The server did not allow the request.',
       error404: 'The server did not know what to do with the request.',
-      error413: 'The request payload was too large. Please choose an image below 30 megabytes.',
-      error5: 'The server could not fulfill the request. Please try again later.',
-      error500: 'The server crashed and could not fulfill the request. Please try again later.',
+      error413:
+        'The request payload was too large. Please choose an image below 30 megabytes.',
+      error5:
+        'The server could not fulfill the request. Please try again later.',
+      error500:
+        'The server crashed and could not fulfill the request. Please try again later.'
     }
     if (httpErrorMsd > 3) {
       const propA: string = 'error' + status
