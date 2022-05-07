@@ -3,11 +3,19 @@ import { useState } from 'react'
 import { Button, Heading, Text, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
 
+interface Token { 
+  name: string, 
+  description: string, 
+  image: string,
+  attributes: any[],
+}
+
 const GenerateImageForm = () => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
   const { data } = useAccount()
   const [input, setInput] = useState('')
   const [disabled, setDisabled] = useState(false)
+  const [tokenJson, setTokenJson] = useState<Token>()
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.files[0])
   const isError = input === ''
@@ -49,14 +57,16 @@ const GenerateImageForm = () => {
       },
     )
     const ipfsApiEndpointResponse = await ipfsApiEndpointRequest.json()
-    const tokenURI = ipfsApiEndpointResponse.tokenUri
+    const tokenURI = await ipfsApiEndpointResponse.tokenUri
     console.log('tokenURI', tokenURI)
 
     const pinataTokenUriRequest = await fetch(tokenURI)
-    const tokenJson = await pinataTokenUriRequest.json()
-    const tokenImageURI = tokenJson.image
-    console.log('tokenJson', tokenJson)
+    const responseJson = await pinataTokenUriRequest.json()
+    setTokenJson(responseJson)
+    const tokenImageURI = await responseJson.image
+    console.log('responseJson', responseJson)
     console.log('tokenImageURI', tokenImageURI)
+    console.log('tokenJson', tokenJson)
   }
 
   return (
