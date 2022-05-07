@@ -112,6 +112,7 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
     const tokenURI = await ipfsApiEndpointResponse.tokenUri
 
     const pinataTokenUriRequest = await fetch(tokenURI)
+    processHttpError(pinataTokenUriRequest.status)
     const responseJson = await pinataTokenUriRequest.json()
     const tokenImageURI = await responseJson.image
     if (tokenImageURI) {
@@ -158,7 +159,6 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
     }
   }, [tokenURIImage])
 
-  console.log(imageFile)
   return (
     <Layout>
       <Heading as="h2" color="gray.600">
