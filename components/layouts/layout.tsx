@@ -1,4 +1,6 @@
 import { Container, Heading, Box, Link, Flex, Spacer } from '@chakra-ui/react'
+import { SwitchNetworkAlert } from '@/components/metaMaskAlert/SwitchNetworkAlert'
+import { MetaMaskLeadBanner } from '@/components/metaMaskAlert/MetaMaskLeadBanner'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -7,6 +9,8 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <>
+      <SwitchNetworkAlert />
+      <MetaMaskLeadBanner />
       <Box padding='4'>
         <Flex>
           <Box p={2}>
@@ -23,7 +27,9 @@ const Layout = ({ children }: LayoutProps) => {
           </Box>
         </Flex>
       </Box>
-      <Container maxW='4xl'>{children}</Container>
+      <Container maxW='4xl'>
+        {children}
+      </Container>
     </>
   )
 }
