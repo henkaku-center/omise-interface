@@ -1,6 +1,14 @@
 import type { NextPage } from 'next'
 import { useAccount, useNetwork, useConnect } from 'wagmi'
-import { Button, Heading, Link, Center, Text, SimpleGrid, Image } from '@chakra-ui/react'
+import {
+  Button,
+  Heading,
+  Link,
+  Center,
+  Text,
+  SimpleGrid,
+  Image
+} from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
@@ -59,24 +67,30 @@ const MintKamon: NextPage = () => {
   }, [])
 
   if (mounted && isConnected && !hasNFT && !tokenURI) {
-    return <GenerateImageForm onSetTokenURI={setTokenURI}/>
+    return <GenerateImageForm onSetTokenURI={setTokenURI} />
   }
 
   return (
     <>
       <Layout>
-      <Heading as='h2' color='gray.600'>
+        <Heading as="h2" color="gray.600">
           Mint your Kamon - 家紋{' '}
         </Heading>
-        <Text m='1rem'>kamon NFT is membership of henkaku community</Text>
-        <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing='10px' color='gray.600'>
+        <Text m="1rem">kamon NFT is membership of henkaku community</Text>
+        <SimpleGrid
+          columns={{ sm: 1, md: 1, lg: 2 }}
+          spacing="10px"
+          color="gray.600"
+        >
           <div>
-            <Image src={tokenURI} alt='' />
+            <Image src={tokenURI} alt="" />
             {!isConnected && (
               <>
-                <Text mb='1rem'>To mint your Kamon NFT- 家紋 connenct your wallet</Text>
+                <Text mb="1rem">
+                  To mint your Kamon NFT- 家紋 connenct your wallet
+                </Text>
                 <Button colorScheme="teal" onClick={() => connect(metaMask)}>
-                connect wallet
+                  connect wallet
                 </Button>
               </>
             )}
@@ -90,7 +104,10 @@ const MintKamon: NextPage = () => {
                   </Heading>
                 </Center>
                 <Center mt={5}>
-                  <Link href={`${openSeaTokenBaseUrl}${totalSupply}`} isExternal>
+                  <Link
+                    href={`${openSeaTokenBaseUrl}${totalSupply}`}
+                    isExternal
+                  >
                     Check with OpenSea <ExternalLinkIcon mx="2px" />
                   </Link>
                 </Center>
@@ -100,11 +117,18 @@ const MintKamon: NextPage = () => {
               </>
             )}
 
-            {mounted && isConnected &&
+            {mounted &&
+              isConnected &&
               !hasNFT &&
               (tokenURI && approved ? (
                 <>
-                  <Text mb={2}>To mint your Kamon NFT - 家紋 enable your wallet to buy</Text>
+                  <Text>
+                    To mint your Kamon NFT - 家紋 enable your wallet to buy
+                  </Text>
+                  <Text mb={2}>
+                    the left image shows your membership nft. it takes 2,3 min
+                    to display all
+                  </Text>
                   <Button
                     colorScheme="teal"
                     onClick={() => mintWithHenkaku()}
@@ -115,7 +139,13 @@ const MintKamon: NextPage = () => {
                 </>
               ) : (
                 <>
-                  <Text mb={2}>To mint your Kamon NFT - 家紋 enable your wallet to buy</Text>
+                  <Text>
+                    To mint your Kamon NFT - 家紋 enable your wallet to buy
+                  </Text>
+                  <Text mb={2}>
+                    the left image shows your membership nft. it takes 2,3 min
+                    to display all
+                  </Text>
                   <Button
                     colorScheme="teal"
                     onClick={approve}
@@ -126,7 +156,7 @@ const MintKamon: NextPage = () => {
                 </>
               ))}
           </div>
-          </SimpleGrid>
+        </SimpleGrid>
       </Layout>
     </>
   )

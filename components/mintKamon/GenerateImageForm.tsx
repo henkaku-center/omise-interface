@@ -45,6 +45,7 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
       // tell user it is not valid
     }
     setIsLoading(true)
+    // this is debug purpose
     // setTokenImageURI(
     //   'https://pitpa.mypinata.cloud/ipfs/QmNndSLYnChANwhPBnj5AwB5M7XEWz5LwDbQsrXNLu89Gb'
     // )
@@ -61,6 +62,7 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
         reader.readAsDataURL(blob)
       })
     }
+
     const payLoad = {
       name,
       address: data?.address,
@@ -80,7 +82,6 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
 
     const ipfsApiEndpointResponse = await ipfsApiEndpointRequest.json()
     const tokenURI = await ipfsApiEndpointResponse.tokenUri
-    console.log('tokenURI', tokenURI)
 
     const pinataTokenUriRequest = await fetch(tokenURI)
     const responseJson = await pinataTokenUriRequest.json()
@@ -94,7 +95,6 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
 
   useEffect(() => {
     if (tokenURIImage) {
-      console.log('yay', tokenURIImage)
       onSetTokenURI(tokenURIImage)
     }
   }, [tokenURIImage])
@@ -106,15 +106,15 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
         Mint your Kamon - 家紋{' '}
       </Heading>
       <Text m="1rem">kamon NFT is membership of henkaku community</Text>
-      <Box bg='whiteAlpha.900' p={6} borderRadius='lg' borderWidth='3px'>
-        <FormControl color='gray.700'>
+      <Box bg="whiteAlpha.900" p={6} borderRadius="lg" borderWidth="3px">
+        <FormControl color="gray.700">
           <FormLabel>wallet address: </FormLabel>
           <Text fontSize="xs"> {data?.address} </Text>
           <FormControl isRequired mt={5}>
-            <FormLabel htmlFor='name'>Your name or nickname</FormLabel>
+            <FormLabel htmlFor="name">Your name or nickname</FormLabel>
             <Input
-              type='text'
-              variant='outline'
+              type="text"
+              variant="outline"
               placeholder="Your name"
               name="name"
               value={name}
@@ -122,10 +122,12 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
             />
           </FormControl>
           <FormControl isRequired mt={5}>
-            <FormLabel htmlFor='imageFile'>Your profile picture for the Kamon NFT</FormLabel>
+            <FormLabel htmlFor="imageFile">
+              Your profile picture for the Kamon NFT
+            </FormLabel>
             <Input
-              variant='outline'
-              id='imageFile'
+              variant="outline"
+              id="imageFile"
               type="file"
               accept={'image/*'}
               isRequired={true}
@@ -138,7 +140,13 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
               }}
             />
           </FormControl>
-          <Button mt={10} colorScheme="teal" type="submit" isLoading={isLoading} onClick={() => submitGenerateImage()}>
+          <Button
+            mt={10}
+            colorScheme="teal"
+            type="submit"
+            isLoading={isLoading}
+            onClick={() => submitGenerateImage()}
+          >
             Generate Image
           </Button>
         </FormControl>
