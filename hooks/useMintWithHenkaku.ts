@@ -10,14 +10,21 @@ export const useMintWithHenkaku = (tokenUri: string, amount: number) => {
     chainId: activeChain?.id
   })
 
-  useContractEvent(
-    {
-      addressOrName: kamonNFT,
-      contractInterface: kamonNFTContract.abi
-    },
-    'BoughtMemberShipNFT',
-    (event) => console.log(event)
-  )
+  try {
+    useContractEvent(
+      {
+        addressOrName: kamonNFT,
+        contractInterface: kamonNFTContract.abi
+      },
+      'BoughtMemberShipNFT',
+      (event) => console.log(event)
+    )
+  } catch (e: any) {
+    console.error(e) // with different chain it occurs
+    if (e?.code != ethers.errors.INVALID_ARGUMENT) {
+      throw e
+    }
+  }
 
   const {
     data: mintData,
