@@ -1,35 +1,53 @@
 import { useAccount } from 'wagmi'
 import { useEffect, useState } from 'react'
-import { Button, Heading, Text, FormControl, FormLabel, Input } from '@chakra-ui/react'
+import {
+  Button,
+  Heading,
+  Text,
+  FormControl,
+  FormLabel,
+  Input,
+  Box
+} from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
 
 interface Token {
-  name: string,
-  description: string,
-  image: string,
-  attributes: any[],
+  name: string
+  description: string
+  image: string
+  attributes: any[]
+}
+
+interface EventProps {
+  event: {
+    target: {
+      value: string
+    }
+  }
 }
 
 interface Prop {
   onSetTokenURI: (value: string) => void
 }
 
-const GenerateImageForm: React.FC<Prop> = ({onSetTokenURI}) => {
+const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
   const { data } = useAccount()
-  const [input, setInput] = useState('')
-  const [disabled, setDisabled] = useState(false)
-  const [tokenJson, setTokenJson] = useState<Token>()
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.files[0])
+  const [name, setName] = useState<string>()
+  const [imageFile, setImageFile] = useState<string>()
+  const [imageFileObject, setImageFileObject] = useState<any>()
+  const [isLoading, setIsLoading] = useState(false)
   const [tokenURIImage, setTokenImageURI] = useState<string>()
-  const isError = input === ''
 
-
-  const submitGenerateImage = async (event: any) => {
-    event.preventDefault()
-    setDisabled(true)
-    const imageFile = event.target.profilePicture.files[0]
+  const submitGenerateImage = async () => {
+    if (!imageFile && !name && !imageFileObject) {
+      // TODO image FIle and name is not valid then
+      // tell user it is not valid
+    }
+    setIsLoading(true)
+    // setTokenImageURI(
+    //   'https://pitpa.mypinata.cloud/ipfs/QmNndSLYnChANwhPBnj5AwB5M7XEWz5LwDbQsrXNLu89Gb'
+    // )
     const blobToBase64 = (blob: any): Promise<string> => {
       return new Promise<string>((resolve, _) => {
         const reader = new FileReader()
@@ -44,24 +62,21 @@ const GenerateImageForm: React.FC<Prop> = ({onSetTokenURI}) => {
       })
     }
     const payLoad = {
-      name: event.target.name.value,
+      name,
       address: data?.address,
       roles: ['Community member'],
       points: 100,
       date: ~~(new Date().getTime() / 1000),
-      profilePicture: await blobToBase64(imageFile),
+      profilePicture: await blobToBase64(imageFileObject)
     }
 
-    const ipfsApiEndpointRequest = await fetch(
-      ipfsApiEndpoint,
-      {
-        body: JSON.stringify(payLoad),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
+    const ipfsApiEndpointRequest = await fetch(ipfsApiEndpoint, {
+      body: JSON.stringify(payLoad),
+      headers: {
+        'Content-Type': 'application/json'
       },
-    )
+      method: 'POST'
+    })
 
     const ipfsApiEndpointResponse = await ipfsApiEndpointRequest.json()
     const tokenURI = await ipfsApiEndpointResponse.tokenUri
@@ -69,12 +84,12 @@ const GenerateImageForm: React.FC<Prop> = ({onSetTokenURI}) => {
 
     const pinataTokenUriRequest = await fetch(tokenURI)
     const responseJson = await pinataTokenUriRequest.json()
-    setTokenJson(responseJson)
     const tokenImageURI = await responseJson.image
-    if ( tokenImageURI) {
+    if (tokenImageURI) {
       setTokenImageURI(tokenImageURI)
+      return
     }
-
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -83,44 +98,51 @@ const GenerateImageForm: React.FC<Prop> = ({onSetTokenURI}) => {
       onSetTokenURI(tokenURIImage)
     }
   }, [tokenURIImage])
+
+  console.log(imageFile)
   return (
     <Layout>
-      <Heading mt={50}>Henkaku Kamon NFT</Heading>
-      <form onSubmit={ submitGenerateImage }>
-        <FormLabel mt={10}>Your address</FormLabel>
-        <Text mt={5} fontSize='xs'>{ data?.address }</Text>
-        <FormControl isInvalid={isError} isRequired>
-          <FormLabel mt={10}>Your name or nickname</FormLabel>
-          <Input
-            mt={5}
-            placeholder='Your name'
-            name='name'
-            onChange={handleInputChange}
-          />
+      <Heading as="h2" color="gray.600">
+        Mint your Kamon - 家紋{' '}
+      </Heading>
+      <Text m="1rem">kamon NFT is membership of henkaku community</Text>
+      <Box bg='whiteAlpha.900' p={6} borderRadius='lg' borderWidth='3px'>
+        <FormControl color='gray.700'>
+          <FormLabel>wallet address: </FormLabel>
+          <Text fontSize="xs"> {data?.address} </Text>
+          <FormControl isRequired mt={5}>
+            <FormLabel htmlFor='name'>Your name or nickname</FormLabel>
+            <Input
+              type='text'
+              variant='outline'
+              placeholder="Your name"
+              name="name"
+              value={name}
+              onChange={(e: any) => setName(e.target.value)}
+            />
+          </FormControl>
+          <FormControl isRequired mt={5}>
+            <FormLabel htmlFor='imageFile'>Your profile picture for the Kamon NFT</FormLabel>
+            <Input
+              variant='outline'
+              id='imageFile'
+              type="file"
+              accept={'image/*'}
+              isRequired={true}
+              placeholder="Upload an JPG or PNG"
+              name="profilePicture"
+              value={imageFile}
+              onChange={(e: any) => {
+                setImageFile(e.target.value)
+                setImageFileObject(e.target.files[0])
+              }}
+            />
+          </FormControl>
+          <Button mt={10} colorScheme="teal" type="submit" isLoading={isLoading} onClick={() => submitGenerateImage()}>
+            Generate Image
+          </Button>
         </FormControl>
-        <FormControl isInvalid={isError} isRequired>
-          <FormLabel mt={10}>Your profile picture for the Kamon NFT</FormLabel>
-          <Input
-            pt={1}
-            mt={5}
-            color='gray.300'
-            type='file'
-            accept={'image/*'}
-            isRequired={true}
-            placeholder='Upload an JPG or PNG'
-            name='profilePicture'
-            onChange={handleFileChange}
-          />
-        </FormControl>
-        <Button
-          mt={10}
-          colorScheme='teal'
-          type='submit'
-          isDisabled={disabled}
-        >
-          Generate Image
-        </Button>
-      </form>
+      </Box>
     </Layout>
   )
 }

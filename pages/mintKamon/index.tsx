@@ -55,7 +55,7 @@ const MintKamon: NextPage = () => {
   const { totalSupply } = useTotalSupply()
 
   useEffect(() => {
-    setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
+    setHasNFT(balanceOf && balanceOf.gte(1) > 0 ? true : false)
   }, [])
 
   if (mounted && isConnected && !hasNFT && !tokenURI) {
@@ -103,23 +103,27 @@ const MintKamon: NextPage = () => {
             {mounted && isConnected &&
               !hasNFT &&
               (tokenURI && approved ? (
-                <Button
-                  mt={10}
-                  colorScheme="teal"
-                  onClick={() => mintWithHenkaku()}
-                  isLoading={isMinting}
-                >
-                  Mint with 1000 henkaku
-                </Button>
+                <>
+                  <Text mb={2}>To mint your Kamon NFT - 家紋 enable your wallet to buy</Text>
+                  <Button
+                    colorScheme="teal"
+                    onClick={() => mintWithHenkaku()}
+                    isLoading={isMinting}
+                  >
+                    Mint with 1000 henkaku
+                  </Button>
+                </>
               ) : (
-                <Button
-                  mt={10}
-                  colorScheme="teal"
-                  onClick={approve}
-                  isLoading={status == APPROVE_CALLBACK_STATUS.PENDING}
-                >
-                  enable to get kamon nft
-                </Button>
+                <>
+                  <Text mb={2}>To mint your Kamon NFT - 家紋 enable your wallet to buy</Text>
+                  <Button
+                    colorScheme="teal"
+                    onClick={approve}
+                    isLoading={status == APPROVE_CALLBACK_STATUS.PENDING}
+                  >
+                    enable to get kamon nft
+                  </Button>
+                </>
               ))}
           </div>
           </SimpleGrid>
