@@ -64,7 +64,7 @@ const MintKamon: NextPage = () => {
 
   useEffect(() => {
     if (data?.address) {
-      setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
+      setHasNFT(balanceOf && balanceOf.gte(1) > 0 ? true : false)
     }
   }, [])
 
