@@ -10,6 +10,7 @@ import {
   Box
 } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
+import { useToast } from '@/hooks/useToast'
 
 interface Token {
   name: string
@@ -32,6 +33,7 @@ interface Prop {
 
 const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
+  const { toast } = useToast()
   const { data } = useAccount()
   const [name, setName] = useState<string>()
   const [imageFile, setImageFile] = useState<string>()
@@ -40,9 +42,22 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI }) => {
   const [tokenURIImage, setTokenImageURI] = useState<string>()
 
   const submitGenerateImage = async () => {
-    if (!imageFile && !name && !imageFileObject) {
-      // TODO image FIle and name is not valid then
-      // tell user it is not valid
+    if (!imageFile || !name || !imageFileObject) {
+      let toastDescription: string = ''
+      if (!name) {
+        toastDescription += 'Please enter your name. '
+      }
+      if (!imageFile) {
+        toastDescription += 'Please choose a profile picture. '
+      } else if (!imageFileObject) {
+        toastDescription += 'Your profile picture could not be correctly processed. '
+      }
+      toast({
+        title: 'All fields are required',
+        description: toastDescription,
+        status: 'error'
+      })
+      return
     }
     setIsLoading(true)
     // this is debug purpose
