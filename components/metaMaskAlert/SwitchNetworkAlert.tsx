@@ -3,7 +3,7 @@ import { Alert, AlertIcon, Button } from '@chakra-ui/react'
 import React from 'react'
 import { chain, useNetwork } from 'wagmi'
 
-export const SwitchNetworkAlert = () => {
+export const SwitchNetworkAlert: React.FC = () => {
   const { activeChain, switchNetwork } = useNetwork()
 
   if (activeChain == chain.polygon) {
@@ -11,7 +11,7 @@ export const SwitchNetworkAlert = () => {
   }
 
   return (
-    switchNetwork && (
+    switchNetwork ? (
       <Alert status="warning">
         <AlertIcon />
         You are using {activeChain?.name}. To use this app, switch to polygon
@@ -27,6 +27,6 @@ export const SwitchNetworkAlert = () => {
           switch to polygon
         </Button>
       </Alert>
-    )
+    ) : (<></>)
   )
 }
