@@ -48,26 +48,30 @@ const MintKamon: NextPage = () => {
 
   // approve
   const { status, approve } = useApprove(henkakuErc20, kamonNFT)
-  const approved = useApproval(henkakuErc20, kamonNFT)
+  const approved = useApproval(henkakuErc20, kamonNFT, data?.address)
 
   // mint
   const mintPrice = 1000
-  const { isMinting, mint } = useMintWithHenkaku(tokenURI, mintPrice)
+  const { isMinting, mint } = useMintWithHenkaku(kamonNFT, tokenURI, mintPrice)
   const mintWithHenkaku = useCallback(async () => {
     const data = await mint()
     if (data) {
       setHasNFT(true)
     }
   }, [mint, setHasNFT])
-  const { balanceOf } = useBalanceOf(data?.address)
-  const { totalSupply } = useTotalSupply()
+  const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
+  const { totalSupply } = useTotalSupply(kamonNFT)
 
   useEffect(() => {
-    setHasNFT(balanceOf && balanceOf.gte(1) > 0 ? true : false)
+    if (data?.address) {
+      setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
+    }
   }, [])
 
   if (mounted && isConnected && !hasNFT && !tokenURI) {
-    return <GenerateImageForm onSetTokenURI={setTokenURI} />
+    return (
+      <GenerateImageForm onSetTokenURI={setTokenURI} address={data?.address} />
+    )
   }
 
   return (
@@ -87,7 +91,7 @@ const MintKamon: NextPage = () => {
             {!isConnected && (
               <>
                 <Text mb="1rem">
-                  To mint your Kamon NFT- 家紋 connenct your wallet
+                  To mint your Kamon NFT- 家紋 connect your wallet
                 </Text>
                 <Button colorScheme="teal" onClick={() => connect(metaMask)}>
                   connect wallet
@@ -99,7 +103,7 @@ const MintKamon: NextPage = () => {
             {hasNFT && (
               <>
                 <Center>
-                  <Heading mt={50} size="2xl">
+                  <Heading mt={50} size="lg">
                     🎉 Your nft is minted !! 🎉
                   </Heading>
                 </Center>

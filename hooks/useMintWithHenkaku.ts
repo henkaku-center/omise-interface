@@ -1,19 +1,16 @@
 import { ethers } from 'ethers'
-import { useNetwork, useContractWrite, useContractEvent } from 'wagmi'
+import { useContractWrite, useContractEvent } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
-import { getContractAddress } from '@/utils/contractAddress'
 
-export const useMintWithHenkaku = (tokenUri: string, amount: number) => {
-  const { activeChain } = useNetwork()
-  const kamonNFT = getContractAddress({
-    name: 'kamonNFT',
-    chainId: activeChain?.id
-  })
-
+export const useMintWithHenkaku = (
+  contract: string,
+  tokenUri: string,
+  amount: number
+) => {
   try {
     useContractEvent(
       {
-        addressOrName: kamonNFT,
+        addressOrName: contract,
         contractInterface: kamonNFTContract.abi
       },
       'BoughtMemberShipNFT',
@@ -33,7 +30,7 @@ export const useMintWithHenkaku = (tokenUri: string, amount: number) => {
     writeAsync: mint
   } = useContractWrite(
     {
-      addressOrName: kamonNFT,
+      addressOrName: contract,
       contractInterface: kamonNFTContract.abi
     },
     'mintWithHenkaku',
