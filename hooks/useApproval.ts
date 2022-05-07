@@ -28,14 +28,12 @@ const useApprove = (erc20: string, spender: string) => {
     {
       args: [spender, ethers.constants.MaxUint256],
       onError(error) {
-        console.log('hi', error)
+        console.log(error)
         setStatus(APPROVE_CALLBACK_STATUS.FAIL)
       },
       onSuccess(data) {
         setStatus(APPROVE_CALLBACK_STATUS.PENDING)
-        console.log(data)
       }
-
     })
 
   return {
