@@ -10,7 +10,8 @@ export const useBalanceOf = (contract: string, owner: string | undefined) => {
     },
     'balanceOf',
     {
-      args: owner || ethers.constants.AddressZero
+      args: owner || ethers.constants.AddressZero,
+      enabled: false
     }
   )
 

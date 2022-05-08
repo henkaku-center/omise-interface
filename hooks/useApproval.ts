@@ -57,6 +57,7 @@ const useApproval = (
     'allowance',
     {
       args: [address || ethers.constants.AddressZero, spenderAddress],
+      enabled: false,
       onSuccess(data) {
         setApprove(data?.gt(1000) ? true : false)
       }

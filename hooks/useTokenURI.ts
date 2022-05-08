@@ -1,20 +1,21 @@
 import { useContractRead } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
 
-export const useTotalSupply = (contract: string) => {
-  const { data: totalSupply, isError } = useContractRead(
+export const useTokenURI = (contract: string, tokenId: number) => {
+  const { data: tokenURI, isError } = useContractRead(
     {
       addressOrName: contract,
       contractInterface: kamonNFTContract.abi
     },
-    'totalSupply',
+    'tokenURI',
     {
+      args: tokenId,
       enabled: false
     }
   )
 
   return {
-    totalSupply,
+    tokenURI,
     isError
   }
 }
