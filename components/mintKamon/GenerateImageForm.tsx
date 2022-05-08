@@ -11,21 +11,6 @@ import {
 import { Layout } from '@/components/layouts/layout'
 import { useToast } from '@/hooks/useToast'
 
-interface Token {
-  name: string
-  description: string
-  image: string
-  attributes: any[]
-}
-
-interface EventProps {
-  event: {
-    target: {
-      value: string
-    }
-  }
-}
-
 interface Prop {
   onSetTokenURI: (value: string) => void
   onSetTokenImageURI: (value: string) => void
@@ -65,9 +50,13 @@ const GenerateImageForm: React.FC<Prop> = ({
     }
     setIsLoading(true)
     // this is debug purpose
-    // setTokenImageURI(
+    // onSetTokenImageURI(
     //   'https://pitpa.mypinata.cloud/ipfs/QmNndSLYnChANwhPBnj5AwB5M7XEWz5LwDbQsrXNLu89Gb'
     // )
+    // onSetTokenURI(
+    //   'https://pitpa.mypinata.cloud/ipfs/QmNndSLYnChANwhPBnj5AwB5M7XEWz5LwDbQsrXNLu89Gb'
+    // )
+
     const blobToBase64 = (blob: any): Promise<string> => {
       return new Promise<string>((resolve, _) => {
         const reader = new FileReader()
