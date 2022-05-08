@@ -28,17 +28,21 @@ interface EventProps {
 
 interface Prop {
   onSetTokenURI: (value: string) => void
+  onSetTokenImageURI: (value: string) => void
   address: string | undefined
 }
 
-const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI, address }) => {
+const GenerateImageForm: React.FC<Prop> = ({
+  onSetTokenURI,
+  onSetTokenImageURI,
+  address
+}) => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
   const { toast } = useToast()
   const [name, setName] = useState<string>()
   const [imageFile, setImageFile] = useState<string>()
   const [imageFileObject, setImageFileObject] = useState<any>()
   const [isLoading, setIsLoading] = useState(false)
-  const [tokenURIImage, setTokenImageURI] = useState<string>()
 
   const submitGenerateImage = async () => {
     if (!imageFile || !name || !imageFileObject) {
@@ -115,8 +119,10 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI, address }) => {
     const responseJson = await pinataTokenUriRequest.json()
     const tokenImageURI = await responseJson.image
     if (tokenImageURI) {
-      setTokenImageURI(tokenImageURI)
-      return
+      onSetTokenImageURI(tokenImageURI)
+    }
+    if (tokenURI) {
+      onSetTokenURI(tokenURI)
     }
     setIsLoading(false)
   }
@@ -158,21 +164,16 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI, address }) => {
       return
     }
   }
-  useEffect(() => {
-    if (tokenURIImage) {
-      onSetTokenURI(tokenURIImage)
-    }
-  }, [tokenURIImage])
 
   return (
     <Layout>
       <Heading as="h2" color="gray.600">
         Mint your Kamon - 家紋{' '}
       </Heading>
-      <Text m="1rem">kamon NFT is membership of henkaku community</Text>
+      <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
       <Box bg="whiteAlpha.900" p={6} borderRadius="lg" borderWidth="3px">
         <FormControl color="gray.700">
-          <FormLabel>wallet address: </FormLabel>
+          <FormLabel>Wallet address: </FormLabel>
           <Text fontSize="xs"> {address} </Text>
           <FormControl isRequired mt={5}>
             <FormLabel htmlFor="name">Your name or nickname</FormLabel>

@@ -10,7 +10,7 @@ const Home: NextPage = () => {
         <Heading as="h2" color="gray.600">
           Mint your Kamon - 家紋{' '}
         </Heading>
-        <Text m="1rem">kamon NFT is membership of henkaku community</Text>
+        <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
         <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing="10px">
           <div>
             <Image src={'/kamonNFT.svg'} alt="" />

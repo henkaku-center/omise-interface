@@ -36,6 +36,7 @@ const MintKamon: NextPage = () => {
 
   // useState
   const [tokenURI, setTokenURI] = useState('')
+  const [tokenURIImage, setTokenImageURI] = useState('')
   const [hasNFT, setHasNFT] = useState(false)
 
   /// connect
@@ -63,7 +64,11 @@ const MintKamon: NextPage = () => {
 
   if (mounted && isConnected && approved && !hasNFT && !tokenURI) {
     return (
-      <GenerateImageForm onSetTokenURI={setTokenURI} address={data?.address} />
+      <GenerateImageForm
+        onSetTokenURI={setTokenURI}
+        onSetTokenImageURI={setTokenImageURI}
+        address={data?.address}
+      />
     )
   }
 
@@ -88,7 +93,7 @@ const MintKamon: NextPage = () => {
           color="gray.600"
         >
           <div>
-            <Image src={tokenURI} alt="" />
+            <Image src={tokenURIImage} alt="" />
             {!isConnected && (
               <>
                 <Text mb="1rem">
