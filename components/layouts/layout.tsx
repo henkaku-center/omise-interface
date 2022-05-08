@@ -1,6 +1,6 @@
 import { Container, Heading, Box, Link, Flex, Spacer } from '@chakra-ui/react'
-import { SwitchNetworkAlert } from '@/components/metaMaskAlert/SwitchNetworkAlert'
-import { MetaMaskLeadBanner } from '@/components/metaMaskAlert/MetaMaskLeadBanner'
+import { SwitchNetworkAlert } from '@/components/metaMask/SwitchNetworkAlert'
+import { MetaMaskLeadBanner } from '@/components/metaMask/MetaMaskLeadBanner'
 import { Footer } from '@/components/footer'
 interface LayoutProps {
   children: React.ReactNode
