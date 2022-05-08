@@ -211,6 +211,7 @@ const GenerateImageForm: React.FC<Prop> = ({
             type="submit"
             isLoading={isLoading}
             onClick={() => submitGenerateImage()}
+            loadingText='generating...'
           >
             Generate Image
           </Button>

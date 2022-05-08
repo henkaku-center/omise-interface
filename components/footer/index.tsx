@@ -50,7 +50,7 @@ export const Footer = () => {
     <Box
       p={5}
       bottom={0}
-      position="absolute"
+      position="relative"
       color={useColorModeValue('gray.700', 'gray.200')}
     >
       <Container
