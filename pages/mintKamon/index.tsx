@@ -14,11 +14,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
 import { GenerateImageForm, Approve } from '@/components/mintKamon/'
 import { useMounted } from '@/hooks/useMounted'
-import {
-  APPROVE_CALLBACK_STATUS,
-  useApproval,
-  useApprove
-} from '@/hooks/useApproval'
+import { useApproval } from '@/hooks/useApproval'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useMintWithHenkaku } from '@/hooks/useMintWithHenkaku'
 import { useBalanceOf } from '@/hooks/useBalanceOf'
@@ -73,11 +69,9 @@ const MintKamon: NextPage = () => {
 
   if (mounted && isConnected && !approved && !hasNFT) {
     return (
-      <>
-        <Layout>
-          <Approve erc20={henkakuErc20} spender={kamonNFT} />
-        </Layout>
-      </>
+      <Layout>
+        <Approve erc20={henkakuErc20} spender={kamonNFT} />
+      </Layout>
     )
   }
 
