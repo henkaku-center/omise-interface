@@ -11,7 +11,7 @@ import { chain, useNetwork } from 'wagmi'
 
 export const SwitchNetworkAlert: React.FC = () => {
   const { activeChain, switchNetwork } = useNetwork()
-  const [isDesktoppOrTablet] = useMediaQuery('(min-width:600px)')
+  const [isDesktopOrTablet] = useMediaQuery('(min-width:600px)')
 
   if (activeChain == chain.polygon) {
     return <></>
@@ -20,7 +20,7 @@ export const SwitchNetworkAlert: React.FC = () => {
   return switchNetwork ? (
     <Alert
       status="warning"
-      flexDirection={isDesktoppOrTablet ? undefined : 'column'}
+      flexDirection={isDesktopOrTablet ? undefined : 'column'}
     >
       <AlertIcon />
       <AlertDescription>

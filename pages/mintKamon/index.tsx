@@ -1,6 +1,14 @@
 import type { NextPage } from 'next'
 import { useAccount, useNetwork, useConnect } from 'wagmi'
-import { Button, Heading, Link, Center, Text } from '@chakra-ui/react'
+import {
+  Button,
+  Heading,
+  Link,
+  Center,
+  Text,
+  SimpleGrid,
+  Image
+} from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
@@ -35,87 +43,123 @@ const MintKamon: NextPage = () => {
   const [hasNFT, setHasNFT] = useState(false)
 
   /// connect
-  const { connect, connectors, error } = useConnect()
+  const { connect, connectors, error, isConnected } = useConnect()
   const [metaMask] = connectors
 
   // approve
   const { status, approve } = useApprove(henkakuErc20, kamonNFT)
-  const approved = useApproval(henkakuErc20, kamonNFT)
+  const approved = useApproval(henkakuErc20, kamonNFT, data?.address)
 
   // mint
   const mintPrice = 1000
-  const { isMinting, mint } = useMintWithHenkaku(tokenURI, mintPrice)
+  const { isMinting, mint } = useMintWithHenkaku(kamonNFT, tokenURI, mintPrice)
   const mintWithHenkaku = useCallback(async () => {
     const data = await mint()
     if (data) {
       setHasNFT(true)
     }
   }, [mint, setHasNFT])
-  const { balanceOf } = useBalanceOf(data?.address)
-  const { totalSupply } = useTotalSupply()
+  const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
+  const { totalSupply } = useTotalSupply(kamonNFT)
 
   useEffect(() => {
-    setTokenURI('httsp://yourtokenURI') // TODO: for enable and mintWithHenkaku method
-    setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
-  }, [])
+    setHasNFT(!!(balanceOf && balanceOf.gte(1) > 0))
+  }, [balanceOf, data?.address])
 
-  if (false && !tokenURI) {
-    return <GenerateImageForm />
+  if (mounted && isConnected && !hasNFT && !tokenURI) {
+    return (
+      <GenerateImageForm onSetTokenURI={setTokenURI} address={data?.address} />
+    )
   }
 
   return (
     <>
       <Layout>
-        <Heading mt={50}>Henkaku kamon nft</Heading>
-        {error && <Text>{error.message}</Text>}
-        {mounted && <Text>{data?.address}</Text>}
+        <Heading as="h2" color="gray.600">
+          Mint your Kamon - 家紋{' '}
+        </Heading>
+        <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
+        <SimpleGrid
+          columns={{ sm: 1, md: 1, lg: 2 }}
+          spacing="10px"
+          color="gray.600"
+        >
+          <div>
+            <Image src={tokenURI} alt="" />
+            {!isConnected && (
+              <>
+                <Text mb="1rem">
+                  To mint your Kamon NFT- 家紋 connect your wallet
+                </Text>
+                <Button colorScheme="teal" onClick={() => connect(metaMask)}>
+                  Connect wallet
+                </Button>
+              </>
+            )}
+          </div>
 
-        {mounted && !data?.address && (
-          <Button colorScheme="teal" onClick={() => connect(metaMask)}>
-            connect wallet
-          </Button>
-        )}
+          <div>
+            {hasNFT && (
+              <>
+                <Center>
+                  <Heading mt={50} size="lg">
+                    🎉 Your nft is minted !! 🎉
+                  </Heading>
+                </Center>
+                <Center mt={5}>
+                  <Link
+                    href={`${openSeaTokenBaseUrl}${totalSupply}`}
+                    isExternal
+                  >
+                    Check with OpenSea <ExternalLinkIcon mx="2px" />
+                  </Link>
+                </Center>
+                <Center>
+                  <Text>It takes a little time for the NFT to appear</Text>
+                </Center>
+              </>
+            )}
 
-        {hasNFT && (
-          <>
-            <Center>
-              <Heading mt={50} size="2xl">
-                🎉 Your nft is minted !! 🎉
-              </Heading>
-            </Center>
-            <Center mt={5}>
-              <Link href={`${openSeaTokenBaseUrl}${totalSupply}`} isExternal>
-                Check with OpenSea <ExternalLinkIcon mx="2px" />
-              </Link>
-            </Center>
-            <Center>
-              <Text>It takes a little time for the NFT to appear</Text>
-            </Center>
-          </>
-        )}
-
-        {mounted &&
-          data?.address &&
-          !hasNFT &&
-          (tokenURI && approved ? (
-            <Button
-              mt={10}
-              colorScheme="teal"
-              onClick={() => mintWithHenkaku()}
-              isLoading={isMinting}
-            >
-              Mint with 1000 henkaku
-            </Button>
-          ) : (
-            <Button
-              mt={10}
-              colorScheme="teal"
-              onClick={approve}
-              isLoading={status == APPROVE_CALLBACK_STATUS.PENDING}
-            >
-              enable to get kamon nft
-            </Button>
-          ))}
+            {mounted &&
+              isConnected &&
+              !hasNFT &&
+              (tokenURI && approved ? (
+                <>
+                  <Text>
+                    To mint your Kamon NFT - 家紋 enable your wallet to buy
+                  </Text>
+                  <Text mb={2}>
+                    The left image shows your Kamon NFT. It takes 2,3 min to
+                    display all
+                  </Text>
+                  <Button
+                    colorScheme="teal"
+                    onClick={() => mintWithHenkaku()}
+                    isLoading={isMinting}
+                  >
+                    Mint with 1000 henkaku
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Text>
+                    To mint your Kamon NFT - 家紋 enable your wallet to buy
+                  </Text>
+                  <Text mb={2}>
+                    the left image shows your membership nft. it takes 2,3 min
+                    to display all
+                  </Text>
+                  <Button
+                    colorScheme="teal"
+                    onClick={approve}
+                    isLoading={status == APPROVE_CALLBACK_STATUS.PENDING}
+                  >
+                    Enable to get kamon nft
+                  </Button>
+                </>
+              ))}
+          </div>
+        </SimpleGrid>
       </Layout>
     </>
   )
