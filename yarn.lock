@@ -1230,6 +1230,11 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
+"@hirohe/react-watermark@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@hirohe/react-watermark/-/react-watermark-0.2.0.tgz#cea54070ed4b17a5b706a107b300c9f5a28100f3"
+  integrity sha512-DHbewvwmMgKilfWcNMQuXNdOjNJNpy6LsD/jCfNAduoqYXitO6WoZOAyAjmxm95yr1buR+vzeSYrbR9iSCKXbA==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.9.5.tgz#2cbaf9a89460da24b5ca6531b8bbfc23e1df50c7"

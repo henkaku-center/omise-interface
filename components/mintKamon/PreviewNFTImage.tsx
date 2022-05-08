@@ -1,4 +1,5 @@
 import { Box, Text, Badge, Image } from '@chakra-ui/react'
+import { Watermark } from '@hirohe/react-watermark';
 
 interface Prop {
   imageUrl: string
@@ -13,7 +14,10 @@ export const PreviewNFTImage: React.FC<Prop> = ({ imageUrl }) => {
           preview
         </Badge>
       </Text>
-      <Image mt={1} boxSize="250px" src={imageUrl} alt="" />
+      <Watermark text="preview" gutter={20}>
+        <Image mt={1} src={imageUrl} alt="" />
+      </Watermark>
+
     </Box>
   )
 }
