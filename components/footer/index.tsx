@@ -72,7 +72,7 @@ export const Footer = () => {
           </SocialButton>
           <SocialButton
             label={'github'}
-            href={'https://github.com/henkaku-center/membership-nft-interface'}
+            href={'https://github.com/henkaku-center/omise-interface'}
           >
             <Text mr={1}>I/F</Text>
             <Icon as={FaGithubAlt} />
