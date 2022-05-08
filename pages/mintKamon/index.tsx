@@ -63,10 +63,8 @@ const MintKamon: NextPage = () => {
   const { totalSupply } = useTotalSupply(kamonNFT)
 
   useEffect(() => {
-    if (data?.address) {
-      setHasNFT(balanceOf && Number(balanceOf.toString()) > 0 ? true : false)
-    }
-  }, [])
+    setHasNFT(!!(balanceOf && balanceOf.gte(1) > 0))
+  }, [balanceOf, data?.address])
 
   if (mounted && isConnected && !hasNFT && !tokenURI) {
     return (
@@ -80,7 +78,7 @@ const MintKamon: NextPage = () => {
         <Heading as="h2" color="gray.600">
           Mint your Kamon - 家紋{' '}
         </Heading>
-        <Text m="1rem">kamon NFT is membership of henkaku community</Text>
+        <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
         <SimpleGrid
           columns={{ sm: 1, md: 1, lg: 2 }}
           spacing="10px"
@@ -94,11 +92,12 @@ const MintKamon: NextPage = () => {
                   To mint your Kamon NFT- 家紋 connect your wallet
                 </Text>
                 <Button colorScheme="teal" onClick={() => connect(metaMask)}>
-                  connect wallet
+                  Connect wallet
                 </Button>
               </>
             )}
           </div>
+
           <div>
             {hasNFT && (
               <>
@@ -130,8 +129,8 @@ const MintKamon: NextPage = () => {
                     To mint your Kamon NFT - 家紋 enable your wallet to buy
                   </Text>
                   <Text mb={2}>
-                    the left image shows your membership nft. it takes 2,3 min
-                    to display all
+                    The left image shows your Kamon NFT. It takes 2,3 min to
+                    display all
                   </Text>
                   <Button
                     colorScheme="teal"
@@ -155,7 +154,7 @@ const MintKamon: NextPage = () => {
                     onClick={approve}
                     isLoading={status == APPROVE_CALLBACK_STATUS.PENDING}
                   >
-                    enable to get kamon nft
+                    Enable to get kamon nft
                   </Button>
                 </>
               ))}

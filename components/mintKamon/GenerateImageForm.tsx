@@ -132,7 +132,7 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI, address }) => {
       error403: 'The server did not allow the request.',
       error404: 'The server did not know what to do with the request.',
       error413:
-        'The request payload was too large. Please choose an image below 30 megabytes.',
+        'The request payload was too large. Please choose an image below 4 megabytes.',
       error5:
         'The server could not fulfill the request. Please try again later.',
       error500:
