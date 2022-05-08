@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Button,
   Heading,
@@ -10,6 +10,11 @@ import {
 } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
 import { useToast } from '@/hooks/useToast'
+import {
+  blobToBase64,
+  formError,
+  httpErrorMessages
+} from './generateImageFormHelper'
 
 interface Prop {
   onSetTokenURI: (value: string) => void
@@ -23,27 +28,40 @@ const GenerateImageForm: React.FC<Prop> = ({
   address
 }) => {
   const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
-  const { toast } = useToast()
   const [name, setName] = useState<string>()
   const [imageFile, setImageFile] = useState<string>()
   const [imageFileObject, setImageFileObject] = useState<any>()
   const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
+
+  const processHttpError = (status: number) => {
+    const httpErrorMsd: number = ~~(status / 100)
+    if (httpErrorMsd > 3) {
+      const propA: string = 'error' + status
+      const propB: string = 'error' + httpErrorMsd
+      let toastDescription: string
+      if (httpErrorMessages.hasOwnProperty(propA)) {
+        toastDescription = httpErrorMessages[propA]
+      } else if (httpErrorMessages.hasOwnProperty(propB)) {
+        toastDescription = httpErrorMessages[propB]
+      } else {
+        toastDescription = httpErrorMessages['error4']
+      }
+      toast({
+        title: 'Error ' + status,
+        description: toastDescription,
+        status: 'error'
+      })
+      setIsLoading(false)
+      return
+    }
+  }
 
   const submitGenerateImage = async () => {
     if (!imageFile || !name || !imageFileObject) {
-      let toastDescription: string = ''
-      if (!name) {
-        toastDescription += 'Please enter your name. '
-      }
-      if (!imageFile) {
-        toastDescription += 'Please choose a profile picture. '
-      } else if (!imageFileObject) {
-        toastDescription +=
-          'Your profile picture could not be correctly processed. '
-      }
       toast({
         title: 'All fields are required',
-        description: toastDescription,
+        description: formError({ name, imageFile, imageFileObject }),
         status: 'error'
       })
       return
@@ -56,20 +74,6 @@ const GenerateImageForm: React.FC<Prop> = ({
     // onSetTokenURI(
     //   'https://pitpa.mypinata.cloud/ipfs/QmNndSLYnChANwhPBnj5AwB5M7XEWz5LwDbQsrXNLu89Gb'
     // )
-
-    const blobToBase64 = (blob: any): Promise<string> => {
-      return new Promise<string>((resolve, _) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          if (typeof reader.result == 'string') {
-            resolve(reader.result)
-          } else {
-            resolve('')
-          }
-        }
-        reader.readAsDataURL(blob)
-      })
-    }
 
     const payLoad = {
       name,
@@ -102,7 +106,6 @@ const GenerateImageForm: React.FC<Prop> = ({
     processHttpError(ipfsApiEndpointRequest.status)
     const ipfsApiEndpointResponse = await ipfsApiEndpointRequest.json()
     const tokenURI = await ipfsApiEndpointResponse.tokenUri
-
     const pinataTokenUriRequest = await fetch(tokenURI)
     processHttpError(pinataTokenUriRequest.status)
     const responseJson = await pinataTokenUriRequest.json()
@@ -114,44 +117,6 @@ const GenerateImageForm: React.FC<Prop> = ({
       onSetTokenURI(tokenURI)
     }
     setIsLoading(false)
-  }
-
-  const processHttpError = (status: number) => {
-    const httpErrorMsd: number = ~~(status / 100)
-    interface errorMessages {
-      [key: string]: string
-    }
-    const httpErrorMessages: errorMessages = {
-      error4: 'There was a problem with the request',
-      error400: 'There probably was an error with the data you submitted.',
-      error403: 'The server did not allow the request.',
-      error404: 'The server did not know what to do with the request.',
-      error413:
-        'The request payload was too large. Please choose an image below 4 megabytes.',
-      error5:
-        'The server could not fulfill the request. Please try again later.',
-      error500:
-        'The server crashed and could not fulfill the request. Please try again later.'
-    }
-    if (httpErrorMsd > 3) {
-      const propA: string = 'error' + status
-      const propB: string = 'error' + httpErrorMsd
-      let toastDescription: string
-      if (httpErrorMessages.hasOwnProperty(propA)) {
-        toastDescription = httpErrorMessages[propA]
-      } else if (httpErrorMessages.hasOwnProperty(propB)) {
-        toastDescription = httpErrorMessages[propB]
-      } else {
-        toastDescription = httpErrorMessages['error4']
-      }
-      toast({
-        title: 'Error ' + status,
-        description: toastDescription,
-        status: 'error'
-      })
-      setIsLoading(false)
-      return
-    }
   }
 
   return (
@@ -200,7 +165,7 @@ const GenerateImageForm: React.FC<Prop> = ({
             type="submit"
             isLoading={isLoading}
             onClick={() => submitGenerateImage()}
-            loadingText='generating...'
+            loadingText="generating..."
           >
             Generate Image
           </Button>
