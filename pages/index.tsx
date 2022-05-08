@@ -1,9 +1,38 @@
 import type { NextPage } from 'next'
-import { useAccount } from 'wagmi'
+import { useNetwork } from 'wagmi'
+import { useEffect, useState } from 'react'
 import { Button, Text, Heading, Image, SimpleGrid, Box } from '@chakra-ui/react'
 import { Layout } from '@/components/layouts/layout'
+import { getContractAddress } from '@/utils/contractAddress'
+import { useTotalSupply } from '@/hooks/useTotalSupply'
+import { useTokenURI } from '@/hooks/useTokenURI'
 
 const Home: NextPage = () => {
+  const { activeChain } = useNetwork()
+  const kamonNFT = getContractAddress({
+    name: 'kamonNFT',
+    chainId: activeChain?.id
+  })
+  const openSeaTokenBaseUrl = `https://testnets.opensea.io/assets/${kamonNFT}/`
+  const { totalSupply } = useTotalSupply(kamonNFT)
+  const { tokenURI } = useTokenURI(kamonNFT, Number(totalSupply))
+
+  // useState
+  const [tokenURIImage, setTokenImageURI] = useState('')
+
+  useEffect(() => {
+    if (totalSupply && tokenURI) {
+      const fetchData = async () => {
+        const pinataRequest = await fetch(tokenURI.toString())
+        const responseJson = await pinataRequest.json()
+
+        setTokenImageURI(responseJson.image)
+      }
+
+      fetchData()
+    }
+  }, [tokenURI, totalSupply])
+
   return (
     <>
       <Layout>
@@ -13,7 +42,11 @@ const Home: NextPage = () => {
         <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
         <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing="10px">
           <div>
-            <Image src={'/kamonNFT.svg'} alt="" />
+            {tokenURIImage ? (
+              <Image src={tokenURIImage} alt="" />
+            ) : (
+              <Image src={'/kamonNFT.svg'} alt="" />
+            )}
           </div>
           <div>
             <Box w="100%" p={4} color="grey.600">
