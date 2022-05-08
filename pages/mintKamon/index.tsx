@@ -7,12 +7,14 @@ import {
   Center,
   Text,
   SimpleGrid,
-  Image
+  Image,
+  Box,
+  Badge
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
-import { GenerateImageForm, ApproveForKamon } from '@/components/mintKamon/'
+import { GenerateImageForm, ApproveForKamon, PreviewNFTImage } from '@/components/mintKamon/'
 import { useMounted } from '@/hooks/useMounted'
 import { useApproval } from '@/hooks/useApproval'
 import { getContractAddress } from '@/utils/contractAddress'
@@ -89,11 +91,11 @@ const MintKamon: NextPage = () => {
         <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
         <SimpleGrid
           columns={{ sm: 1, md: 1, lg: 2 }}
-          spacing="10px"
+          spacing={5}
           color="gray.600"
         >
           <div>
-            <Image src={tokenURIImage} alt="" />
+            <PreviewNFTImage imageUrl={tokenURIImage} />
             {!isConnected && (
               <>
                 <Text mb="1rem">
@@ -133,12 +135,9 @@ const MintKamon: NextPage = () => {
                 <Text>
                   To mint your Kamon NFT - 家紋 you need ot pay $1000 henkaku
                 </Text>
-                <Text mb={2}>
-                  The left image shows your Kamon NFT. It may take 2,3 min to
-                  display all
-                </Text>
                 <Button
                   colorScheme="teal"
+                  mt={3}
                   onClick={() => mintWithHenkaku()}
                   isLoading={isMinting}
                 >
