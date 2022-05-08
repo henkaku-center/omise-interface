@@ -126,10 +126,10 @@ const MintKamon: NextPage = () => {
             {mounted && isConnected && !hasNFT && tokenURI && approved && (
               <>
                 <Text>
-                  To mint your Kamon NFT - 家紋 enable your wallet to buy
+                  To mint your Kamon NFT - 家紋 you need ot pay $1000 henkaku
                 </Text>
                 <Text mb={2}>
-                  The left image shows your Kamon NFT. It takes 2,3 min to
+                  The left image shows your Kamon NFT. It may take 2,3 min to
                   display all
                 </Text>
                 <Button
@@ -137,7 +137,7 @@ const MintKamon: NextPage = () => {
                   onClick={() => mintWithHenkaku()}
                   isLoading={isMinting}
                 >
-                  Mint with 1000 henkaku
+                  Mint with 1000 $henkaku
                 </Button>
               </>
             )}
