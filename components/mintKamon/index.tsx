@@ -1,4 +1,4 @@
-import { Approve } from './Approve'
+import { ApproveForKamon } from './ApproveForKamon'
 import { GenerateImageForm } from './GenerateImageForm'
 
-export { Approve, GenerateImageForm }
+export { ApproveForKamon, GenerateImageForm }

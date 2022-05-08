@@ -12,7 +12,7 @@ import {
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
-import { GenerateImageForm, Approve } from '@/components/mintKamon/'
+import { GenerateImageForm, ApproveForKamon } from '@/components/mintKamon/'
 import { useMounted } from '@/hooks/useMounted'
 import { useApproval } from '@/hooks/useApproval'
 import { getContractAddress } from '@/utils/contractAddress'
@@ -70,7 +70,7 @@ const MintKamon: NextPage = () => {
   if (mounted && isConnected && !approved && !hasNFT) {
     return (
       <Layout>
-        <Approve erc20={henkakuErc20} spender={kamonNFT} />
+        <ApproveForKamon erc20={henkakuErc20} spender={kamonNFT} />
       </Layout>
     )
   }
