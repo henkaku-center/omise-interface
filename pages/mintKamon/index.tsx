@@ -12,7 +12,7 @@ import {
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
-import { GenerateImageForm } from '@/components/mintKamon/GenerateImageForm'
+import { GenerateImageForm, Approve } from '@/components/mintKamon/'
 import { useMounted } from '@/hooks/useMounted'
 import {
   APPROVE_CALLBACK_STATUS,
@@ -47,7 +47,6 @@ const MintKamon: NextPage = () => {
   const [metaMask] = connectors
 
   // approve
-  const { status, approve } = useApprove(henkakuErc20, kamonNFT)
   const approved = useApproval(henkakuErc20, kamonNFT, data?.address)
 
   // mint
@@ -66,9 +65,19 @@ const MintKamon: NextPage = () => {
     setHasNFT(!!(balanceOf && balanceOf.gte(1) > 0))
   }, [balanceOf, data?.address])
 
-  if (mounted && isConnected && !hasNFT && !tokenURI) {
+  if (mounted && isConnected && approved && !hasNFT && !tokenURI) {
     return (
       <GenerateImageForm onSetTokenURI={setTokenURI} address={data?.address} />
+    )
+  }
+
+  if (mounted && isConnected && !approved && !hasNFT) {
+    return (
+      <>
+        <Layout>
+          <Approve erc20={henkakuErc20} spender={kamonNFT} />
+        </Layout>
+      </>
     )
   }
 
@@ -120,44 +129,24 @@ const MintKamon: NextPage = () => {
               </>
             )}
 
-            {mounted &&
-              isConnected &&
-              !hasNFT &&
-              (tokenURI && approved ? (
-                <>
-                  <Text>
-                    To mint your Kamon NFT - 家紋 enable your wallet to buy
-                  </Text>
-                  <Text mb={2}>
-                    The left image shows your Kamon NFT. It takes 2,3 min to
-                    display all
-                  </Text>
-                  <Button
-                    colorScheme="teal"
-                    onClick={() => mintWithHenkaku()}
-                    isLoading={isMinting}
-                  >
-                    Mint with 1000 henkaku
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Text>
-                    To mint your Kamon NFT - 家紋 enable your wallet to buy
-                  </Text>
-                  <Text mb={2}>
-                    the left image shows your membership nft. it takes 2,3 min
-                    to display all
-                  </Text>
-                  <Button
-                    colorScheme="teal"
-                    onClick={approve}
-                    isLoading={status == APPROVE_CALLBACK_STATUS.PENDING}
-                  >
-                    Enable to get kamon nft
-                  </Button>
-                </>
-              ))}
+            {mounted && isConnected && !hasNFT && tokenURI && approved && (
+              <>
+                <Text>
+                  To mint your Kamon NFT - 家紋 enable your wallet to buy
+                </Text>
+                <Text mb={2}>
+                  The left image shows your Kamon NFT. It takes 2,3 min to
+                  display all
+                </Text>
+                <Button
+                  colorScheme="teal"
+                  onClick={() => mintWithHenkaku()}
+                  isLoading={isMinting}
+                >
+                  Mint with 1000 henkaku
+                </Button>
+              </>
+            )}
           </div>
         </SimpleGrid>
       </Layout>
