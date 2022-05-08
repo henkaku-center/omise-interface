@@ -210,6 +210,7 @@ const GenerateImageForm: React.FC<Prop> = ({ onSetTokenURI, address }) => {
             type="submit"
             isLoading={isLoading}
             onClick={() => submitGenerateImage()}
+            loadingText='Generating...'
           >
             Generate Image
           </Button>

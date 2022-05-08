@@ -63,6 +63,7 @@ const Quests: NextPage = () => {
                     colorScheme="teal"
                     onClick={() => submit()}
                     isLoading={isSubmitting}
+                    loadingText='submitting...'
                     disabled={keyword == ''}
                   >
                     Submit Keyword

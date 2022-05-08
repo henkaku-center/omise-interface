@@ -17,6 +17,7 @@ export const Approve: React.FC<Props> = ({ erc20, spender, children }) => {
       mt={2}
       onClick={approve}
       isLoading={status == APPROVE_CALLBACK_STATUS.PENDING}
+      loadingText='enabling...'
     >
       {children}
     </Button>
