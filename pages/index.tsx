@@ -6,8 +6,10 @@ import { Layout } from '@/components/layouts/layout'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useTotalSupply } from '@/hooks/useTotalSupply'
 import { useTokenURI } from '@/hooks/useTokenURI'
+import { useLocale } from '@/hooks/useLocale'
 
 const Home: NextPage = () => {
+  const { locale, t } = useLocale()
   const { activeChain } = useNetwork()
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
@@ -37,7 +39,7 @@ const Home: NextPage = () => {
     <>
       <Layout>
         <Heading as="h2" color="gray.600">
-          Mint your Kamon - 家紋{' '}
+          {t.MINT_YOUR_KAMON_HEADING}{' '}
         </Heading>
         <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
         <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing="10px">

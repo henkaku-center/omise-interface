@@ -21,8 +21,10 @@ import { getContractAddress } from '@/utils/contractAddress'
 import { useMintWithHenkaku } from '@/hooks/useMintWithHenkaku'
 import { useBalanceOf } from '@/hooks/useBalanceOf'
 import { useTotalSupply } from '@/hooks/useTotalSupply'
+import { useLocale } from '@/hooks/useLocale'
 
 const MintKamon: NextPage = () => {
+  const { locale, t } = useLocale()
   const mounted = useMounted()
   const { activeChain } = useNetwork()
   const { data } = useAccount()
@@ -86,7 +88,7 @@ const MintKamon: NextPage = () => {
     <>
       <Layout>
         <Heading as="h2" color="gray.600">
-          Mint your Kamon - 家紋{' '}
+          {t.MINT_YOUR_KAMON_HEADING}{' '}
         </Heading>
         <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
         <SimpleGrid
