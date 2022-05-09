@@ -45,7 +45,7 @@ const Home: NextPage = () => {
             {tokenURIImage ? (
               <Image src={tokenURIImage} alt="" />
             ) : (
-              <Image src={'/kamonNFT.svg'} alt="" />
+              <Image src={'/kamonNFT_427@2x.png'} alt="" />
             )}
           </div>
           <div>
