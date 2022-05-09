@@ -121,12 +121,12 @@ const GenerateImageForm: React.FC<Prop> = ({
 
   return (
     <Layout>
-      <Heading as="h2" color="gray.600">
+      <Heading as="h2" color="white.600">
         Mint your Kamon - 家紋{' '}
       </Heading>
       <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
-      <Box bg="whiteAlpha.900" p={6} borderRadius="lg" borderWidth="3px">
-        <FormControl color="gray.700">
+      <Box bg="Gray.800" p={6} borderRadius="lg" borderWidth="3px">
+        <FormControl color="white.700">
           <FormLabel>Wallet address: </FormLabel>
           <Text fontSize="xs"> {address} </Text>
           <FormControl isRequired mt={5}>
