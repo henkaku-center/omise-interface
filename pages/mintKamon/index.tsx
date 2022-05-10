@@ -89,7 +89,7 @@ const MintKamon: NextPage = () => {
   return (
     <>
       <Layout>
-        <Heading as="h2" color="gray.600">
+        <Heading as="h2" color="white.600">
           Mint your Kamon - 家紋{' '}
         </Heading>
         <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
