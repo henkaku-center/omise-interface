@@ -79,7 +79,7 @@ const GenerateImageForm: React.FC<Prop> = ({
       name,
       address: address,
       roles: ['Community member'],
-      points: 100,
+      points: 0,
       date: ~~(new Date().getTime() / 1000),
       profilePicture: await blobToBase64(imageFileObject)
     }
