@@ -14,7 +14,11 @@ import {
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
 import { Layout } from '@/components/layouts/layout'
-import { GenerateImageForm, ApproveForKamon, PreviewNFTImage } from '@/components/mintKamon/'
+import {
+  GenerateImageForm,
+  ApproveForKamon,
+  PreviewNFTImage
+} from '@/components/mintKamon/'
 import { useMounted } from '@/hooks/useMounted'
 import { useApproval } from '@/hooks/useApproval'
 import { getContractAddress } from '@/utils/contractAddress'
@@ -95,7 +99,9 @@ const MintKamon: NextPage = () => {
           color="gray.600"
         >
           <div>
-            <PreviewNFTImage imageUrl={tokenURIImage} />
+            {isConnected && tokenURIImage && (
+              <PreviewNFTImage imageUrl={tokenURIImage} />
+            )}
             {!isConnected && (
               <>
                 <Text mb="1rem">
