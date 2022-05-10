@@ -37,6 +37,9 @@ const Layout = ({ children }: LayoutProps) => {
             <Link href="/" p={4}>
               Home
             </Link>
+            <Link href="/claim" p={4}>
+              Claim
+            </Link>
             <Link href="/quests" p={4}>
               Quests
             </Link>
