@@ -4,12 +4,15 @@ import { MetaMaskLeadBanner } from '@/components/metaMask/MetaMaskLeadBanner'
 import { Footer } from '@/components/footer'
 import { useLocale } from '@/hooks/useLocale'
 import { default as NextLink } from 'next/link'
+import { useRouter } from 'next/router'
+
 interface LayoutProps {
   children: React.ReactNode
 }
 
 const Layout = ({ children }: LayoutProps) => {
   const { locale, t } = useLocale()
+  const router = useRouter()
   return (
     <>
       <SwitchNetworkAlert />
@@ -28,11 +31,11 @@ const Layout = ({ children }: LayoutProps) => {
               {t.QUESTS_LINK}
             </Link>
             {locale === 'en' ? (
-              <NextLink href="/" locale="ja" passHref={true}>
+              <NextLink href={router.pathname} locale="ja" passHref={true}>
                 <a>{t.LANG_SWITCHER}</a>
               </NextLink>
             ) : (
-              <NextLink href="/" locale="en" passHref={true}>
+              <NextLink href={router.pathname} locale="en" passHref={true}>
                 <a>{t.LANG_SWITCHER}</a>
               </NextLink>
             )}
