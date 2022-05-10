@@ -16,7 +16,7 @@ const contractAddress: ContractAddress = {
     [chainId.rinkeby]: '0x6FDDbe89B90795Eb0652F80fc3dBC2c61e753b1C'
   },
   kamonNFT: {
-    [chainId.rinkeby]: '0x73bf43b830fE47CdeEC85190e99b9a6FCe9b9aaB'
+    [chainId.rinkeby]: '0x9D8b1775CbEE7ae3Cf9dAE3D2CaCBA4986d7df63'
   }
 }
 
