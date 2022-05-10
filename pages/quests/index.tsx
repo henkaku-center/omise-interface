@@ -52,7 +52,6 @@ const Quests: NextPage = () => {
               <Box mt={4}>
                 <Stack>
                   <Input
-                    bg="white"
                     placeholder="Keyword"
                     onChange={inputChange}
                   />
