@@ -1,12 +1,25 @@
-import { Container, Heading, Box, Link, Flex, Spacer } from '@chakra-ui/react'
+import {
+  Container,
+  Heading,
+  Box,
+  Link,
+  Flex,
+  Spacer,
+  useColorMode,
+  Button
+} from '@chakra-ui/react'
 import { SwitchNetworkAlert } from '@/components/metaMask/SwitchNetworkAlert'
 import { MetaMaskLeadBanner } from '@/components/metaMask/MetaMaskLeadBanner'
 import { Footer } from '@/components/footer'
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+
 interface LayoutProps {
   children: React.ReactNode
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const { colorMode, toggleColorMode } = useColorMode()
+
   return (
     <>
       <SwitchNetworkAlert />
@@ -18,6 +31,9 @@ const Layout = ({ children }: LayoutProps) => {
           </Box>
           <Spacer />
           <Box p={2}>
+            <Button size="md" onClick={toggleColorMode} p={4}>
+              {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
+            </Button>
             <Link href="/" p={4}>
               Home
             </Link>
