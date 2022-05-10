@@ -27,7 +27,7 @@ const GenerateImageForm: React.FC<Prop> = ({
   onSetTokenImageURI,
   address
 }) => {
-  const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
+  const ipfsApiEndpoint = 'https://api.sakazuki.xyz/henkaku/ipfs'
   const [name, setName] = useState<string>()
   const [imageFile, setImageFile] = useState<string>()
   const [imageFileObject, setImageFileObject] = useState<any>()
