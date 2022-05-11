@@ -65,7 +65,7 @@ const MintKamon: NextPage = () => {
   const { totalSupply } = useTotalSupply(kamonNFT)
 
   useEffect(() => {
-    setHasNFT(!!(balanceOf && balanceOf.gte(1) > 0))
+    setHasNFT(balanceOf?.gte(1) > 0)
   }, [balanceOf, data?.address])
 
   if (mounted && isConnected && approved && !hasNFT && !tokenURI) {
@@ -115,7 +115,7 @@ const MintKamon: NextPage = () => {
           </div>
 
           <div>
-            {hasNFT && (
+            {isConnected && hasNFT && (
               <>
                 <Center>
                   <Heading mt={50} size="lg">
