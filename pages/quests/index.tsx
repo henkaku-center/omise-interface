@@ -54,6 +54,7 @@ const Quests: NextPage = () => {
                   <Input
                     placeholder="Keyword"
                     onChange={inputChange}
+                    textTransform="uppercase"
                   />
 
                   <Button
