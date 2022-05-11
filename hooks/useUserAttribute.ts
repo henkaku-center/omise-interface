@@ -19,7 +19,7 @@ export const useUserAttribute = (
     'userAttribute',
     {
       args: owner || ethers.constants.AddressZero,
-      enabled: false
+      watch: true
     }
   )
 
