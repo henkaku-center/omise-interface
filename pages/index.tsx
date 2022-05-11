@@ -104,7 +104,6 @@ const Home: NextPage = () => {
 
 interface GetStaticPropsOptions { locale: string }
 export async function getStaticProps({ locale }: GetStaticPropsOptions) {
-  if (typeof window == 'object') { return 'en' }
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
