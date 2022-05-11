@@ -16,7 +16,7 @@ export const useClaim = () => {
     onSuccess() {
       toast({
         title: 'Submitted',
-        description: 'Answer was correct.\nYou earn 100 points',
+        description: 'You got $HENKAKU', // TODO: Show the actual amount of henkaku earned
         status: 'success'
       })
     }

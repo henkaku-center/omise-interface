@@ -9,13 +9,14 @@ import {
   Heading,
   Image,
   Spacer,
-  Stack,
   Text
 } from '@chakra-ui/react'
 import { useClaim } from '@/hooks/claim/useClaim'
-import { useGetClaimableToken } from '@/hooks/quest/useGetClaimableToken'
+import { useGetClaimableToken } from '@/hooks/claim/useGetClaimableToken'
 import { useHasNFT } from '@/hooks/useHasNFT'
 import Link from 'next/link'
+import { ethers } from 'ethers'
+import { useCallback } from 'react'
 
 const Claim: NextPage = () => {
   const mounted = useMounted()
@@ -23,8 +24,13 @@ const Claim: NextPage = () => {
   const [metaMask] = connectors
   const { data } = useAccount()
   const { claim, isClaiming } = useClaim()
-  const { claimableToken } = useGetClaimableToken()
+  const { claimableToken, refetchClaimableToken } = useGetClaimableToken()
   const { hasNFT } = useHasNFT()
+
+  const handleClaim = useCallback(async () => {
+    claim()
+    await refetchClaimableToken()
+  }, [claim, refetchClaimableToken, claimableToken]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -47,8 +53,14 @@ const Claim: NextPage = () => {
                   ? 'You can claim your $HENKAKU.'
                   : 'You can claim $HENKAKU if you own NFT.'}
               </Text>
-              {hasNFT && claimableToken ? (
-                <Text>{`You can get ${claimableToken} $HENKAKU`}</Text>
+              {hasNFT && claimableToken != undefined ? (
+                <Text>
+                  {claimableToken == BigInt(0)
+                    ? 'You currently have no points to claim'
+                    : `You can get ${ethers.utils.formatEther(
+                        claimableToken
+                      )} $HENKAKU`}
+                </Text>
               ) : null}
             </Box>
             {mounted && !data?.address ? (
@@ -58,16 +70,17 @@ const Claim: NextPage = () => {
                 colorScheme="teal"
                 onClick={() => connect(metaMask)}
               >
-                connect wallet
+                Connect Wallet
               </Button>
             ) : hasNFT ? (
               <Button
                 mt={10}
                 w="100%"
                 colorScheme="teal"
-                onClick={() => claim()}
+                onClick={handleClaim}
                 isLoading={isClaiming}
                 loadingText="claiming..."
+                disabled={claimableToken == BigInt(0)}
               >
                 Claim
               </Button>

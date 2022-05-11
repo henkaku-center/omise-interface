@@ -1,21 +1,16 @@
 import { useContractRead } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
-import { ethers } from 'ethers'
-
-type UserAttribute = {
-  point: number
-  claimableToken: number
-  answeredAt: string
-}
+import { BigNumber, ethers } from 'ethers'
 
 export const useUserAttribute = (
   contract: string,
   owner: string | undefined
-): { data?: UserAttribute; isError: boolean; error: Error | null } => {
+) => {
   const {
     data: data,
     isError,
-    error
+    error,
+    refetch
   } = useContractRead(
     {
       addressOrName: contract,
@@ -29,14 +24,16 @@ export const useUserAttribute = (
   )
 
   return {
-    data: data
-      ? {
-          point: data.point,
-          claimableToken: data.claimableToken,
-          answeredAt: data.answeredAt
-        }
-      : undefined,
+    data:
+      data && data.length == 3
+        ? {
+            point: (data[0] as BigNumber).toBigInt(),
+            claimableToken: (data[1] as BigNumber).toBigInt(),
+            answeredAt: (data[2] as BigNumber).toBigInt()
+          }
+        : undefined,
     isError,
-    error
+    error,
+    refetch
   }
 }

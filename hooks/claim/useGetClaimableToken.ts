@@ -10,6 +10,17 @@ export const useGetClaimableToken = () => {
   })
   const { data } = useAccount()
 
-  const { data: userAttribute, isError, error } = useUserAttribute(kamonNFT, data?.address)
-  return { claimableToken: userAttribute?.claimableToken, isError, error }
+  const {
+    data: userAttribute,
+    isError,
+    error,
+    refetch
+  } = useUserAttribute(kamonNFT, data?.address)
+
+  return {
+    claimableToken: userAttribute?.claimableToken,
+    isError,
+    error,
+    refetchClaimableToken: refetch
+  }
 }
