@@ -13,6 +13,9 @@ import {
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Layout } from '@/components/layouts/layout'
 import {
   GenerateImageForm,
@@ -27,6 +30,7 @@ import { useBalanceOf } from '@/hooks/useBalanceOf'
 import { useTotalSupply } from '@/hooks/useTotalSupply'
 
 const MintKamon: NextPage = () => {
+  const { t } = useTranslation('common')
   const mounted = useMounted()
   const { activeChain } = useNetwork()
   const { data } = useAccount()
@@ -90,9 +94,9 @@ const MintKamon: NextPage = () => {
     <>
       <Layout>
         <Heading as="h2" color="white.600">
-          Mint your Kamon - 家紋{' '}
+          {t('MINT_YOUR_KAMON_HEADING')}{' '}
         </Heading>
-        <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
+        <Text m="1rem">{t('MINT_YOUR_KAMON_EXPLANATION')}</Text>
         <SimpleGrid
           columns={{ sm: 1, md: 1, lg: 2 }}
           spacing={5}
@@ -158,4 +162,13 @@ const MintKamon: NextPage = () => {
   )
 }
 
+interface GetStaticPropsOptions { locale: string }
+export async function getStaticProps({ locale }: GetStaticPropsOptions) {
+  if (typeof window == 'object') { return 'en' }
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 export default MintKamon

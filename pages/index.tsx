@@ -24,7 +24,6 @@ import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 
 const Home: NextPage = () => {
-  const router = useRouter()
   const { t } = useTranslation('common')
   const { activeChain } = useNetwork()
   const { data } = useAccount()

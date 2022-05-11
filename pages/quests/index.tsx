@@ -9,11 +9,15 @@ import {
   Stack
 } from '@chakra-ui/react'
 import { useAccount, useConnect } from 'wagmi'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Layout } from '@/components/layouts/layout'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
 
 const Quests: NextPage = () => {
+  const { t } = useTranslation('common')
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -23,7 +27,7 @@ const Quests: NextPage = () => {
   return (
     <>
       <Layout>
-        <Heading mt={50}>Quest</Heading>
+        <Heading mt={50}>{t('QUESTS_HEADING')}</Heading>
         <Box display={{ md: 'flex', xl: 'flex' }}>
           <Box p={2} minW={300}>
             <Image
@@ -78,4 +82,13 @@ const Quests: NextPage = () => {
   )
 }
 
+interface GetStaticPropsOptions { locale: string }
+export async function getStaticProps({ locale }: GetStaticPropsOptions) {
+  if (typeof window == 'object') { return 'en' }
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 export default Quests
