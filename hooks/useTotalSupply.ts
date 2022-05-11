@@ -7,10 +7,7 @@ export const useTotalSupply = (contract: string) => {
       addressOrName: contract,
       contractInterface: kamonNFTContract.abi
     },
-    'totalSupply',
-    {
-      enabled: false
-    }
+    'totalSupply'
   )
 
   return {

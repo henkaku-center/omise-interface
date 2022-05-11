@@ -9,8 +9,7 @@ export const useTokenURI = (contract: string, tokenId: number) => {
     },
     'tokenURI',
     {
-      args: tokenId,
-      enabled: false
+      args: tokenId
     }
   )
 
