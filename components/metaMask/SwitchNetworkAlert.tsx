@@ -8,8 +8,10 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { chain, useNetwork } from 'wagmi'
+import { useTranslation } from 'next-i18next'
 
 export const SwitchNetworkAlert: React.FC = () => {
+  const { t } = useTranslation('common')
   const { activeChain, switchNetwork } = useNetwork()
   const [isDesktopOrTablet] = useMediaQuery('(min-width:600px)')
 
@@ -24,8 +26,7 @@ export const SwitchNetworkAlert: React.FC = () => {
     >
       <AlertIcon />
       <AlertDescription>
-        You are using {activeChain?.name}. To use this app, switch to polygon
-        mainnet
+      {t('SWITCH_NETWORK_MSG_1')}{activeChain?.name}{t('SWITCH_NETWORK_MSG_2')}
       </AlertDescription>
 
       <Button
@@ -35,7 +36,7 @@ export const SwitchNetworkAlert: React.FC = () => {
         rightIcon={<ArrowForwardIcon />}
         onClick={() => switchNetwork(chain.polygon.id)}
       >
-        switch to polygon
+        {t('SWITCH_NETWORK_BUTTON')}
       </Button>
     </Alert>
   ) : (

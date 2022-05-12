@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { FaGithubAlt } from 'react-icons/fa'
 import { AiFillTwitterCircle } from "react-icons/ai";
+import { useTranslation } from 'next-i18next'
 
 const SocialButton = ({
   children,
@@ -46,6 +47,8 @@ const SocialButton = ({
 }
 
 export const Footer = () => {
+  const { t } = useTranslation('common')
+
   return (
     <Box
       p={5}
@@ -62,7 +65,7 @@ export const Footer = () => {
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}
       >
-        <Text>© 2022 henkaku.org. All rights reserved</Text>
+        <Text>{t('COPYRIGHT_LINE')}</Text>
         <Stack direction={'row'} spacing={6}>
           <SocialButton
             label={'Instagram'}
