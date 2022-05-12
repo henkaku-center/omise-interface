@@ -27,7 +27,7 @@ const GenerateImageForm: React.FC<Prop> = ({
   onSetTokenImageURI,
   address
 }) => {
-  const ipfsApiEndpoint = 'https://api.staging.sakazuki.xyz/henkaku/ipfs'
+  const ipfsApiEndpoint = process.env.IPFS_API_URI + '/ipfs'
   const [name, setName] = useState<string>()
   const [imageFile, setImageFile] = useState<string>()
   const [imageFileObject, setImageFileObject] = useState<any>()
@@ -122,7 +122,7 @@ const GenerateImageForm: React.FC<Prop> = ({
   return (
     <Layout>
       <Heading as="h2" color="white.600">
-        Mint your Kamon - 家紋{' '}
+        Mint your Kamon - 家紋{' '}{ipfsApiEndpoint}
       </Heading>
       <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
       <Box bg="Gray.800" p={6} borderRadius="lg" borderWidth="3px">
