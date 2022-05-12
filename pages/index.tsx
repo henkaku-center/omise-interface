@@ -11,6 +11,9 @@ import {
   Link,
   Spacer
 } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Layout } from '@/components/layouts/layout'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useTotalSupply } from '@/hooks/useTotalSupply'
@@ -21,6 +24,8 @@ import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 
 const Home: NextPage = () => {
+  const router = useRouter()
+  const { t } = useTranslation('common')
   const { activeChain } = useNetwork()
   const { data } = useAccount()
   const kamonNFT = getContractAddress({
@@ -53,10 +58,10 @@ const Home: NextPage = () => {
     <>
       <Layout>
         <Heading as="h2" color="white.600">
-          Mint your Kamon - 家紋{' '}
+          {t('MINT_YOUR_KAMON_HEADING')}{' '}
         </Heading>
         <Text m="1rem">
-          Kamon NFT is membership of henkaku community.{' '}
+          {t('MINT_YOUR_KAMON_EXPLANATION')}{' '}
           {mounted && totalSupply && (
             <Text>🎉 {totalSupply.toString()} members minted so far 🎉</Text>
           )}
@@ -72,9 +77,9 @@ const Home: NextPage = () => {
           <div>
             <Box w="100%" p={4} color="grey.600">
               <Heading as="h3" fontSize="1.2rem">
-                Kamon - 家紋 NFT costs 1000 $HENKAKU
+                {t('MINT_YOUR_KAMON_DETAILS')}
               </Heading>
-              <Text m="1rem">Excluding Gas fee</Text>
+              <Text m="1rem">{t('MINT_YOUR_KAMON_DETAILS_NOTE')}</Text>
               {mounted && balanceOf?.gte(1) ? (
                 <>
                   <Button disabled={true} size="lg" colorScheme="teal">
@@ -87,7 +92,7 @@ const Home: NextPage = () => {
                 </>
               ) : (
                 <Button as="a" href="/mintKamon" size="lg" colorScheme="teal">
-                  Go and Mint your NFT
+                  {t('MINT_YOUR_KAMON_BUTTON')}
                 </Button>
               )}
             </Box>
@@ -98,4 +103,13 @@ const Home: NextPage = () => {
   )
 }
 
+interface GetStaticPropsOptions { locale: string }
+export async function getStaticProps({ locale }: GetStaticPropsOptions) {
+  if (typeof window == 'object') { return 'en' }
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 export default Home
