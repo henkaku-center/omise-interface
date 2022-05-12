@@ -27,7 +27,7 @@ const Home: NextPage = () => {
     name: 'kamonNFT',
     chainId: activeChain?.id
   })
-  const openSeaTokenBaseUrl = `https://testnets.opensea.io/assets/${kamonNFT}/`
+  const openSeaTokenBaseUrl = `https://opensea.io/assets/matic/${kamonNFT}/`
   const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
   const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
   const { totalSupply } = useTotalSupply(kamonNFT)

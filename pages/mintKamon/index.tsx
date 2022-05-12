@@ -38,7 +38,7 @@ const MintKamon: NextPage = () => {
     name: 'kamonNFT',
     chainId: activeChain?.id
   })
-  const openSeaTokenBaseUrl = `https://testnets.opensea.io/assets/${kamonNFT}/`
+  const openSeaTokenBaseUrl = `https://opensea.io/assets/matic/${kamonNFT}/`
 
   // useState
   const [tokenURI, setTokenURI] = useState('')
