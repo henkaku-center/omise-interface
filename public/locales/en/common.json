@@ -4,9 +4,29 @@
 
   "MINT_YOUR_KAMON_HEADING": "Mint your Kamon",
   "MINT_YOUR_KAMON_EXPLANATION": "The Kamon NFT proves your membership of the HENKAKU community",
-  "MINT_YOUR_KAMON_DETAILS": "You can mint your Kamon NFT for 1000 $HENKAKU",
+  "MINT_YOUR_KAMON_DETAILS": "You can mint your Kamon NFT for 1000 $HENKAKU.",
   "MINT_YOUR_KAMON_DETAILS_NOTE": "(Plus gas)",
   "MINT_YOUR_KAMON_BUTTON": "Go and Mint Your NFT",
+  "MINT_YOUR_KAMON_WALLET_INSTRUCTION": "To mint your Kamon NFT, connect your wallet.",
+  "MINT_YOUR_KAMON_MINTED": "🎉 Your NFT was minted! 🎉",
+  "MINT_YOUR_KAMON_OPENSEA_INSTRUCTION": "See it on OpenSea",
+  "MINT_YOUR_KAMON_OPENSEA_INSTRUCTION_2": "It may take some time for the NFT to appear.",
+  "MINT_YOUR_KAMON_MINT_BUTTON": "Mint for 1000 $HENKAKU",
+
+  "ENABLE_EXPLANATION": "Enable Kamon NFT to access your $HENKAKU, in order to be able to mint.",
+  "ENABLE_BUTTON": "Enable $HENKAKU payments",
+
+  "FORM_LABEL_WALLET_ADDRESS": "Wallet address",
+  "FORM_LABEL_NAME_NICKNAME": "Your name or nickname",
+  "FORM_LABEL_NAME_NICKNAME_PLACEHOLDER": "Your name",
+  "FORM_LABEL_PFP": "Your profile picture for the Kamon NFT",
+  "FORM_LABEL_PFP_PLACEHOLDER": "Upload an JPG or PNG",
+  "GENERATE_IMAGE_BUTTON": "Generate Image",
+  "GENERATE_IMAGE_BUTTON_LOADING": "Generating...",
+
+  "IMAGE_PREVIEW": "Preview Image",
+  "IMAGE_PREVIEW_BADGE": "preview",
+  "IMAGE_PREVIEW_ALT": "Kamon NFT preview",
 
   "QUESTS_HEADING": "Quests",
   "QUESTS_IMAGE_ALT": "JOI ITO 変革への道",

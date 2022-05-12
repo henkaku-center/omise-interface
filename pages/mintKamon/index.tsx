@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Layout } from '@/components/layouts/layout'
@@ -109,10 +108,10 @@ const MintKamon: NextPage = () => {
             {!isConnected && (
               <>
                 <Text mb="1rem">
-                  To mint your Kamon NFT- 家紋 connect your wallet
+                  {t('MINT_YOUR_KAMON_WALLET_INSTRUCTION')}
                 </Text>
                 <Button colorScheme="teal" onClick={() => connect(metaMask)}>
-                  Connect wallet
+                  {t('CONNECT_WALLET_BUTTON')}
                 </Button>
               </>
             )}
@@ -123,7 +122,7 @@ const MintKamon: NextPage = () => {
               <>
                 <Center>
                   <Heading mt={50} size="lg">
-                    🎉 Your nft is minted !! 🎉
+                    {t('MINT_YOUR_KAMON_MINTED')}
                   </Heading>
                 </Center>
                 <Center mt={5}>
@@ -131,11 +130,12 @@ const MintKamon: NextPage = () => {
                     href={`${openSeaTokenBaseUrl}${totalSupply}`}
                     isExternal
                   >
-                    Check with OpenSea <ExternalLinkIcon mx="2px" />
+                    {t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION')}
+                    <ExternalLinkIcon mx="2px" />
                   </Link>
                 </Center>
                 <Center>
-                  <Text>It takes a little time for the NFT to appear</Text>
+                  <Text>{t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION_2')}</Text>
                 </Center>
               </>
             )}
@@ -143,7 +143,7 @@ const MintKamon: NextPage = () => {
             {mounted && isConnected && !hasNFT && tokenURI && approved && (
               <>
                 <Text>
-                  To mint your Kamon NFT - 家紋 you need ot pay $1000 henkaku
+                  {t('MINT_YOUR_KAMON_DETAILS')}
                 </Text>
                 <Button
                   colorScheme="teal"
@@ -151,7 +151,7 @@ const MintKamon: NextPage = () => {
                   onClick={() => mintWithHenkaku()}
                   isLoading={isMinting}
                 >
-                  Mint with 1000 $henkaku
+                  {t('MINT_YOUR_KAMON_MINT_BUTTON')}
                 </Button>
               </>
             )}
