@@ -1,6 +1,14 @@
 {
   "CONNECT_WALLET_BUTTON": "ウォレットを接続",
   "BUTTON_SUBMITTING": "送信中...",
+  "BUTTON_CANCEL": "キャンセル",
+
+  "MMASK_LEAD_HEADER": "MetaMaskをインストール",
+  "MMASK_LEAD_EXPLANATION": "このウェブアプリを使うには、ブラウザーにMetaMaskがインストールされている必要があります。",
+  "MMASK_MODAL_MOBILE_BODY": "MetaMaskアプリを開く、もしくはインストールする",
+  "MMASK_MODAL_MOBILE_CTA": "MetaMaskアプリを開く",
+  "MMASK_MODAL_BODY": "MetaMaskのブラウザー拡張機能をインストール",
+  "MMASK_MODAL_CTA": "MetaMaskをインストール",
 
   "MINT_YOUR_KAMON_HEADING": "家紋をミント",
   "MINT_YOUR_KAMON_EXPLANATION": "家紋NFTはHENKAKUコミュニティへの参加を証明する",

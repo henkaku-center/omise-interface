@@ -1,6 +1,14 @@
 {
   "CONNECT_WALLET_BUTTON": "Connect wallet",
   "BUTTON_SUBMITTING": "Submitting...",
+  "BUTTON_CANCEL": "Cancel",
+
+  "MMASK_LEAD_HEADER": "Install MetaMask",
+  "MMASK_LEAD_EXPLANATION": "To use this web app, your browser needs to have MetaMask.",
+  "MMASK_MODAL_MOBILE_BODY": "Open or Install the MetaMask App",
+  "MMASK_MODAL_MOBILE_CTA": "Open the MetaMask App",
+  "MMASK_MODAL_BODY": "Install the browser extension for MetaMask",
+  "MMASK_MODAL_CTA": "Install MetaMask",
 
   "MINT_YOUR_KAMON_HEADING": "Mint your Kamon",
   "MINT_YOUR_KAMON_EXPLANATION": "The Kamon NFT proves your membership of the HENKAKU community",
