@@ -1,11 +1,19 @@
 {
+  "CONNECT_WALLET_BUTTON": "Connect wallet",
+  "BUTTON_SUBMITTING": "Submitting...",
+
   "MINT_YOUR_KAMON_HEADING": "Mint your Kamon",
-  "MINT_YOUR_KAMON_EXPLANATION": "The Kamon NFT proves your membership of the Henkaku community",
+  "MINT_YOUR_KAMON_EXPLANATION": "The Kamon NFT proves your membership of the HENKAKU community",
   "MINT_YOUR_KAMON_DETAILS": "You can mint your Kamon NFT for 1000 $HENKAKU",
   "MINT_YOUR_KAMON_DETAILS_NOTE": "(Plus gas)",
   "MINT_YOUR_KAMON_BUTTON": "Go and Mint Your NFT",
 
   "QUESTS_HEADING": "Quests",
+  "QUESTS_IMAGE_ALT": "JOI ITO 変革への道",
+  "QUESTS_EXPLANATION_HEADING": "Enter weekly keyword",
+  "QUESTS_EXPLANATION_BODY": "By answering this question you will earn 100 points, which you can exchange to $HENKAKU tokens.",
+  "QUESTS_INPUT_PLACEHOLDER": "Keyword",
+  "QUESTS_SUBMIT_BUTTON": "Submit Keyword",
 
   "LAYOUT_HEADING": "Omise – HENKAKU",
   "HOME_LINK": "Home",

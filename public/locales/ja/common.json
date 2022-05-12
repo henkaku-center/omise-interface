@@ -1,11 +1,19 @@
 {
+  "CONNECT_WALLET_BUTTON": "ウォレットを接続",
+  "BUTTON_SUBMITTING": "送信中...",
+
   "MINT_YOUR_KAMON_HEADING": "家紋をミント",
-  "MINT_YOUR_KAMON_EXPLANATION": "家紋NFTはHenkakuコミュニティへの参加を証明する",
+  "MINT_YOUR_KAMON_EXPLANATION": "家紋NFTはHENKAKUコミュニティへの参加を証明する",
   "MINT_YOUR_KAMON_DETAILS": "家紋NFTをミントするには1000 $HENKAKUが必要です。",
   "MINT_YOUR_KAMON_DETAILS_NOTE": "（ガスもかかります）",
   "MINT_YOUR_KAMON_BUTTON": "あなたのNFTをミントしましょう",
 
   "QUESTS_HEADING": "クエスト",
+  "QUESTS_IMAGE_ALT": "JOI ITO 変革への道",
+  "QUESTS_EXPLANATION_HEADING": "今週のキーワードを入力して下さい",
+  "QUESTS_EXPLANATION_BODY": "このキーワードを当てることであなたは$HENKAKUトークンと交換できる100ポイントを獲得できます。",
+  "QUESTS_INPUT_PLACEHOLDER": "キーワード",
+  "QUESTS_SUBMIT_BUTTON": "キーワードを送信",
 
   "LAYOUT_HEADING": "Omise – HENKAKU",
   "HOME_LINK": "Home",
