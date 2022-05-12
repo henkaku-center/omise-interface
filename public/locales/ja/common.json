@@ -20,6 +20,9 @@
   "MINT_YOUR_KAMON_OPENSEA_INSTRUCTION": "OpenSeaで確認しましょう",
   "MINT_YOUR_KAMON_OPENSEA_INSTRUCTION_2": "確認できるまで、少し時間がかかることがあります。",
   "MINT_YOUR_KAMON_MINT_BUTTON": "1000 $HENKAKUでミント",
+  "MINT_YOUR_KAMON_DISABLED_BUTTON_HOLDER": "家紋NFTを既に所有",
+  "CURRENT_HOLDERS_1": "🎉 メンバー",
+  "CURRENT_HOLDERS_2": "人がミント済み 🎉",
 
   "ENABLE_EXPLANATION": "家紋NFTをミントするには、$HENKAKUへのアクセス権限を与えてください。",
   "ENABLE_BUTTON": "$HENKAKUでの支払いを有効に",

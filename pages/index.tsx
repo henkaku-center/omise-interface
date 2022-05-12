@@ -64,7 +64,7 @@ const Home: NextPage = () => {
         <Text m="1rem">
           {t('MINT_YOUR_KAMON_EXPLANATION')}{' '}
           {mounted && totalSupply && (
-            <Text>🎉 {totalSupply.toString()} members minted so far 🎉</Text>
+            <Text>{t('CURRENT_HOLDERS_1')}{totalSupply.toString()}{t('CURRENT_HOLDERS_2')}</Text>
           )}
         </Text>
         <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing="10px">
@@ -84,11 +84,12 @@ const Home: NextPage = () => {
               {mounted && balanceOf?.gte(1) ? (
                 <>
                   <Button disabled={true} size="lg" colorScheme="teal">
-                    You hold kamonNFT
+                    {t('MINT_YOUR_KAMON_DISABLED_BUTTON_HOLDER')}
                   </Button>
                   <Spacer mt={5} />
                   <Link href={`${openSeaTokenBaseUrl}`} isExternal>
-                    Check with OpenSea <ExternalLinkIcon mx="2px" />
+                    {t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION')}
+                    <ExternalLinkIcon mx="2px" />
                   </Link>
                 </>
               ) : (
