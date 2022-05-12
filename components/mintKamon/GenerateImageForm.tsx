@@ -122,7 +122,7 @@ const GenerateImageForm: React.FC<Prop> = ({
   return (
     <Layout>
       <Heading as="h2" color="white.600">
-        Mint your Kamon - 家紋{' '}{ipfsApiEndpoint}
+        Mint your Kamon - 家紋{' '}
       </Heading>
       <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
       <Box bg="Gray.800" p={6} borderRadius="lg" borderWidth="3px">
