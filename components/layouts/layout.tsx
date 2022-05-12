@@ -39,12 +39,24 @@ const Layout = ({ children }: LayoutProps) => {
             <Button size="md" onClick={toggleColorMode} p={4}>
               {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
             </Button>
-            <Link href="/" p={4}>
-              {t('HOME_LINK')}
-            </Link>
-            <Link href="/quests" p={4}>
-              {t('QUESTS_LINK')}
-            </Link>
+            <NextLink
+              passHref
+              href="/"
+              locale={router.locale}
+            >
+              <Link href="/" p={4}>
+                {t('HOME_LINK')}
+              </Link>
+            </NextLink>
+            <NextLink
+              passHref
+              href="/quests"
+              locale={router.locale}
+            >
+              <Link p={4}>
+                {t('QUESTS_LINK')}
+              </Link>
+            </NextLink>
             <NextLink
               passHref
               href={router.pathname}

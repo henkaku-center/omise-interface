@@ -11,6 +11,7 @@ import {
   Link,
   Spacer
 } from '@chakra-ui/react'
+import { default as NextLink } from 'next/link'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -24,6 +25,7 @@ import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 
 const Home: NextPage = () => {
+  const router = useRouter()
   const { t } = useTranslation('common')
   const { activeChain } = useNetwork()
   const { data } = useAccount()
@@ -90,9 +92,11 @@ const Home: NextPage = () => {
                   </Link>
                 </>
               ) : (
-                <Button as="a" href="/mintKamon" size="lg" colorScheme="teal">
-                  {t('MINT_YOUR_KAMON_BUTTON')}
-                </Button>
+                <NextLink href="/mintKamon" locale={router.locale} passHref>
+                  <Button as="a" size="lg" colorScheme="teal">
+                    {t('MINT_YOUR_KAMON_BUTTON')}
+                  </Button>
+                </NextLink>
               )}
             </Box>
           </div>
