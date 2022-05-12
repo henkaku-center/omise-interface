@@ -17,6 +17,8 @@ import { useTotalSupply } from '@/hooks/useTotalSupply'
 import { useMounted } from '@/hooks/useMounted'
 import { useBalanceOf } from '@/hooks/useBalanceOf'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { useTokenIdOf } from '@/hooks/useTokenIdOf'
+import { useTokenURI } from '@/hooks/useTokenURI'
 
 const Home: NextPage = () => {
   const { activeChain } = useNetwork()
@@ -27,9 +29,26 @@ const Home: NextPage = () => {
   })
   const openSeaTokenBaseUrl = `https://testnets.opensea.io/assets/${kamonNFT}/`
   const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
+  const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
   const { totalSupply } = useTotalSupply(kamonNFT)
+  const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
+
   const mounted = useMounted()
 
+  const [tokenURIImage, setTokenImageURI] = useState('')
+
+  useEffect(() => {
+    if (balanceOf && tokenIdOf && tokenURI) {
+      const fetchData = async () => {
+        const pinataRequest = await fetch(tokenURI.toString())
+        const responseJson = await pinataRequest.json()
+
+        setTokenImageURI(responseJson.image)
+      }
+
+      fetchData()
+    }
+  }, [balanceOf, tokenIdOf, tokenURI])
   return (
     <>
       <Layout>
@@ -44,7 +63,11 @@ const Home: NextPage = () => {
         </Text>
         <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing="10px">
           <div>
-            <Image src={'/kamonNFT_427@2x.png'} alt="" />
+            {mounted && tokenIdOf?.gt(0) && tokenURIImage ? (
+              <Image src={tokenURIImage} alt="" />
+            ) : (
+              <Image src={'/kamonNFT_427@2x.png'} alt="" />
+            )}
           </div>
           <div>
             <Box w="100%" p={4} color="grey.600">
