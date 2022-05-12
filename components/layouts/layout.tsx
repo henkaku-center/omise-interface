@@ -8,6 +8,9 @@ import {
   useColorMode,
   Button
 } from '@chakra-ui/react'
+import { default as NextLink } from 'next/link'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 import { SwitchNetworkAlert } from '@/components/metaMask/SwitchNetworkAlert'
 import { MetaMaskLeadBanner } from '@/components/metaMask/MetaMaskLeadBanner'
 import { Footer } from '@/components/footer'
@@ -18,6 +21,8 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const router = useRouter()
+  const { t } = useTranslation('common')
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
@@ -27,7 +32,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Box p="4">
         <Flex>
           <Box p={2}>
-            <Heading size="md">Omise – HENKAKU</Heading>
+            <Heading size="md">{t('LAYOUT_HEADING')}</Heading>
           </Box>
           <Spacer />
           <Box p={2}>
@@ -35,11 +40,20 @@ const Layout = ({ children }: LayoutProps) => {
               {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
             </Button>
             <Link href="/" p={4}>
-              Home
+              {t('HOME_LINK')}
             </Link>
             <Link href="/quests" p={4}>
-              Quests
+              {t('QUESTS_LINK')}
             </Link>
+            <NextLink
+              passHref
+              href={router.pathname}
+              locale={router.locale === 'en' ? 'ja' : 'en'}
+            >
+              <Link>
+                {t('LANG_SWITCHER')}
+              </Link>
+            </NextLink>
           </Box>
         </Flex>
       </Box>
