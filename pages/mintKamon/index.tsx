@@ -26,7 +26,6 @@ import { useApproval } from '@/hooks/useApproval'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useMintWithHenkaku } from '@/hooks/useMintWithHenkaku'
 import { useBalanceOf } from '@/hooks/useBalanceOf'
-import { useTotalSupply } from '@/hooks/useTotalSupply'
 
 const MintKamon: NextPage = () => {
   const { t } = useTranslation('common')
@@ -46,10 +45,9 @@ const MintKamon: NextPage = () => {
   // useState
   const [tokenURI, setTokenURI] = useState('')
   const [tokenURIImage, setTokenImageURI] = useState('')
-  const [hasNFT, setHasNFT] = useState(false)
 
   /// connect
-  const { connect, connectors, error, isConnected } = useConnect()
+  const { connect, connectors, isConnected } = useConnect()
   const [metaMask] = connectors
 
   // approve
@@ -57,21 +55,15 @@ const MintKamon: NextPage = () => {
 
   // mint
   const mintPrice = 1000
-  const { isMinting, mint } = useMintWithHenkaku(kamonNFT, tokenURI, mintPrice)
-  const mintWithHenkaku = useCallback(async () => {
-    const data = await mint()
-    if (data) {
-      setHasNFT(true)
-    }
-  }, [mint, setHasNFT])
-  const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
-  const { totalSupply } = useTotalSupply(kamonNFT)
+  const { isMinting, mint } = useMintWithHenkaku(
+    kamonNFT,
+    tokenURI,
+    mintPrice,
+    data?.address
+  )
+  const { balanceOf, hasNft } = useBalanceOf(kamonNFT, data?.address)
 
-  useEffect(() => {
-    setHasNFT(balanceOf?.gte(1) > 0)
-  }, [balanceOf, data?.address])
-
-  if (mounted && isConnected && approved && !hasNFT && !tokenURI) {
+  if (mounted && isConnected && approved && !hasNft && !tokenURI) {
     return (
       <GenerateImageForm
         onSetTokenURI={setTokenURI}
@@ -81,7 +73,7 @@ const MintKamon: NextPage = () => {
     )
   }
 
-  if (mounted && isConnected && !approved && !hasNFT) {
+  if (mounted && isConnected && !approved && !hasNft) {
     return (
       <Layout>
         <ApproveForKamon erc20={henkakuErc20} spender={kamonNFT} />
@@ -107,9 +99,7 @@ const MintKamon: NextPage = () => {
             )}
             {!isConnected && (
               <>
-                <Text mb="1rem">
-                  {t('MINT_YOUR_KAMON_WALLET_INSTRUCTION')}
-                </Text>
+                <Text mb="1rem">{t('MINT_YOUR_KAMON_WALLET_INSTRUCTION')}</Text>
                 <Button colorScheme="teal" onClick={() => connect(metaMask)}>
                   {t('CONNECT_WALLET_BUTTON')}
                 </Button>
@@ -118,7 +108,7 @@ const MintKamon: NextPage = () => {
           </div>
 
           <div>
-            {isConnected && hasNFT && (
+            {isConnected && hasNft && (
               <>
                 <Center>
                   <Heading mt={50} size="lg">
@@ -126,10 +116,7 @@ const MintKamon: NextPage = () => {
                   </Heading>
                 </Center>
                 <Center mt={5}>
-                  <Link
-                    href={`${openSeaTokenBaseUrl}${totalSupply}`}
-                    isExternal
-                  >
+                  <Link href={`${openSeaTokenBaseUrl}}`} isExternal>
                     {t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION')}
                     <ExternalLinkIcon mx="2px" />
                   </Link>
@@ -140,15 +127,13 @@ const MintKamon: NextPage = () => {
               </>
             )}
 
-            {mounted && isConnected && !hasNFT && tokenURI && approved && (
+            {mounted && isConnected && !hasNft && tokenURI && approved && (
               <>
-                <Text>
-                  {t('MINT_YOUR_KAMON_DETAILS')}
-                </Text>
+                <Text>{t('MINT_YOUR_KAMON_DETAILS')}</Text>
                 <Button
                   colorScheme="teal"
                   mt={3}
-                  onClick={() => mintWithHenkaku()}
+                  onClick={() => mint()}
                   isLoading={isMinting}
                 >
                   {t('MINT_YOUR_KAMON_MINT_BUTTON')}
@@ -162,12 +147,14 @@ const MintKamon: NextPage = () => {
   )
 }
 
-interface GetStaticPropsOptions { locale: string }
+interface GetStaticPropsOptions {
+  locale: string
+}
 export async function getStaticProps({ locale }: GetStaticPropsOptions) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
+      ...(await serverSideTranslations(locale, ['common']))
+    }
+  }
 }
 export default MintKamon

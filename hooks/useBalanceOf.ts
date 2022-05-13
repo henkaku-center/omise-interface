@@ -9,12 +9,14 @@ export const useBalanceOf = (contract: string, owner: string | undefined) => {
     },
     'balanceOf',
     {
-      args: owner
+      args: owner,
+      watch: true
     }
   )
 
   return {
     balanceOf,
+    hasNft: balanceOf?.gt(0),
     isError
   }
 }
