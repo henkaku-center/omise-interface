@@ -8,15 +8,21 @@ import { providers } from 'ethers'
 import { appWithTranslation } from 'next-i18next'
 
 const connector = new MetaMaskConnector({
-  chains: [chain.polygon, chain.rinkeby],
+  chains: [chain.polygon, chain.rinkeby, chain.goerli]
 })
 
 const client = createClient({
   autoConnect: true,
   connectors: [connector],
   provider(config) {
-    return new providers.InfuraProvider(config.chainId)
-  },
+    if (config.chainId == chain.polygon.id) {
+      return new providers.AlchemyProvider(
+        config.chainId,
+        process.env.ALCHEMY_API_KEY
+      )
+    }
+    return new providers.AlchemyProvider(config.chainId)
+  }
 })
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
