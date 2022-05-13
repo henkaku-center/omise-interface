@@ -6,10 +6,11 @@ import kamonNFTContract from '@/utils/abis/kamonNFT.json'
 export const useMintWithHenkaku = (
   contract: string,
   tokenUri: string,
-  amount: number
+  amount: number,
+  address?: string
 ) => {
   const [minted, setMinted] = useState<boolean>(false)
-
+  const [isMinting, setIsminting] = useState<boolean>(false)
   try {
     useContractEvent(
       {
@@ -18,8 +19,11 @@ export const useMintWithHenkaku = (
       },
       'BoughtMemberShipNFT',
       (event) => {
-        console.log(event)
-        setMinted(true)
+        const [owner, tokenId] = event
+        if (owner == address && tokenId?.gt(0)) {
+          setMinted(true)
+          setIsminting(false)
+        }
       }
     )
   } catch (e: any) {
@@ -32,7 +36,6 @@ export const useMintWithHenkaku = (
   const {
     data: mintData,
     isError,
-    isLoading: isMinting,
     writeAsync: mint
   } = useContractWrite(
     {
@@ -41,8 +44,11 @@ export const useMintWithHenkaku = (
     },
     'mintWithHenkaku',
     {
-      args: [tokenUri, ethers.utils.parseEther(amount.toString())]
-    }
+      args: [tokenUri, ethers.utils.parseEther(amount.toString())],
+      onSuccess() {
+        setIsminting(true)
+      }
+    },
   )
 
   return {

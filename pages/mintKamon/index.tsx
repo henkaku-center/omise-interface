@@ -45,10 +45,9 @@ const MintKamon: NextPage = () => {
   // useState
   const [tokenURI, setTokenURI] = useState('')
   const [tokenURIImage, setTokenImageURI] = useState('')
-  const [hasNFT, setHasNFT] = useState(false)
 
   /// connect
-  const { connect, connectors, error, isConnected } = useConnect()
+  const { connect, connectors, isConnected } = useConnect()
   const [metaMask] = connectors
 
   // approve
@@ -56,24 +55,15 @@ const MintKamon: NextPage = () => {
 
   // mint
   const mintPrice = 1000
-  const { isMinting, mint, minted } = useMintWithHenkaku(
+  const { isMinting, mint } = useMintWithHenkaku(
     kamonNFT,
     tokenURI,
-    mintPrice
+    mintPrice,
+    data?.address
   )
-  const mintWithHenkaku = useCallback(async () => {
-    const data = await mint()
-    if (data && minted) {
-      setHasNFT(true)
-    }
-  }, [mint, minted, setHasNFT])
-  const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
+  const { balanceOf, hasNft } = useBalanceOf(kamonNFT, data?.address)
 
-  useEffect(() => {
-    setHasNFT(balanceOf?.gte(1) > 0)
-  }, [balanceOf, data?.address])
-
-  if (mounted && isConnected && approved && !hasNFT && !tokenURI) {
+  if (mounted && isConnected && approved && !hasNft && !tokenURI) {
     return (
       <GenerateImageForm
         onSetTokenURI={setTokenURI}
@@ -83,7 +73,7 @@ const MintKamon: NextPage = () => {
     )
   }
 
-  if (mounted && isConnected && !approved && !hasNFT) {
+  if (mounted && isConnected && !approved && !hasNft) {
     return (
       <Layout>
         <ApproveForKamon erc20={henkakuErc20} spender={kamonNFT} />
@@ -118,7 +108,7 @@ const MintKamon: NextPage = () => {
           </div>
 
           <div>
-            {isConnected && hasNFT && (
+            {isConnected && hasNft && (
               <>
                 <Center>
                   <Heading mt={50} size="lg">
@@ -137,13 +127,13 @@ const MintKamon: NextPage = () => {
               </>
             )}
 
-            {mounted && isConnected && !hasNFT && tokenURI && approved && (
+            {mounted && isConnected && !hasNft && tokenURI && approved && (
               <>
                 <Text>{t('MINT_YOUR_KAMON_DETAILS')}</Text>
                 <Button
                   colorScheme="teal"
                   mt={3}
-                  onClick={() => mintWithHenkaku()}
+                  onClick={() => mint()}
                   isLoading={isMinting}
                 >
                   {t('MINT_YOUR_KAMON_MINT_BUTTON')}
