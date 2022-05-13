@@ -5,6 +5,7 @@ import { theme } from '@/components/layouts/theme'
 import { chain } from 'wagmi'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { providers } from 'ethers'
+import { appWithTranslation } from 'next-i18next'
 
 const connector = new MetaMaskConnector({
   chains: [chain.polygon, chain.rinkeby],
@@ -28,4 +29,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   )
 }
 
-export default MyApp
+export default appWithTranslation(MyApp)
