@@ -26,7 +26,6 @@ import { useApproval } from '@/hooks/useApproval'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useMintWithHenkaku } from '@/hooks/useMintWithHenkaku'
 import { useBalanceOf } from '@/hooks/useBalanceOf'
-import { useTotalSupply } from '@/hooks/useTotalSupply'
 
 const MintKamon: NextPage = () => {
   const { t } = useTranslation('common')
@@ -57,15 +56,18 @@ const MintKamon: NextPage = () => {
 
   // mint
   const mintPrice = 1000
-  const { isMinting, mint } = useMintWithHenkaku(kamonNFT, tokenURI, mintPrice)
+  const { isMinting, mint, minted } = useMintWithHenkaku(
+    kamonNFT,
+    tokenURI,
+    mintPrice
+  )
   const mintWithHenkaku = useCallback(async () => {
     const data = await mint()
-    if (data) {
+    if (data && minted) {
       setHasNFT(true)
     }
-  }, [mint, setHasNFT])
+  }, [mint, minted, setHasNFT])
   const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
-  const { totalSupply } = useTotalSupply(kamonNFT)
 
   useEffect(() => {
     setHasNFT(balanceOf?.gte(1) > 0)
@@ -107,9 +109,7 @@ const MintKamon: NextPage = () => {
             )}
             {!isConnected && (
               <>
-                <Text mb="1rem">
-                  {t('MINT_YOUR_KAMON_WALLET_INSTRUCTION')}
-                </Text>
+                <Text mb="1rem">{t('MINT_YOUR_KAMON_WALLET_INSTRUCTION')}</Text>
                 <Button colorScheme="teal" onClick={() => connect(metaMask)}>
                   {t('CONNECT_WALLET_BUTTON')}
                 </Button>
@@ -126,10 +126,7 @@ const MintKamon: NextPage = () => {
                   </Heading>
                 </Center>
                 <Center mt={5}>
-                  <Link
-                    href={`${openSeaTokenBaseUrl}${totalSupply}`}
-                    isExternal
-                  >
+                  <Link href={`${openSeaTokenBaseUrl}}`} isExternal>
                     {t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION')}
                     <ExternalLinkIcon mx="2px" />
                   </Link>
@@ -142,9 +139,7 @@ const MintKamon: NextPage = () => {
 
             {mounted && isConnected && !hasNFT && tokenURI && approved && (
               <>
-                <Text>
-                  {t('MINT_YOUR_KAMON_DETAILS')}
-                </Text>
+                <Text>{t('MINT_YOUR_KAMON_DETAILS')}</Text>
                 <Button
                   colorScheme="teal"
                   mt={3}
@@ -162,12 +157,14 @@ const MintKamon: NextPage = () => {
   )
 }
 
-interface GetStaticPropsOptions { locale: string }
+interface GetStaticPropsOptions {
+  locale: string
+}
 export async function getStaticProps({ locale }: GetStaticPropsOptions) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
+      ...(await serverSideTranslations(locale, ['common']))
+    }
+  }
 }
 export default MintKamon

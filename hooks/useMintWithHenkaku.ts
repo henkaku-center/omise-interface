@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+import { useState } from 'react'
 import { useContractWrite, useContractEvent } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
 
@@ -7,6 +8,8 @@ export const useMintWithHenkaku = (
   tokenUri: string,
   amount: number
 ) => {
+  const [minted, setMinted] = useState<boolean>(false)
+
   try {
     useContractEvent(
       {
@@ -14,7 +17,10 @@ export const useMintWithHenkaku = (
         contractInterface: kamonNFTContract.abi
       },
       'BoughtMemberShipNFT',
-      (event) => console.log(event)
+      (event) => {
+        console.log(event)
+        setMinted(true)
+      }
     )
   } catch (e: any) {
     console.error(e) // with different chain it occurs
@@ -43,6 +49,7 @@ export const useMintWithHenkaku = (
     mintData,
     isError,
     isMinting,
-    mint
+    mint,
+    minted
   }
 }
