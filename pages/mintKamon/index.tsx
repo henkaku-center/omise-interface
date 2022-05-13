@@ -13,6 +13,8 @@ import {
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Layout } from '@/components/layouts/layout'
 import {
   GenerateImageForm,
@@ -27,6 +29,7 @@ import { useBalanceOf } from '@/hooks/useBalanceOf'
 import { useTotalSupply } from '@/hooks/useTotalSupply'
 
 const MintKamon: NextPage = () => {
+  const { t } = useTranslation('common')
   const mounted = useMounted()
   const { activeChain } = useNetwork()
   const { data } = useAccount()
@@ -90,9 +93,9 @@ const MintKamon: NextPage = () => {
     <>
       <Layout>
         <Heading as="h2" color="white.600">
-          Mint your Kamon - 家紋{' '}
+          {t('MINT_YOUR_KAMON_HEADING')}{' '}
         </Heading>
-        <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
+        <Text m="1rem">{t('MINT_YOUR_KAMON_EXPLANATION')}</Text>
         <SimpleGrid
           columns={{ sm: 1, md: 1, lg: 2 }}
           spacing={5}
@@ -105,10 +108,10 @@ const MintKamon: NextPage = () => {
             {!isConnected && (
               <>
                 <Text mb="1rem">
-                  To mint your Kamon NFT- 家紋 connect your wallet
+                  {t('MINT_YOUR_KAMON_WALLET_INSTRUCTION')}
                 </Text>
                 <Button colorScheme="teal" onClick={() => connect(metaMask)}>
-                  Connect wallet
+                  {t('CONNECT_WALLET_BUTTON')}
                 </Button>
               </>
             )}
@@ -119,7 +122,7 @@ const MintKamon: NextPage = () => {
               <>
                 <Center>
                   <Heading mt={50} size="lg">
-                    🎉 Your nft is minted !! 🎉
+                    {t('MINT_YOUR_KAMON_MINTED')}
                   </Heading>
                 </Center>
                 <Center mt={5}>
@@ -127,11 +130,12 @@ const MintKamon: NextPage = () => {
                     href={`${openSeaTokenBaseUrl}${totalSupply}`}
                     isExternal
                   >
-                    Check with OpenSea <ExternalLinkIcon mx="2px" />
+                    {t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION')}
+                    <ExternalLinkIcon mx="2px" />
                   </Link>
                 </Center>
                 <Center>
-                  <Text>It takes a little time for the NFT to appear</Text>
+                  <Text>{t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION_2')}</Text>
                 </Center>
               </>
             )}
@@ -139,7 +143,7 @@ const MintKamon: NextPage = () => {
             {mounted && isConnected && !hasNFT && tokenURI && approved && (
               <>
                 <Text>
-                  To mint your Kamon NFT - 家紋 you need ot pay $1000 henkaku
+                  {t('MINT_YOUR_KAMON_DETAILS')}
                 </Text>
                 <Button
                   colorScheme="teal"
@@ -147,7 +151,7 @@ const MintKamon: NextPage = () => {
                   onClick={() => mintWithHenkaku()}
                   isLoading={isMinting}
                 >
-                  Mint with 1000 $henkaku
+                  {t('MINT_YOUR_KAMON_MINT_BUTTON')}
                 </Button>
               </>
             )}
@@ -158,4 +162,12 @@ const MintKamon: NextPage = () => {
   )
 }
 
+interface GetStaticPropsOptions { locale: string }
+export async function getStaticProps({ locale }: GetStaticPropsOptions) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 export default MintKamon

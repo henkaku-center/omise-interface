@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
+import { useTranslation } from 'next-i18next'
 
 interface ModalProps {
   body: string
@@ -19,6 +20,7 @@ interface ModalProps {
 }
 
 const MetaMaskLeadBanner = () => {
+  const { t } = useTranslation('common')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [modal, setModal] = useState<ModalProps>()
 
@@ -26,14 +28,14 @@ const MetaMaskLeadBanner = () => {
     if (!window.ethereum) {
       isMobile
         ? setModal({
-            body: 'Go or Install MetaMask App',
+            body: t('MMASK_MODAL_MOBILE_BODY'),
             link: 'https://metamask.app.link/dapp/henkaku-membership.vercel.app/',
-            cta: 'open MetaMask App'
+            cta: t('MMASK_MODAL_MOBILE_CTA')
           })
         : setModal({
-            body: 'Install Chrome extension for MetaMask',
+            body: t('MMASK_MODAL_BODY'),
             link: 'https://metamask.io/download',
-            cta: 'Install Metamask'
+            cta: t('MMASK_MODAL_CTA')
           })
 
       onOpen()
@@ -45,12 +47,11 @@ const MetaMaskLeadBanner = () => {
       <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Install Metamask</ModalHeader>
+          <ModalHeader>{t('MMASK_LEAD_HEADER')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Your Browser does not support MetaMask.
+            {t('MMASK_LEAD_EXPLANATION')}
             <br />
-            To use this web app, You need to have Metamask. <br />
             {modal?.body}
           </ModalBody>
           <ModalFooter>
@@ -62,8 +63,9 @@ const MetaMaskLeadBanner = () => {
             >
               {modal?.cta}
             </Button>
+            &nbsp;
             <Button variant='ghost' mr={3} onClick={onClose}>
-              cancel
+              {t('BUTTON_CANCEL')}
             </Button>
           </ModalFooter>
         </ModalContent>

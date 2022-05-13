@@ -8,6 +8,7 @@ import {
   Input,
   Box
 } from '@chakra-ui/react'
+import { useTranslation } from 'next-i18next'
 import { Layout } from '@/components/layouts/layout'
 import { useToast } from '@/hooks/useToast'
 import {
@@ -27,6 +28,7 @@ const GenerateImageForm: React.FC<Prop> = ({
   onSetTokenImageURI,
   address
 }) => {
+  const { t } = useTranslation('common')
   const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
   const [name, setName] = useState<string>()
   const [imageFile, setImageFile] = useState<string>()
@@ -122,19 +124,19 @@ const GenerateImageForm: React.FC<Prop> = ({
   return (
     <Layout>
       <Heading as="h2" color="white.600">
-        Mint your Kamon - 家紋{' '}
+        {t('MINT_YOUR_KAMON_HEADING')}{' '}
       </Heading>
-      <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
+      <Text m="1rem">{t('MINT_YOUR_KAMON_EXPLANATION')}</Text>
       <Box bg="Gray.800" p={6} borderRadius="lg" borderWidth="3px">
         <FormControl color="white.700">
-          <FormLabel>Wallet address: </FormLabel>
+          <FormLabel>{t('FORM_LABEL_WALLET_ADDRESS')}</FormLabel>
           <Text fontSize="xs"> {address} </Text>
           <FormControl isRequired mt={5}>
-            <FormLabel htmlFor="name">Your name or nickname</FormLabel>
+            <FormLabel htmlFor="name">{t('FORM_LABEL_NAME_NICKNAME')}</FormLabel>
             <Input
               type="text"
               variant="outline"
-              placeholder="Your name"
+              placeholder={t('FORM_LABEL_NAME_NICKNAME_PLACEHOLDER')}
               name="name"
               value={name}
               onChange={(e: any) => setName(e.target.value)}
@@ -142,7 +144,7 @@ const GenerateImageForm: React.FC<Prop> = ({
           </FormControl>
           <FormControl isRequired mt={5}>
             <FormLabel htmlFor="imageFile">
-              Your profile picture for the Kamon NFT
+              {t('FORM_LABEL_PFP')}
             </FormLabel>
             <Input
               variant="outline"
@@ -150,7 +152,7 @@ const GenerateImageForm: React.FC<Prop> = ({
               type="file"
               accept={'image/*'}
               isRequired={true}
-              placeholder="Upload an JPG or PNG"
+              placeholder={t('FORM_LABEL_PFP_PLACEHOLDER')}
               name="profilePicture"
               value={imageFile}
               onChange={(e: any) => {
@@ -165,9 +167,9 @@ const GenerateImageForm: React.FC<Prop> = ({
             type="submit"
             isLoading={isLoading}
             onClick={() => submitGenerateImage()}
-            loadingText="generating..."
+            loadingText={t('GENERATE_IMAGE_BUTTON_LOADING')}
           >
-            Generate Image
+            {t('GENERATE_IMAGE_BUTTON')}
           </Button>
         </FormControl>
       </Box>

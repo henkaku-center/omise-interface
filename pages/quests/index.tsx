@@ -9,11 +9,15 @@ import {
   Stack
 } from '@chakra-ui/react'
 import { useAccount, useConnect } from 'wagmi'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Layout } from '@/components/layouts/layout'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
 
 const Quests: NextPage = () => {
+  const { t } = useTranslation('common')
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -23,20 +27,19 @@ const Quests: NextPage = () => {
   return (
     <>
       <Layout>
-        <Heading mt={50}>Quest</Heading>
+        <Heading mt={50}>{t('QUESTS_HEADING')}</Heading>
         <Box display={{ md: 'flex', xl: 'flex' }}>
           <Box p={2} minW={300}>
             <Image
               src="/joi-ito-henkaku-podcast.png"
-              alt="JOI ITO 変革への道"
+              alt="{t('QUESTS_IMAGE_ALT')}"
             />
           </Box>
           <Box p={2}>
             <Box w="100%" p={4}>
-              <Heading size="md">Enter weekly keyword</Heading>
+              <Heading size="md">{t('QUESTS_EXPLANATION_HEADING')}</Heading>
               <Text>
-                By answering this question you will earn 100 points, which you
-                can exchange to $HENKAKU tokens.
+                {t('QUESTS_EXPLANATION_BODY')}
               </Text>
             </Box>
             {mounted && !data?.address ? (
@@ -46,13 +49,13 @@ const Quests: NextPage = () => {
                 colorScheme="teal"
                 onClick={() => connect(metaMask)}
               >
-                connect wallet
+                {t('CONNECT_WALLET_BUTTON')}
               </Button>
             ) : (
               <Box mt={4}>
                 <Stack>
                   <Input
-                    placeholder="Keyword"
+                    placeholder={t('QUESTS_INPUT_PLACEHOLDER')}
                     onChange={inputChange}
                     textTransform="uppercase"
                   />
@@ -63,10 +66,10 @@ const Quests: NextPage = () => {
                     colorScheme="teal"
                     onClick={() => submit()}
                     isLoading={isSubmitting}
-                    loadingText='submitting...'
+                    loadingText={t('BUTTON_SUBMITTING')}
                     disabled={keyword == ''}
                   >
-                    Submit Keyword
+                    {t('QUESTS_SUBMIT_BUTTON')}
                   </Button>
                 </Stack>
               </Box>
@@ -78,4 +81,12 @@ const Quests: NextPage = () => {
   )
 }
 
+interface GetStaticPropsOptions { locale: string }
+export async function getStaticProps({ locale }: GetStaticPropsOptions) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 export default Quests

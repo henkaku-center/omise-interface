@@ -1,4 +1,5 @@
 import { Heading, Text } from '@chakra-ui/react'
+import { useTranslation } from 'next-i18next'
 import { Approve } from '@/components/metaMask/Approve'
 
 interface Props {
@@ -7,16 +8,17 @@ interface Props {
 }
 
 export const ApproveForKamon: React.FC<Props> = ({ erc20, spender }) => {
+  const { t } = useTranslation('common')
 
   return (
     <>
       <Heading as="h2" color="white.600">
-        Mint your Kamon - 家紋{' '}
+        {t('MINT_YOUR_KAMON_HEADING')}{' '}
       </Heading>
-      <Text m="1rem">Kamon NFT is membership of henkaku community</Text>
-      <Text>To mint your Kamon NFT - 家紋 enable your wallet to buy</Text>
+      <Text m="1rem">{t('MINT_YOUR_KAMON_EXPLANATION')}</Text>
+      <Text>{t('ENABLE_EXPLANATION')}</Text>
       <Approve erc20={erc20} spender={spender}>
-        Enable to get kamon nft
+        {t('ENABLE_BUTTON')}
       </Approve>
     </>
   )
