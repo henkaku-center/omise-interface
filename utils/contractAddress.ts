@@ -14,7 +14,7 @@ interface getContractAddressArg {
 const contractAddress: ContractAddress = {
   henkakuErc20: {
     [chainId.rinkeby]: '0x6FDDbe89B90795Eb0652F80fc3dBC2c61e753b1C',
-    [chainId.goerli]: '0x275480BDa5F848955413622EA7b47c72764D042F'
+    [chainId.goerli]: '0x02Dd992774aBCacAD7D46155Da2301854903118D'
   },
   kamonNFT: {
     [chainId.rinkeby]: '0x9D8b1775CbEE7ae3Cf9dAE3D2CaCBA4986d7df63',
