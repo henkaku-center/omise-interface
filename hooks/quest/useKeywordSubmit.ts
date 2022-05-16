@@ -20,7 +20,7 @@ export const useKeywordSubmit = () => {
     },
     'checkAnswer',
     {
-      args: [keyword],
+      args: keyword,
       onError(error) {
         toast({
           title: 'Error',
