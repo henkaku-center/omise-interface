@@ -1,10 +1,11 @@
 import { useToast } from '@/hooks/useToast'
 import { useClaimToken } from '@/hooks/useClaimToken'
 import { useCallback } from 'react'
-import { getErrorMessageFromRaw } from '@/utils/handleError'
+import { useGetError } from '@/hooks/useGetError'
 
 export const useClaim = () => {
   const { toast } = useToast()
+  const { getError } = useGetError()
   const { claim, isClaiming } = useClaimToken({
     onError(error) {
       toast({
@@ -22,18 +23,21 @@ export const useClaim = () => {
     }
   })
 
-  const handleErrorMessage = useCallback((error: Error): string => {
-    switch (getErrorMessageFromRaw(error)) {
-      case 'INSUFFICIENT AMOUNT':
-        return "You don't own a claimable point."
-      case 'INSUFFICIENT FOUND':
-        return 'Currently unable to claim.'
-      case 'TX FAILED':
-        return 'Transaction failed.'
-      default:
-        return 'Unknown Server Error'
-    }
-  }, [])
+  const handleErrorMessage = useCallback(
+    (error: Error): string => {
+      switch (getError(error)) {
+        case 'INSUFFICIENT AMOUNT':
+          return "You don't own a claimable point."
+        case 'INSUFFICIENT FOUND':
+          return 'Currently unable to claim.'
+        case 'TX FAILED':
+          return 'Transaction failed.'
+        default:
+          return 'Unknown Server Error'
+      }
+    },
+    [getError]
+  )
 
   return { claim, isClaiming }
 }
