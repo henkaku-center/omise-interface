@@ -15,7 +15,7 @@ export const SwitchNetworkAlert: React.FC = () => {
   const { activeChain, switchNetwork } = useNetwork()
   const [isDesktopOrTablet] = useMediaQuery('(min-width:600px)')
 
-  if (activeChain == chain.polygon) {
+  if (activeChain?.id == chain.polygon.id) {
     return <></>
   }
 
@@ -26,7 +26,9 @@ export const SwitchNetworkAlert: React.FC = () => {
     >
       <AlertIcon />
       <AlertDescription>
-      {t('SWITCH_NETWORK_MSG_1')}{activeChain?.name}{t('SWITCH_NETWORK_MSG_2')}
+        {t('SWITCH_NETWORK_MSG_1')}
+        {activeChain?.name}
+        {t('SWITCH_NETWORK_MSG_2')}
       </AlertDescription>
 
       <Button
