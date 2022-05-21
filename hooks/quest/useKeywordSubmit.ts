@@ -3,11 +3,12 @@ import { useToast } from '@/hooks/useToast'
 import { useContractWrite, useNetwork } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
 import { getContractAddress } from '@/utils/contractAddress'
-import { getErrorMessageFromRaw } from '@/utils/handleError'
+import { useGetError } from '@/hooks/useGetError'
 
 export const useKeywordSubmit = () => {
   const { toast } = useToast()
   const { activeChain } = useNetwork()
+  const { getError } = useGetError()
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
     chainId: activeChain?.id
@@ -43,7 +44,7 @@ export const useKeywordSubmit = () => {
   }
 
   const handleErrorMessage = useCallback((error: Error): string => {
-    switch (getErrorMessageFromRaw(error)) {
+    switch (getError(error)) {
       case 'MUST BE HOLDER':
         return 'Only token holders may answer.'
       case 'WRONG ANSWER':
@@ -53,7 +54,7 @@ export const useKeywordSubmit = () => {
       default:
         return 'Unknown Server Error'
     }
-  }, [])
+  }, [getError])
 
   return { keyword, inputChange, submit, isSubmitting }
 }
