@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cy:open": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress open",
+    "cy:run": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress run --headed --browser chrome"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
@@ -27,6 +29,8 @@
     "@types/node": "17.0.24",
     "@types/react": "18.0.5",
     "@types/react-dom": "18.0.1",
+    "cypress": "^9.6.1",
+    "cypress-metamask": "^1.0.5-development",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.5",
     "prettier": "^2.6.2",

@@ -24,6 +24,7 @@ const Quests: NextPage = () => {
   const { data } = useAccount()
   const { keyword, inputChange, submit, isSubmitting } = useKeywordSubmit()
 
+  console.log(keyword)
   return (
     <>
       <Layout>
@@ -38,9 +39,7 @@ const Quests: NextPage = () => {
           <Box p={2}>
             <Box w="100%" p={4}>
               <Heading size="md">{t('QUESTS_EXPLANATION_HEADING')}</Heading>
-              <Text>
-                {t('QUESTS_EXPLANATION_BODY')}
-              </Text>
+              <Text>{t('QUESTS_EXPLANATION_BODY')}</Text>
             </Box>
             {mounted && !data?.address ? (
               <Button
@@ -81,12 +80,14 @@ const Quests: NextPage = () => {
   )
 }
 
-interface GetStaticPropsOptions { locale: string }
+interface GetStaticPropsOptions {
+  locale: string
+}
 export async function getStaticProps({ locale }: GetStaticPropsOptions) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
+      ...(await serverSideTranslations(locale, ['common']))
+    }
+  }
 }
 export default Quests
