@@ -5527,6 +5527,13 @@ eth-sig-util@^1.4.2:
     ethereumjs-abi "git+https://github.com/ethereumjs/ethereumjs-abi.git"
     ethereumjs-util "^5.1.1"
 
+eth-testing@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eth-testing/-/eth-testing-1.1.0.tgz#4f798af26402cee8f2acbe583af0dec03f2b3dae"
+  integrity sha512-t0WHfdWVDBwWtqcNs3GG1/qguH48H19TWt2/KRBEfrb1I4XAbI2K4gD//f9z6IgzzfidC+BY+Rej9KNjv7MvEA==
+  dependencies:
+    ethers "^5.5.4"
+
 ethereum-cryptography@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/ethereum-cryptography/-/ethereum-cryptography-0.1.3.tgz#8d6143cfc3d74bf79bbd8edecdf29e4ae20dd191"
@@ -5581,7 +5588,7 @@ ethereumjs-util@^6.0.0:
     ethjs-util "0.1.6"
     rlp "^2.2.3"
 
-ethers@^5.1.4:
+ethers@^5.1.4, ethers@^5.5.4:
   version "5.6.6"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.6.tgz#a37aa7e265a484a1b4d2ef91d4d89d6b43808a57"
   integrity sha512-2B2ZmSGvRcJpHnFMBk58mkXP50njFipUBCgLK8jUTFbomhVs501cLzyMU6+Vx8YnUDQxywC3qkZvd33xWS+2FA==

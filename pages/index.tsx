@@ -64,11 +64,7 @@ const Home: NextPage = () => {
         <Text m="1rem">
           {t('MINT_YOUR_KAMON_EXPLANATION')}{' '}
           {mounted && totalSupply && (
-            <Text>
-              {t('CURRENT_HOLDERS_1')}
-              {totalSupply.toString()}
-              {t('CURRENT_HOLDERS_2')}
-            </Text>
+            <Text>{t('CURRENT_HOLDERS_1')}{totalSupply.toString()}{t('CURRENT_HOLDERS_2')}</Text>
           )}
         </Text>
         <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing="10px">
@@ -111,14 +107,12 @@ const Home: NextPage = () => {
   )
 }
 
-interface GetStaticPropsOptions {
-  locale: string
-}
+interface GetStaticPropsOptions { locale: string }
 export async function getStaticProps({ locale }: GetStaticPropsOptions) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common']))
-    }
-  }
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
 }
 export default Home
