@@ -10,11 +10,13 @@ import {
 } from '@chakra-ui/react'
 import { useAccount, useConnect } from 'wagmi'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Layout } from '@/components/layouts/layout'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
+import { useHasNFT } from '@/hooks/useHasNFT'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
@@ -23,26 +25,37 @@ const Quests: NextPage = () => {
   const [metaMask] = connectors
   const { data } = useAccount()
   const { keyword, inputChange, submit, isSubmitting } = useKeywordSubmit()
+  const { hasNFT } = useHasNFT()
 
   return (
     <>
       <Layout>
-        <Heading mt={50}>{t('QUESTS_HEADING')}</Heading>
+        <Heading mt={50}>{t('QUEST.HEADING')}</Heading>
         <Box display={{ md: 'flex', xl: 'flex' }}>
           <Box p={2} minW={300}>
             <Image
               src="/joi-ito-henkaku-podcast.png"
-              alt="{t('QUESTS_IMAGE_ALT')}"
+              alt="{t('QUEST.IMAGE_ALT')}"
             />
           </Box>
           <Box p={2}>
             <Box w="100%" p={4}>
-              <Heading size="md">{t('QUESTS_EXPLANATION_HEADING')}</Heading>
-              <Text>
-                {t('QUESTS_EXPLANATION_BODY')}
-              </Text>
+              {hasNFT ? (
+                <>
+                  <Heading size="md">{t('QUEST.EXPLANATION_HEADING')}</Heading>
+                  <Text>{t('QUEST.EXPLANATION_BODY')}</Text>
+                </>
+              ) : (
+                <>
+                  <Heading size="md">
+                    {t('QUEST.MINT_YOUR_KAMON_HEADING')}
+                  </Heading>
+                  <Text>{t('QUEST.MINT_YOUR_KAMON_EXPLANATION')}</Text>
+                </>
+              )}
             </Box>
-            {mounted && !data?.address ? (
+
+            {mounted && !data?.address && !hasNFT ? (
               <Button
                 mt={10}
                 w="100%"
@@ -51,11 +64,11 @@ const Quests: NextPage = () => {
               >
                 {t('CONNECT_WALLET_BUTTON')}
               </Button>
-            ) : (
+            ) : hasNFT ? (
               <Box mt={4}>
                 <Stack>
                   <Input
-                    placeholder={t('QUESTS_INPUT_PLACEHOLDER')}
+                    placeholder={t('QUEST.INPUT_PLACEHOLDER')}
                     onChange={inputChange}
                     textTransform="uppercase"
                   />
@@ -69,10 +82,16 @@ const Quests: NextPage = () => {
                     loadingText={t('BUTTON_SUBMITTING')}
                     disabled={keyword == ''}
                   >
-                    {t('QUESTS_SUBMIT_BUTTON')}
+                    {t('QUEST.SUBMIT_BUTTON')}
                   </Button>
                 </Stack>
               </Box>
+            ) : (
+              <Link href="/" passHref>
+                <Button mt={10} w="100%" colorScheme="teal">
+                  {t('QUEST.MINT_BUTTON')}
+                </Button>
+              </Link>
             )}
           </Box>
         </Box>
@@ -81,12 +100,14 @@ const Quests: NextPage = () => {
   )
 }
 
-interface GetStaticPropsOptions { locale: string }
+interface GetStaticPropsOptions {
+  locale: string
+}
 export async function getStaticProps({ locale }: GetStaticPropsOptions) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
+      ...(await serverSideTranslations(locale, ['common']))
+    }
+  }
 }
 export default Quests
