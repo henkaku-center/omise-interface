@@ -7,16 +7,13 @@ describe('Footer', () => {
   beforeAll(() => {
     // Manually inject the mocked provider in the window as MetaMask does
     global.window.ethereum = testingUtils.getProvider()
-
-    // Suppress Error: call revert exception
-    jest.spyOn(console, 'error').mockImplementation((mes) => console.log(mes))
   })
   afterEach(() => {
     // Clear all mocks between tests
     testingUtils.clearAllMocks()
   })
 
-  it('renders a heading', async () => {
+  it('renders a heading', () => {
     render(<Home />)
 
     const heading = screen.getAllByRole('button')[0]
