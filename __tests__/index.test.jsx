@@ -16,7 +16,7 @@ describe('Footer', () => {
     testingUtils.clearAllMocks()
   })
 
-  it('renders a heading', () => {
+  it('renders a heading', async () => {
     render(<Home />)
 
     const heading = screen.getAllByRole('button')[0]
