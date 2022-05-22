@@ -40,16 +40,11 @@ const Layout = ({ children }: LayoutProps) => {
               {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
             </Button>
             <NextLink passHref href="/" locale={router.locale}>
-              <Link href="/" p={4}>
-                {t('HOME_LINK')}
-              </Link>
+              <Link p={4}>{t('HOME_LINK')}</Link>
             </NextLink>
-            {/*<NextLink passHref href="/quests" locale={router.locale}>*/}
-            <Link href="/claim" p={4}>
-              {/*TODO: translate*/}
-              Claim
-            </Link>
-            {/*</NextLink>*/}
+            <NextLink passHref href="/claim" locale={router.locale}>
+              <Link p={4}>{t('CLAIM_LINK')}</Link>
+            </NextLink>
             <NextLink passHref href="/quests" locale={router.locale}>
               <Link p={4}>{t('QUESTS_LINK')}</Link>
             </NextLink>

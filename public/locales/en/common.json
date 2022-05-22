@@ -2,6 +2,7 @@
   "CONNECT_WALLET_BUTTON": "Connect wallet",
   "BUTTON_SUBMITTING": "Submitting...",
   "BUTTON_CANCEL": "Cancel",
+  "DOLLAR_HENKAKU": "$HENKAKU",
 
   "MMASK_LEAD_HEADER": "Install MetaMask",
   "MMASK_LEAD_EXPLANATION": "To use this web app, your browser needs to have MetaMask.",
@@ -39,12 +40,30 @@
   "IMAGE_PREVIEW_BADGE": "preview",
   "IMAGE_PREVIEW_ALT": "Kamon NFT preview",
 
+  "QUESTS_HEADING": "Quests",
+  "QUESTS_IMAGE_ALT": "JOI ITO 変革への道",
+  "QUESTS_EXPLANATION_HEADING": "Enter this week's keyword",
+  "QUESTS_EXPLANATION_BODY": "By answering this question you will earn 100 points, which you can exchange to $HENKAKU tokens.",
+  "QUESTS_INPUT_PLACEHOLDER": "Keyword",
+  "QUESTS_SUBMIT_BUTTON": "Submit Keyword",
+
+  "CLAIM_HEADING": "Claim $HENKAKU",
+  "CLAIM_EXPLANATION_HEADING": "Claim your tokens",
+  "CLAIM_EXPLANATION_BODY": "You are enabled to claim $HENKAKU.",
+  "CLAIM_EXPLANATION_HEADING_NO_NFT": "First, get your NFT!",
+  "CLAIM_EXPLANATION_BODY_NO_NFT": "You will be able to claim $HENKAKU when you own a Kamon NFT.",
+  "CLAIM_CLAIMABLE_AMOUNT_0": "But, you currently have no points to claim $HENKAKU.",
+  "CLAIM_CLAIMABLE_AMOUNT_1": "You can claim ",
+  "CLAIM_CLAIMABLE_AMOUNT_2": " $HENKAKU.",
+  "CLAIM_SUBMIT_BUTTON": "Claim",
+
   "SWITCH_NETWORK_MSG_1": "You are using ",
   "SWITCH_NETWORK_MSG_2": ". To use this app, switch to Polygon Mainnet.",
   "SWITCH_NETWORK_BUTTON": "Switch to Polygon",
 
   "LAYOUT_HEADING": "Omise – HENKAKU",
   "HOME_LINK": "Home",
+  "CLAIM_LINK": "Claim",
   "QUESTS_LINK": "Quests",
   "LANG_SWITCHER": "日本語",
   "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved.",

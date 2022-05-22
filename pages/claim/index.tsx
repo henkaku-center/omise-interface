@@ -1,6 +1,8 @@
 import { NextPage } from 'next'
 import { useMounted } from '@/hooks/useMounted'
 import { useAccount, useConnect } from 'wagmi'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Layout } from '@/components/layouts/layout'
 import {
   Box,
@@ -17,9 +19,9 @@ import { useHasNFT } from '@/hooks/useHasNFT'
 import Link from 'next/link'
 import { ethers } from 'ethers'
 import { useCallback } from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const Claim: NextPage = () => {
+  const { t } = useTranslation('common')
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -36,7 +38,7 @@ const Claim: NextPage = () => {
   return (
     <>
       <Layout>
-        <Heading mt={50}>Claim</Heading>
+        <Heading mt={50}>{t('CLAIM_HEADING')}</Heading>
         <Flex direction={{ base: 'column', sm: 'row' }}>
           <Flex
             px={2}
@@ -47,20 +49,18 @@ const Claim: NextPage = () => {
           >
             <Box w="100%" p={4}>
               <Heading size="md">
-                {hasNFT ? 'Claim your token' : "Let's get NFT first!"}
+                {hasNFT ? t('CLAIM_EXPLANATION_HEADING') : t('CLAIM_EXPLANATION_HEADING_NO_NFT')}
               </Heading>
               <Text>
                 {hasNFT
-                  ? 'You can claim your $HENKAKU.'
-                  : 'You can claim $HENKAKU if you own NFT.'}
+                  ? t('CLAIM_EXPLANATION_BODY')
+                  : t('CLAIM_EXPLANATION_BODY_NO_NFT')}
               </Text>
               {hasNFT && claimableToken != undefined ? (
                 <Text>
                   {claimableToken == BigInt(0)
-                    ? 'You currently have no points to claim'
-                    : `You can get ${ethers.utils.formatEther(
-                        claimableToken
-                      )} $HENKAKU`}
+                    ? t('CLAIM_CLAIMABLE_AMOUNT_0')
+                    : t('CLAIM_CLAIMABLE_AMOUNT_1') + ethers.utils.formatEther(claimableToken) + t('CLAIM_CLAIMABLE_AMOUNT_2')}
                 </Text>
               ) : null}
             </Box>
@@ -71,7 +71,7 @@ const Claim: NextPage = () => {
                 colorScheme="teal"
                 onClick={() => connect(metaMask)}
               >
-                Connect Wallet
+                {t('CONNECT_WALLET_BUTTON')}
               </Button>
             ) : hasNFT ? (
               <Button
@@ -83,19 +83,19 @@ const Claim: NextPage = () => {
                 loadingText="claiming..."
                 disabled={claimableToken == BigInt(0)}
               >
-                Claim
+                {t('CLAIM_SUBMIT_BUTTON')}
               </Button>
             ) : (
               <Link href="/" passHref>
                 <Button mt={10} w="100%" colorScheme="teal">
-                  Mint Your NFT
+                  {t('MINT_YOUR_KAMON_BUTTON')}
                 </Button>
               </Link>
             )}
           </Flex>
           <Spacer />
           <Box p={10} mx={'auto'} minW={200} order={{ base: 1, sm: 2 }}>
-            <Image src="/henkaku-token.png" alt="$HENKAKU" />
+            <Image src="/henkaku-token.png" alt={t('DOLLAR_HENKAKU')} />
           </Box>
         </Flex>
       </Layout>

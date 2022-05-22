@@ -2,6 +2,7 @@
   "CONNECT_WALLET_BUTTON": "ウォレットを接続",
   "BUTTON_SUBMITTING": "送信中...",
   "BUTTON_CANCEL": "キャンセル",
+  "DOLLAR_HENKAKU": "$HENKAKU",
 
   "MMASK_LEAD_HEADER": "MetaMaskをインストール",
   "MMASK_LEAD_EXPLANATION": "このウェブアプリを使うには、ブラウザーにMetaMaskがインストールされている必要があります。",
@@ -39,12 +40,30 @@
   "IMAGE_PREVIEW_BADGE": "preview",
   "IMAGE_PREVIEW_ALT": "家紋NFTのプレビュー",
 
+  "QUESTS_HEADING": "クエスト",
+  "QUESTS_IMAGE_ALT": "JOI ITO 変革への道",
+  "QUESTS_EXPLANATION_HEADING": "今週のキーワードを入力して下さい",
+  "QUESTS_EXPLANATION_BODY": "このキーワードを当てることであなたは$HENKAKUトークンと交換できる100ポイントを獲得できます。",
+  "QUESTS_INPUT_PLACEHOLDER": "キーワード",
+  "QUESTS_SUBMIT_BUTTON": "キーワードを送信",
+
+  "CLAIM_HEADING": "$HENKAKUを受けとる",
+  "CLAIM_EXPLANATION_HEADING": "トークンを受け取りましょう。",
+  "CLAIM_EXPLANATION_BODY": "$HENKAKU受けとり可能です。",
+  "CLAIM_EXPLANATION_HEADING_NO_NFT": "まずはNFTを取得しましょう！",
+  "CLAIM_EXPLANATION_BODY_NO_NFT": "$HENKAKUを受け取るには家紋NFTが必要です。",
+  "CLAIM_CLAIMABLE_AMOUNT_0": "しかし、$HENKAKUを受け取れるほどのポイントをお持ちではありません。",
+  "CLAIM_CLAIMABLE_AMOUNT_1": "ただいま",
+  "CLAIM_CLAIMABLE_AMOUNT_2": "$HENKAKUを受けとることができます。",
+  "CLAIM_SUBMIT_BUTTON": "受けとる",
+
   "SWITCH_NETWORK_MSG_1": "あなたは今",
   "SWITCH_NETWORK_MSG_2": "を使っています。このウェブアプリを使うには、Polygon Mainnetに切り替えてください。",
   "SWITCH_NETWORK_BUTTON": "Polygonに切り替える",
 
   "LAYOUT_HEADING": "Omise – HENKAKU",
   "HOME_LINK": "Home",
+  "CLAIM_LINK": "受けとる",
   "QUESTS_LINK": "クエスト",
   "LANG_SWITCHER": "English",
   "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved.",
