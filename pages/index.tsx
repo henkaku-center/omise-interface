@@ -37,7 +37,7 @@ const Home: NextPage = () => {
   const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
   const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
   const { totalSupply } = useTotalSupply(kamonNFT)
-  const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
+  const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 1)
 
   const mounted = useMounted()
 
@@ -55,18 +55,21 @@ const Home: NextPage = () => {
       fetchData()
     }
   }, [balanceOf, tokenIdOf, tokenURI])
+
   return (
     <>
       <Layout>
         <Heading as="h2" color="white.600">
           {t('MINT_YOUR_KAMON_HEADING')}{' '}
         </Heading>
-        <Text m="1rem">
-          {t('MINT_YOUR_KAMON_EXPLANATION')}{' '}
-          {mounted && totalSupply && (
-            <Text>{t('CURRENT_HOLDERS_1')}{totalSupply.toString()}{t('CURRENT_HOLDERS_2')}</Text>
-          )}
-        </Text>
+        <Text mt="1rem">{t('MINT_YOUR_KAMON_EXPLANATION')} </Text>
+        {mounted && totalSupply && (
+          <Text mb="1rem">
+            {t('CURRENT_HOLDERS_1')}
+            {totalSupply.toString()}
+            {t('CURRENT_HOLDERS_2')}
+          </Text>
+        )}
         <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing="10px">
           <div>
             {mounted && tokenIdOf?.gt(0) && tokenURIImage ? (
@@ -107,12 +110,14 @@ const Home: NextPage = () => {
   )
 }
 
-interface GetStaticPropsOptions { locale: string }
+interface GetStaticPropsOptions {
+  locale: string
+}
 export async function getStaticProps({ locale }: GetStaticPropsOptions) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
+      ...(await serverSideTranslations(locale, ['common']))
+    }
+  }
 }
 export default Home
