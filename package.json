@@ -10,8 +10,9 @@
     "test": "jest --watch",
     "cy:open": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress open",
     "cy:run": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress run --headed --browser chrome",
-    "e2e": "start-server-and-test dev http://localhost:3000 cypress",
-    "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless run"
+    "cy:run:headless": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress run --headless --browser chrome",
+    "e2e": "start-server-and-test dev http://localhost:3000 cy:run",
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 cy:run:headless"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
