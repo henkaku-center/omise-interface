@@ -39,13 +39,6 @@
   "IMAGE_PREVIEW_BADGE": "preview",
   "IMAGE_PREVIEW_ALT": "Kamon NFT preview",
 
-  "QUESTS_HEADING": "Quests",
-  "QUESTS_IMAGE_ALT": "JOI ITO 変革への道",
-  "QUESTS_EXPLANATION_HEADING": "Enter weekly keyword",
-  "QUESTS_EXPLANATION_BODY": "By answering this question you will earn 100 points, which you can exchange to $HENKAKU tokens.",
-  "QUESTS_INPUT_PLACEHOLDER": "Keyword",
-  "QUESTS_SUBMIT_BUTTON": "Submit Keyword",
-
   "SWITCH_NETWORK_MSG_1": "You are using ",
   "SWITCH_NETWORK_MSG_2": ". To use this app, switch to Polygon Mainnet.",
   "SWITCH_NETWORK_BUTTON": "Switch to Polygon",
@@ -54,5 +47,17 @@
   "HOME_LINK": "Home",
   "QUESTS_LINK": "Quests",
   "LANG_SWITCHER": "日本語",
-  "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved."
+  "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved.",
+
+  "QUEST": {
+    "HEADING": "Quests",
+    "IMAGE_ALT": "JOI ITO 変革への道",
+    "EXPLANATION_HEADING": "Enter weekly keyword",
+    "EXPLANATION_BODY": "By answering this question you will earn 100 points, which you can exchange to $HENKAKU tokens.",
+    "MINT_YOUR_KAMON_HEADING": "Let's get NFT first!",
+    "MINT_YOUR_KAMON_EXPLANATION": "You can answer questions if you own NFT.",
+    "MINT_BUTTON": "Mint Your NFT",
+    "INPUT_PLACEHOLDER": "Keyword",
+    "SUBMIT_BUTTON": "Submit Keyword"
+  }
 }

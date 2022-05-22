@@ -39,13 +39,6 @@
   "IMAGE_PREVIEW_BADGE": "preview",
   "IMAGE_PREVIEW_ALT": "家紋NFTのプレビュー",
 
-  "QUESTS_HEADING": "クエスト",
-  "QUESTS_IMAGE_ALT": "JOI ITO 変革への道",
-  "QUESTS_EXPLANATION_HEADING": "今週のキーワードを入力して下さい",
-  "QUESTS_EXPLANATION_BODY": "このキーワードを当てることであなたは$HENKAKUトークンと交換できる100ポイントを獲得できます。",
-  "QUESTS_INPUT_PLACEHOLDER": "キーワード",
-  "QUESTS_SUBMIT_BUTTON": "キーワードを送信",
-
   "SWITCH_NETWORK_MSG_1": "あなたは今",
   "SWITCH_NETWORK_MSG_2": "を使っています。このウェブアプリを使うには、Polygon Mainnetに切り替えてください。",
   "SWITCH_NETWORK_BUTTON": "Polygonに切り替える",
@@ -54,5 +47,17 @@
   "HOME_LINK": "Home",
   "QUESTS_LINK": "クエスト",
   "LANG_SWITCHER": "English",
-  "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved."
+  "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved.",
+
+  "QUEST": {
+    "HEADING": "クエスト",
+    "IMAGE_ALT": "JOI ITO 変革への道",
+    "EXPLANATION_HEADING": "今週のキーワードを入力して下さい",
+    "EXPLANATION_BODY": "このキーワードを当てることであなたは$HENKAKUトークンと交換できる100ポイントを獲得できます。",
+    "MINT_YOUR_KAMON_HEADING": "まず家紋NFTをミントしましょう",
+    "MINT_YOUR_KAMON_EXPLANATION": "NFTを持っているとキーワードを入力できます",
+    "MINT_BUTTON": "NFTをミントする",
+    "INPUT_PLACEHOLDER": "キーワード",
+    "SUBMIT_BUTTON": "キーワードを送信"
+  }
 }
