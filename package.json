@@ -9,7 +9,9 @@
     "lint": "next lint",
     "test": "jest --watch",
     "cy:open": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress open",
-    "cy:run": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress run --headed --browser chrome"
+    "cy:run": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress run --headed --browser chrome",
+    "e2e": "start-server-and-test dev http://localhost:3000 cypress",
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless run"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
@@ -36,11 +38,12 @@
     "cypress-metamask": "^1.0.5-development",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.5",
-    "eth-testing": "^1.1.0",
+    "http-server": "^14.1.0",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
     "prettier": "^2.6.2",
     "react-icons": "^4.3.1",
+    "start-server-and-test": "^1.14.0",
     "typescript": "4.6.3"
   }
 }
