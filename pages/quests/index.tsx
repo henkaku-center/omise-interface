@@ -24,8 +24,21 @@ import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
 
+interface TokenAttribute {
+  display_type: string | undefined
+  trait_type: string
+  value: number | string
+}
+interface KamonToken {
+  name: string
+  description: string
+  image: string
+  attributes: TokenAttribute[]
+}
+
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
+  const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -42,7 +55,10 @@ const Quests: NextPage = () => {
   const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
   const { point, refetchPoint } = useGetPoint()
   const [tokenURIImage, setTokenImageURI] = useState('')
-  const [tokenJSON, setTokenJSON] = useState('')
+  const [tokenJSON, setTokenJSON] = useState<KamonToken>()
+  const [newTokenURI, setNewTokenURI] = useState('')
+  const [newTokenURIImage, setNewTokenImageURI] = useState('')
+  const [newTokenJSON, setNewTokenJSON] = useState<KamonToken>()
   const [stillProcessingSomething, setStillProcessingSomething] = useState(false)
   const [readyToRequestIpfs, setReadyToRequestIpfs] = useState(false)
   const [hasSubmittedQuest, setHasSubmittedQuest] = useState(false)
@@ -72,18 +88,49 @@ const Quests: NextPage = () => {
 
   useEffect(() => {
     if (readyToRequestIpfs == true) {
+      const hitIpfsAip = async () => {
+        console.log('hitIpfsAip')
+        let dateFromToken = 0
+        let rolesFromToken: string[] = []
+        console.log(await refetchPoint())
+        let points: number = 0
+        if (point !== undefined) {
+          points = parseInt(point?.toString())
+          console.log('points:', points)
+        } else {
+          console.log('points undefined:', points)
+        }
+        console.log(tokenJSON)
+        tokenJSON?.attributes.forEach((attr: TokenAttribute) => {
+          if (attr.trait_type == 'Date') {
+            dateFromToken = parseInt(attr.value.toString())
+          } else if (attr.trait_type == 'Role') {
+            rolesFromToken.push(attr.value.toString())
+          }
+        })
+        const payload = {
+          address: data?.address,
+          roles: rolesFromToken,
+          points: points,
+          date: dateFromToken,
+        }
+        console.log(payload)
+    
+        const res = await axios.post(ipfsApiEndpoint, payload, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        console.log('Called API', res.data.tokenUri)
+        setNewTokenURI(res.data.tokenUri)
+        setStillProcessingSomething(false)
+      }
       setHasSubmittedQuest(false)
       setReadyToRequestIpfs(false)
       setStillProcessingSomething(true)
       hitIpfsAip()
     }
-  }, [readyToRequestIpfs])
-
-  const hitIpfsAip = async () => {
-    const res = await axios.get('https://jsonplaceholder.typicode.com/posts')
-    console.log('Called API', res.data)
-    setStillProcessingSomething(false)
-  }
+  }, [readyToRequestIpfs, data?.address, point, tokenJSON])
 
   const submitForm = () => {
     setStillProcessingSomething(true)
@@ -141,9 +188,9 @@ const Quests: NextPage = () => {
                     w="100%"
                     colorScheme="teal"
                     onClick={() => submitForm()}
-                    isLoading={isSubmitting}
+                    isLoading={stillProcessingSomething}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == ''}
+                    disabled={keyword == '' || stillProcessingSomething}
                   >
                     {t('QUEST.SUBMIT_BUTTON')}
                   </Button>
@@ -166,7 +213,9 @@ const Quests: NextPage = () => {
             <Text>isSubmitting: {isSubmitting? '✅': '❌'}</Text>
             <Text>hasSubmittedQuest: {hasSubmittedQuest? '✅': '❌'}</Text>
             <Text>readyToRequestIpfs: {readyToRequestIpfs? '✅': '❌'}</Text>
+            <Text>newTokenURI: {newTokenURI? newTokenURI: '❓'}</Text>
             <Text>stillProcessingSomething: {stillProcessingSomething? '✅': '❌'}</Text>
+            <Text>{ipfsApiEndpoint}</Text>
             <Text>{JSON.stringify(tokenJSON)}</Text>
             <Image src={tokenURIImage} alt="" />
           </>
