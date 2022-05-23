@@ -8,7 +8,8 @@ import {
   Input,
   Stack
 } from '@chakra-ui/react'
-import { useAccount, useConnect } from 'wagmi'
+import { useEffect, useState } from 'react'
+import { useAccount, useConnect, useNetwork } from 'wagmi'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
@@ -16,6 +17,10 @@ import { Layout } from '@/components/layouts/layout'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
 import { useHasNFT } from '@/hooks/useHasNFT'
+import { useBalanceOf } from '@/hooks/useBalanceOf'
+import { useTokenIdOf } from '@/hooks/useTokenIdOf'
+import { useTokenURI } from '@/hooks/useTokenURI'
+import { getContractAddress } from '@/utils/contractAddress'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
@@ -25,6 +30,30 @@ const Quests: NextPage = () => {
   const { data } = useAccount()
   const { keyword, inputChange, submit, isSubmitting } = useKeywordSubmit()
   const { hasNFT } = useHasNFT()
+  const { activeChain } = useNetwork()
+  const kamonNFT = getContractAddress({
+    name: 'kamonNFT',
+    chainId: activeChain?.id
+  })
+  const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
+  const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
+  const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
+  const [tokenURIImage, setTokenImageURI] = useState('')
+  const [tokenJSON, setTokenJSON] = useState('')
+
+  useEffect(() => {
+    if (balanceOf && tokenIdOf && tokenURI) {
+      const fetchData = async () => {
+        const pinataRequest = await fetch(tokenURI.toString())
+        const responseJson = await pinataRequest.json()
+
+        setTokenImageURI(responseJson.image)
+        setTokenJSON(responseJson)
+      }
+
+      fetchData()
+    }
+  }, [balanceOf, tokenIdOf, tokenURI])
 
   return (
     <>
@@ -94,6 +123,13 @@ const Quests: NextPage = () => {
             )}
           </Box>
         </Box>
+        {mounted && tokenIdOf?.gt(0) && tokenURIImage ? (
+          <>
+            <Text>Debug</Text>
+            <Image src={tokenURIImage} alt="" />
+            <Text>{JSON.stringify(tokenJSON)}</Text>
+          </>
+        ) : (<></>)}
       </Layout>
     </>
   )
