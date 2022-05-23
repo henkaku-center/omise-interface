@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useAccount, useConnect, useNetwork } from 'wagmi'
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
@@ -21,6 +22,7 @@ import { useBalanceOf } from '@/hooks/useBalanceOf'
 import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
+import { useGetPoint } from '@/hooks/quest/useGetPoint'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
@@ -38,8 +40,12 @@ const Quests: NextPage = () => {
   const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
   const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
   const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
+  const { point, refetchPoint } = useGetPoint()
   const [tokenURIImage, setTokenImageURI] = useState('')
   const [tokenJSON, setTokenJSON] = useState('')
+  const [stillProcessingSomething, setStillProcessingSomething] = useState(false)
+  const [readyToRequestIpfs, setReadyToRequestIpfs] = useState(false)
+  const [hasSubmittedQuest, setHasSubmittedQuest] = useState(false)
 
   useEffect(() => {
     if (balanceOf && tokenIdOf && tokenURI) {
@@ -54,6 +60,35 @@ const Quests: NextPage = () => {
       fetchData()
     }
   }, [balanceOf, tokenIdOf, tokenURI])
+
+  useEffect(() => {
+    if (isSubmitting == true) {
+      setStillProcessingSomething(true)
+      setHasSubmittedQuest(true)
+    } else if (hasSubmittedQuest) {
+      setReadyToRequestIpfs(true)
+    }
+  }, [isSubmitting, hasSubmittedQuest])
+
+  useEffect(() => {
+    if (readyToRequestIpfs == true) {
+      setHasSubmittedQuest(false)
+      setReadyToRequestIpfs(false)
+      setStillProcessingSomething(true)
+      hitIpfsAip()
+    }
+  }, [readyToRequestIpfs])
+
+  const hitIpfsAip = async () => {
+    const res = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    console.log('Called API', res.data)
+    setStillProcessingSomething(false)
+  }
+
+  const submitForm = () => {
+    setStillProcessingSomething(true)
+    submit()
+  }
 
   return (
     <>
@@ -105,7 +140,7 @@ const Quests: NextPage = () => {
                     mt={10}
                     w="100%"
                     colorScheme="teal"
-                    onClick={() => submit()}
+                    onClick={() => submitForm()}
                     isLoading={isSubmitting}
                     loadingText={t('BUTTON_SUBMITTING')}
                     disabled={keyword == ''}
@@ -126,8 +161,14 @@ const Quests: NextPage = () => {
         {mounted && tokenIdOf?.gt(0) && tokenURIImage ? (
           <>
             <Text>Debug</Text>
-            <Image src={tokenURIImage} alt="" />
+            <Text>process.env.production: <>{process.env.production ? 'polygon' : 'goerli'}</></Text>
+            <Text>point: <>{point && point>0? point.toString(): 0}</></Text>
+            <Text>isSubmitting: {isSubmitting? '✅': '❌'}</Text>
+            <Text>hasSubmittedQuest: {hasSubmittedQuest? '✅': '❌'}</Text>
+            <Text>readyToRequestIpfs: {readyToRequestIpfs? '✅': '❌'}</Text>
+            <Text>stillProcessingSomething: {stillProcessingSomething? '✅': '❌'}</Text>
             <Text>{JSON.stringify(tokenJSON)}</Text>
+            <Image src={tokenURIImage} alt="" />
           </>
         ) : (<></>)}
       </Layout>
