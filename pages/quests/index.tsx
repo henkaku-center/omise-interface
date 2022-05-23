@@ -130,7 +130,7 @@ const Quests: NextPage = () => {
       setStillProcessingSomething(true)
       hitIpfsAip()
     }
-  }, [readyToRequestIpfs, data?.address, point, tokenJSON])
+  }, [readyToRequestIpfs, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint])
 
   const submitForm = () => {
     setStillProcessingSomething(true)
