@@ -57,7 +57,7 @@ const Quests: NextPage = () => {
   const [tokenURIImage, setTokenImageURI] = useState('')
   const [tokenJSON, setTokenJSON] = useState<KamonToken>()
   const [newTokenURI, setNewTokenURI] = useState('')
-  const [newTokenURIImage, setNewTokenImageURI] = useState('')
+  const [newTokenImageURI, setNewTokenImageURI] = useState('')
   const [newTokenJSON, setNewTokenJSON] = useState<KamonToken>()
   const [stillProcessingSomething, setStillProcessingSomething] = useState(false)
   const [readyToRequestIpfs, setReadyToRequestIpfs] = useState(false)
@@ -116,13 +116,22 @@ const Quests: NextPage = () => {
         }
         console.log(payload)
     
-        const res = await axios.post(ipfsApiEndpoint, payload, {
+        const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
           headers: {
             'Content-Type': 'application/json'
           }
         })
-        console.log('Called API', res.data.tokenUri)
-        setNewTokenURI(res.data.tokenUri)
+        setNewTokenURI(await ipfsRequest.data.tokenUri)
+        console.log('ipfsRequest status', ipfsRequest.status)
+        console.log('newTokenURI', newTokenURI)
+        const newTokenRequest = await axios.get(newTokenURI)
+        setNewTokenJSON(newTokenRequest.data)
+        console.log('newTokenRequest status', newTokenRequest.status)
+        console.log('newTokenJSON', newTokenJSON)
+        if(newTokenJSON !== undefined) {
+          setNewTokenImageURI(newTokenJSON.image)
+          console.log('newTokenImageURI', newTokenImageURI)
+        }
         setStillProcessingSomething(false)
       }
       setHasSubmittedQuest(false)
@@ -130,7 +139,7 @@ const Quests: NextPage = () => {
       setStillProcessingSomething(true)
       hitIpfsAip()
     }
-  }, [readyToRequestIpfs, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint])
+  }, [readyToRequestIpfs, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint, newTokenImageURI, newTokenJSON, newTokenURI])
 
   const submitForm = () => {
     setStillProcessingSomething(true)
@@ -214,6 +223,8 @@ const Quests: NextPage = () => {
             <Text>hasSubmittedQuest: {hasSubmittedQuest? '✅': '❌'}</Text>
             <Text>readyToRequestIpfs: {readyToRequestIpfs? '✅': '❌'}</Text>
             <Text>newTokenURI: {newTokenURI? newTokenURI: '❓'}</Text>
+            <Text>newTokenJSON: {newTokenJSON? JSON.stringify(newTokenJSON): '❓'}</Text>
+            <Text>newTokenImageURI: {newTokenImageURI? newTokenImageURI: '❓'}</Text>
             <Text>stillProcessingSomething: {stillProcessingSomething? '✅': '❌'}</Text>
             <Text>{ipfsApiEndpoint}</Text>
             <Text>{JSON.stringify(tokenJSON)}</Text>
