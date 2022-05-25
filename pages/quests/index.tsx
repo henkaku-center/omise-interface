@@ -23,6 +23,7 @@ import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
+import { BigNumber } from 'ethers'
 
 interface TokenAttribute {
   display_type: string | undefined
@@ -60,8 +61,12 @@ const Quests: NextPage = () => {
   const [newTokenImageURI, setNewTokenImageURI] = useState('')
   const [newTokenJSON, setNewTokenJSON] = useState<KamonToken>()
   const [stillProcessingSomething, setStillProcessingSomething] = useState(false)
-  const [readyToRequestIpfs, setReadyToRequestIpfs] = useState(false)
-  const [hasSubmittedQuest, setHasSubmittedQuest] = useState(false)
+  const [questSubmitted, setQuestSubmitted] = useState(false)
+  const [questReturned, setQuestReturned] = useState(false)
+  const [ipfsSubmitted, setIpfsSubmitted] = useState(false)
+  const [ipfsReturned, setIpfsReturned] = useState(false)
+  const [newTokenRequestSubmitted, setNewTokenRequestSubmitted] = useState(false)
+  const [newTokenRequestReturned, setNewTokenRequestReturned] = useState(false)
 
   useEffect(() => {
     if (balanceOf && tokenIdOf && tokenURI) {
@@ -77,22 +82,37 @@ const Quests: NextPage = () => {
     }
   }, [balanceOf, tokenIdOf, tokenURI])
 
+  // Manage when the quest starts and finishes submitting
   useEffect(() => {
     if (isSubmitting == true) {
       setStillProcessingSomething(true)
-      setHasSubmittedQuest(true)
-    } else if (hasSubmittedQuest) {
-      setReadyToRequestIpfs(true)
-    }
-  }, [isSubmitting, hasSubmittedQuest])
+      setQuestSubmitted(true)
+      setQuestReturned(false)
+      setIpfsSubmitted(false)
+      setIpfsReturned(false)
+      setNewTokenRequestSubmitted(false)
+      setNewTokenRequestReturned(false)
+      setNewTokenURI('')
+      setNewTokenImageURI('')
 
+    } else if (questSubmitted) {
+      setQuestReturned(true)
+    }
+  }, [isSubmitting, questSubmitted])
+
+  // Manage the IPFS request after the quest returns
   useEffect(() => {
-    if (readyToRequestIpfs == true) {
-      const hitIpfsAip = async () => {
-        console.log('hitIpfsAip')
+    if (questReturned == true && ipfsSubmitted == false && newTokenURI == '') {
+      const hitIpfsApi = async () => {
+        setIpfsSubmitted(true)
+        console.log('hitIpfsApi')
         let dateFromToken = 0
         let rolesFromToken: string[] = []
-        console.log(await refetchPoint())
+        let currentPoints = point? parseInt(point?.toString()): 0
+        console.log('old point value', currentPoints)
+        const updatedPointsQuery = await refetchPoint()
+        const updatedPoints = Array.isArray(updatedPointsQuery.data)? updatedPointsQuery.data[0]: 0
+        console.log('new point value', parseInt(updatedPoints.toString()))
         let points: number = 0
         if (point !== undefined) {
           points = parseInt(point?.toString())
@@ -121,9 +141,20 @@ const Quests: NextPage = () => {
             'Content-Type': 'application/json'
           }
         })
+        setIpfsReturned(true)
         setNewTokenURI(await ipfsRequest.data.tokenUri)
         console.log('ipfsRequest status', ipfsRequest.status)
         console.log('newTokenURI', newTokenURI)
+      }
+      hitIpfsApi()
+    }
+  }, [questReturned, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint, newTokenURI, ipfsSubmitted])
+
+  // Manage the new token request after the quest returns
+  useEffect(() => {
+    if (ipfsReturned == true && newTokenRequestSubmitted == false && newTokenImageURI == '') {
+      const getNewToken = async () => {
+        setNewTokenRequestSubmitted(true)
         const newTokenRequest = await axios.get(newTokenURI)
         setNewTokenJSON(newTokenRequest.data)
         console.log('newTokenRequest status', newTokenRequest.status)
@@ -133,13 +164,17 @@ const Quests: NextPage = () => {
           console.log('newTokenImageURI', newTokenImageURI)
         }
         setStillProcessingSomething(false)
+        setQuestSubmitted(false)
+        setQuestReturned(false)
+        setIpfsSubmitted(false)
+        setIpfsReturned(false)
+        setNewTokenRequestSubmitted(false)
+        setNewTokenRequestReturned(true)
+        setStillProcessingSomething(false)
       }
-      setHasSubmittedQuest(false)
-      setReadyToRequestIpfs(false)
-      setStillProcessingSomething(true)
-      hitIpfsAip()
+      getNewToken()
     }
-  }, [readyToRequestIpfs, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint, newTokenImageURI, newTokenJSON, newTokenURI])
+  }, [data?.address, newTokenImageURI, newTokenJSON, newTokenURI, ipfsReturned, newTokenRequestSubmitted])
 
   const submitForm = () => {
     setStillProcessingSomething(true)
@@ -217,18 +252,24 @@ const Quests: NextPage = () => {
         {mounted && tokenIdOf?.gt(0) && tokenURIImage ? (
           <>
             <Text>Debug</Text>
-            <Text>process.env.production: <>{process.env.production ? 'polygon' : 'goerli'}</></Text>
             <Text>point: <>{point && point>0? point.toString(): 0}</></Text>
-            <Text>isSubmitting: {isSubmitting? '✅': '❌'}</Text>
-            <Text>hasSubmittedQuest: {hasSubmittedQuest? '✅': '❌'}</Text>
-            <Text>readyToRequestIpfs: {readyToRequestIpfs? '✅': '❌'}</Text>
-            <Text>newTokenURI: {newTokenURI? newTokenURI: '❓'}</Text>
+            <Text>{isSubmitting? '✅': '❌'} isSubmitting</Text>
+            <Text>{questSubmitted? '✅': '❌'} questSubmitted</Text>
+            <Text>{questReturned? '✅': '❌'} questReturned</Text>
+            <Text>{ipfsSubmitted? '✅': '❌'} ipfsSubmitted</Text>
+            <Text>{ipfsReturned? '✅': '❌'} ipfsReturned</Text>
+            <Text>{newTokenRequestSubmitted? '✅': '❌'} newTokenRequestSubmitted</Text>
+            <Text>{newTokenRequestReturned? '✅': '❌'} newTokenRequestReturned</Text>
+            <Text>{newTokenURI? '✅': '❓'} newTokenURI</Text>
+            <Text>{newTokenImageURI? '✅': '❓'} newTokenImageURI</Text>
+            <Text>{stillProcessingSomething? '✅': '❌'} stillProcessingSomething</Text>
+            {/* <Text>{ipfsApiEndpoint}</Text> */}
+            {/* <Text>{JSON.stringify(tokenJSON)}</Text> */}
+            <Stack direction='row'>
+              <Image src={tokenURIImage} alt="" boxSize='300px' />
+              {newTokenImageURI !== ''? <Image src={newTokenImageURI} alt="" boxSize='300px' />: <></>}
+            </Stack>
             <Text>newTokenJSON: {newTokenJSON? JSON.stringify(newTokenJSON): '❓'}</Text>
-            <Text>newTokenImageURI: {newTokenImageURI? newTokenImageURI: '❓'}</Text>
-            <Text>stillProcessingSomething: {stillProcessingSomething? '✅': '❌'}</Text>
-            <Text>{ipfsApiEndpoint}</Text>
-            <Text>{JSON.stringify(tokenJSON)}</Text>
-            <Image src={tokenURIImage} alt="" />
           </>
         ) : (<></>)}
       </Layout>
