@@ -68,6 +68,18 @@ const Quests: NextPage = () => {
   const [newTokenRequestSubmitted, setNewTokenRequestSubmitted] = useState(false)
   const [newTokenRequestReturned, setNewTokenRequestReturned] = useState(false)
 
+  const resetFlags = () => {
+    setStillProcessingSomething(false)
+    setQuestSubmitted(false)
+    setQuestReturned(false)
+    setIpfsSubmitted(false)
+    setIpfsReturned(false)
+    setNewTokenRequestSubmitted(false)
+    setNewTokenRequestReturned(false)
+    setNewTokenURI('')
+    setNewTokenImageURI('')
+  }
+
   useEffect(() => {
     if (balanceOf && tokenIdOf && tokenURI) {
       const fetchData = async () => {
@@ -85,15 +97,9 @@ const Quests: NextPage = () => {
   // Manage when the quest starts and finishes submitting
   useEffect(() => {
     if (isSubmitting == true) {
+      resetFlags()
       setStillProcessingSomething(true)
       setQuestSubmitted(true)
-      setQuestReturned(false)
-      setIpfsSubmitted(false)
-      setIpfsReturned(false)
-      setNewTokenRequestSubmitted(false)
-      setNewTokenRequestReturned(false)
-      setNewTokenURI('')
-      setNewTokenImageURI('')
 
     } else if (questSubmitted) {
       setQuestReturned(true)
@@ -105,22 +111,20 @@ const Quests: NextPage = () => {
     if (questReturned == true && ipfsSubmitted == false && newTokenURI == '') {
       const hitIpfsApi = async () => {
         setIpfsSubmitted(true)
-        console.log('hitIpfsApi')
         let dateFromToken = 0
         let rolesFromToken: string[] = []
-        let currentPoints = point? parseInt(point?.toString()): 0
-        console.log('old point value', currentPoints)
+        const onTokenPointsAttr: TokenAttribute | undefined = tokenJSON?.attributes.find(elem => elem.trait_type == 'Points')
+        const onTokenPoints = onTokenPointsAttr?.value
+        // console.log('point value on token', onTokenPoints)
         const updatedPointsQuery = await refetchPoint()
         const updatedPoints = Array.isArray(updatedPointsQuery.data)? updatedPointsQuery.data[0]: 0
-        console.log('new point value', parseInt(updatedPoints.toString()))
-        let points: number = 0
-        if (point !== undefined) {
-          points = parseInt(point?.toString())
-          console.log('points:', points)
-        } else {
-          console.log('points undefined:', points)
+        const updatedPointsInt = parseInt(updatedPoints.toString())
+        // console.log('new point value', updatedPointsInt)
+        if(onTokenPoints == updatedPointsInt) {
+          console.log('💀 No need to update the NFT')
+          resetFlags()
+          return // For debugging — uncomment when done
         }
-        console.log(tokenJSON)
         tokenJSON?.attributes.forEach((attr: TokenAttribute) => {
           if (attr.trait_type == 'Date') {
             dateFromToken = parseInt(attr.value.toString())
@@ -131,10 +135,10 @@ const Quests: NextPage = () => {
         const payload = {
           address: data?.address,
           roles: rolesFromToken,
-          points: points,
+          points: updatedPointsInt,
           date: dateFromToken,
         }
-        console.log(payload)
+        console.log('payload', payload)
     
         const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
           headers: {
