@@ -76,8 +76,6 @@ const Quests: NextPage = () => {
     setIpfsReturned(false)
     setNewTokenRequestSubmitted(false)
     setNewTokenRequestReturned(false)
-    setNewTokenURI('')
-    setNewTokenImageURI('')
   }
 
   useEffect(() => {
@@ -98,9 +96,10 @@ const Quests: NextPage = () => {
   useEffect(() => {
     if (isSubmitting == true) {
       resetFlags()
+      setNewTokenURI('')
+      setNewTokenImageURI('')
       setStillProcessingSomething(true)
       setQuestSubmitted(true)
-
     } else if (questSubmitted) {
       setQuestReturned(true)
     }
@@ -123,7 +122,9 @@ const Quests: NextPage = () => {
         if(onTokenPoints == updatedPointsInt) {
           console.log('💀 No need to update the NFT')
           resetFlags()
-          return // For debugging — uncomment when done
+          setNewTokenURI('')
+          setNewTokenImageURI('')
+          return // Comment for debugging
         }
         tokenJSON?.attributes.forEach((attr: TokenAttribute) => {
           if (attr.trait_type == 'Date') {
@@ -146,9 +147,10 @@ const Quests: NextPage = () => {
           }
         })
         setIpfsReturned(true)
-        setNewTokenURI(await ipfsRequest.data.tokenUri)
+        const TempNewTokenURI = await ipfsRequest.data.tokenUri
+        setNewTokenURI(TempNewTokenURI)
         console.log('ipfsRequest status', ipfsRequest.status)
-        console.log('newTokenURI', newTokenURI)
+        console.log('newTokenURI', TempNewTokenURI)
       }
       hitIpfsApi()
     }
@@ -156,29 +158,29 @@ const Quests: NextPage = () => {
 
   // Manage the new token request after the quest returns
   useEffect(() => {
-    if (ipfsReturned == true && newTokenRequestSubmitted == false && newTokenImageURI == '') {
+    if (ipfsReturned == true && newTokenRequestSubmitted == false && newTokenJSON == undefined) {
       const getNewToken = async () => {
         setNewTokenRequestSubmitted(true)
         const newTokenRequest = await axios.get(newTokenURI)
         setNewTokenJSON(newTokenRequest.data)
         console.log('newTokenRequest status', newTokenRequest.status)
-        console.log('newTokenJSON', newTokenJSON)
-        if(newTokenJSON !== undefined) {
-          setNewTokenImageURI(newTokenJSON.image)
-          console.log('newTokenImageURI', newTokenImageURI)
-        }
-        setStillProcessingSomething(false)
-        setQuestSubmitted(false)
-        setQuestReturned(false)
-        setIpfsSubmitted(false)
-        setIpfsReturned(false)
-        setNewTokenRequestSubmitted(false)
         setNewTokenRequestReturned(true)
-        setStillProcessingSomething(false)
       }
       getNewToken()
     }
-  }, [data?.address, newTokenImageURI, newTokenJSON, newTokenURI, ipfsReturned, newTokenRequestSubmitted])
+  }, [newTokenJSON, newTokenURI, ipfsReturned, newTokenRequestSubmitted])
+
+  // Get the new token image URI from the updated token
+  useEffect(() => {
+    if (newTokenRequestReturned == true) {
+      console.log('newTokenJSON', newTokenJSON)
+      if(newTokenJSON !== undefined) {
+        console.log('newTokenImageURI', newTokenJSON.image)
+        setNewTokenImageURI(newTokenJSON.image)
+      }
+    }
+    resetFlags()
+  }, [newTokenRequestReturned, newTokenJSON, newTokenImageURI])
 
   const submitForm = () => {
     setStillProcessingSomething(true)
