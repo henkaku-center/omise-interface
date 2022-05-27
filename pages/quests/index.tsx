@@ -11,7 +11,6 @@ import {
 import { useEffect, useState } from 'react'
 import { useAccount, useConnect, useNetwork } from 'wagmi'
 import axios from 'axios'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components/layouts/layout'
@@ -23,7 +22,7 @@ import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
-import { BigNumber } from 'ethers'
+import { useUpdateOwnNFT } from '@/hooks/useUpdateOwnNFT'
 
 interface TokenAttribute {
   display_type: string | undefined
@@ -55,9 +54,10 @@ const Quests: NextPage = () => {
   const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
   const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
   const { point, refetchPoint } = useGetPoint()
-  const [tokenURIImage, setTokenImageURI] = useState('')
+  const [tokenImageURI, setTokenImageURI] = useState('')
+  const [tokenId, setTokenId] = useState(0)
   const [tokenJSON, setTokenJSON] = useState<KamonToken>()
-  const [newTokenURI, setNewTokenURI] = useState('')
+  const [finalTokenUri, setFinalTokenUri] = useState('')
   const [newTokenImageURI, setNewTokenImageURI] = useState('')
   const [newTokenJSON, setNewTokenJSON] = useState<KamonToken>()
   const [stillProcessingSomething, setStillProcessingSomething] = useState(false)
@@ -67,6 +67,12 @@ const Quests: NextPage = () => {
   const [ipfsReturned, setIpfsReturned] = useState(false)
   const [newTokenRequestSubmitted, setNewTokenRequestSubmitted] = useState(false)
   const [newTokenRequestReturned, setNewTokenRequestReturned] = useState(false)
+
+  const { update, isError } = useUpdateOwnNFT(
+    kamonNFT,
+    tokenId,
+    finalTokenUri,
+  )
 
   const resetFlags = () => {
     setStillProcessingSomething(false)
@@ -96,7 +102,7 @@ const Quests: NextPage = () => {
   useEffect(() => {
     if (isSubmitting == true) {
       resetFlags()
-      setNewTokenURI('')
+      setFinalTokenUri('')
       setNewTokenImageURI('')
       setStillProcessingSomething(true)
       setQuestSubmitted(true)
@@ -107,7 +113,7 @@ const Quests: NextPage = () => {
 
   // Manage the IPFS request after the quest returns
   useEffect(() => {
-    if (questReturned == true && ipfsSubmitted == false && newTokenURI == '') {
+    if (questReturned == true && ipfsSubmitted == false && finalTokenUri == '') {
       const hitIpfsApi = async () => {
         setIpfsSubmitted(true)
         let dateFromToken = 0
@@ -122,7 +128,7 @@ const Quests: NextPage = () => {
         if(onTokenPoints == updatedPointsInt) {
           console.log('💀 No need to update the NFT')
           resetFlags()
-          setNewTokenURI('')
+          setFinalTokenUri('')
           setNewTokenImageURI('')
           return // Comment for debugging
         }
@@ -147,28 +153,28 @@ const Quests: NextPage = () => {
           }
         })
         setIpfsReturned(true)
-        const TempNewTokenURI = await ipfsRequest.data.tokenUri
-        setNewTokenURI(TempNewTokenURI)
+        const TempfinalTokenUri = await ipfsRequest.data.tokenUri
+        setFinalTokenUri(TempfinalTokenUri)
         console.log('ipfsRequest status', ipfsRequest.status)
-        console.log('newTokenURI', TempNewTokenURI)
+        console.log('finalTokenUri', TempfinalTokenUri)
       }
       hitIpfsApi()
     }
-  }, [questReturned, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint, newTokenURI, ipfsSubmitted])
+  }, [questReturned, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint, finalTokenUri, ipfsSubmitted])
 
   // Manage the new token request after the quest returns
   useEffect(() => {
     if (ipfsReturned == true && newTokenRequestSubmitted == false && newTokenJSON == undefined) {
       const getNewToken = async () => {
         setNewTokenRequestSubmitted(true)
-        const newTokenRequest = await axios.get(newTokenURI)
+        const newTokenRequest = await axios.get(finalTokenUri)
         setNewTokenJSON(newTokenRequest.data)
         console.log('newTokenRequest status', newTokenRequest.status)
         setNewTokenRequestReturned(true)
       }
       getNewToken()
     }
-  }, [newTokenJSON, newTokenURI, ipfsReturned, newTokenRequestSubmitted])
+  }, [newTokenJSON, finalTokenUri, ipfsReturned, newTokenRequestSubmitted])
 
   // Get the new token image URI from the updated token
   useEffect(() => {
@@ -255,7 +261,7 @@ const Quests: NextPage = () => {
             )}
           </Box>
         </Box>
-        {mounted && tokenIdOf?.gt(0) && tokenURIImage ? (
+        {mounted && tokenIdOf?.gt(0) && tokenImageURI ? (
           <>
             <Text>Debug</Text>
             <Text>point: <>{point && point>0? point.toString(): 0}</></Text>
@@ -266,13 +272,13 @@ const Quests: NextPage = () => {
             <Text>{ipfsReturned? '✅': '❌'} ipfsReturned</Text>
             <Text>{newTokenRequestSubmitted? '✅': '❌'} newTokenRequestSubmitted</Text>
             <Text>{newTokenRequestReturned? '✅': '❌'} newTokenRequestReturned</Text>
-            <Text>{newTokenURI? '✅': '❓'} newTokenURI</Text>
+            <Text>{finalTokenUri? '✅': '❓'} finalTokenUri</Text>
             <Text>{newTokenImageURI? '✅': '❓'} newTokenImageURI</Text>
             <Text>{stillProcessingSomething? '✅': '❌'} stillProcessingSomething</Text>
             {/* <Text>{ipfsApiEndpoint}</Text> */}
             {/* <Text>{JSON.stringify(tokenJSON)}</Text> */}
             <Stack direction='row'>
-              <Image src={tokenURIImage} alt="" boxSize='300px' />
+              <Image src={tokenImageURI} alt="" boxSize='300px' />
               {newTokenImageURI !== ''? <Image src={newTokenImageURI} alt="" boxSize='300px' />: <></>}
             </Stack>
             <Text>newTokenJSON: {newTokenJSON? JSON.stringify(newTokenJSON): '❓'}</Text>
