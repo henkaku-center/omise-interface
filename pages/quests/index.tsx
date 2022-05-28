@@ -67,8 +67,10 @@ const Quests: NextPage = () => {
   const [ipfsReturned, setIpfsReturned] = useState(false)
   const [newTokenRequestSubmitted, setNewTokenRequestSubmitted] = useState(false)
   const [newTokenRequestReturned, setNewTokenRequestReturned] = useState(false)
+  const [updateOwnNftSubmitted, setUpdateOwnNftSubmitted] = useState(false)
+  const [updateOwnNftReturned, setUpdateOwnNftReturned] = useState(false)
 
-  const { update, isError } = useUpdateOwnNFT(
+  const { update, isError, updated } = useUpdateOwnNFT(
     kamonNFT,
     tokenId,
     finalTokenUri,
@@ -126,7 +128,7 @@ const Quests: NextPage = () => {
         const updatedPointsInt = parseInt(updatedPoints.toString())
         // console.log('new point value', updatedPointsInt)
         if(onTokenPoints == updatedPointsInt) {
-          console.log('💀 No need to update the NFT')
+          console.log('No need to update the NFT')
           resetFlags()
           setFinalTokenUri('')
           setNewTokenImageURI('')
@@ -185,8 +187,29 @@ const Quests: NextPage = () => {
         setNewTokenImageURI(newTokenJSON.image)
       }
     }
-    resetFlags()
   }, [newTokenRequestReturned, newTokenJSON, newTokenImageURI])
+
+  // Call updateOwnNFT on the contract to update oru own token's URI
+  useEffect(() => {
+    if (
+      newTokenRequestReturned == true
+      && finalTokenUri !== undefined
+      && updated !== true
+    ) {
+      const updateToken = async () => {
+        console.log('Updating own NFT with', finalTokenUri)
+        const theTokenId = tokenIdOf? parseInt(tokenIdOf.toString()): 0
+        if(theTokenId == 0) { return }
+        setTokenId(theTokenId)
+        setUpdateOwnNftSubmitted(true)
+        const updateResponse = await update()
+        setUpdateOwnNftReturned(true)
+        console.log('updateResponse', updateResponse)
+      }
+      updateToken()
+    }
+    resetFlags()
+  }, [newTokenRequestReturned, finalTokenUri, updated, update, tokenId, tokenIdOf])
 
   const submitForm = () => {
     setStillProcessingSomething(true)
@@ -264,7 +287,8 @@ const Quests: NextPage = () => {
         {mounted && tokenIdOf?.gt(0) && tokenImageURI ? (
           <>
             <Text>Debug</Text>
-            <Text>point: <>{point && point>0? point.toString(): 0}</></Text>
+            <Text>{tokenIdOf? '✅': '❓'} tokenIdOf: {tokenIdOf.toString()}</Text>
+            <Text>{point? '✅': '❌'} point: {point?.toString()}</Text>
             <Text>{isSubmitting? '✅': '❌'} isSubmitting</Text>
             <Text>{questSubmitted? '✅': '❌'} questSubmitted</Text>
             <Text>{questReturned? '✅': '❌'} questReturned</Text>
