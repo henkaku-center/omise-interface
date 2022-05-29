@@ -55,7 +55,7 @@ const Quests: NextPage = () => {
   const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
   const { point, refetchPoint } = useGetPoint()
   const [tokenImageURI, setTokenImageURI] = useState('')
-  const [tokenId, setTokenId] = useState(0)
+  const [tokenId, setTokenId] = useState<BigInt>(BigInt(0))
   const [tokenJSON, setTokenJSON] = useState<KamonToken>()
   const [finalTokenUri, setFinalTokenUri] = useState('')
   const [newTokenImageURI, setNewTokenImageURI] = useState('')
@@ -183,11 +183,13 @@ const Quests: NextPage = () => {
     if (newTokenRequestReturned == true) {
       console.log('newTokenJSON', newTokenJSON)
       if(newTokenJSON !== undefined) {
-        console.log('newTokenImageURI', newTokenJSON.image)
+        const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
+        if(theTokenId == BigInt(0)) { return }
+        setTokenId(BigInt(parseInt(theTokenId.toString())))
         setNewTokenImageURI(newTokenJSON.image)
       }
     }
-  }, [newTokenRequestReturned, newTokenJSON, newTokenImageURI])
+  }, [newTokenRequestReturned, newTokenJSON, newTokenImageURI, tokenIdOf, tokenId])
 
   // Call updateOwnNFT on the contract to update oru own token's URI
   useEffect(() => {
@@ -195,16 +197,14 @@ const Quests: NextPage = () => {
       newTokenRequestReturned == true
       && finalTokenUri !== undefined
       && updated !== true
+      && tokenId !== BigInt(0)
     ) {
       const updateToken = async () => {
-        console.log('Updating own NFT with', finalTokenUri)
-        const theTokenId = tokenIdOf? parseInt(tokenIdOf.toString()): 0
-        if(theTokenId == 0) { return }
-        setTokenId(theTokenId)
         setUpdateOwnNftSubmitted(true)
+        console.log('Updating own NFT with', tokenId.toString(), finalTokenUri)
         const updateResponse = await update()
+        console.log('updateResponse returned', updateResponse)
         setUpdateOwnNftReturned(true)
-        console.log('updateResponse', updateResponse)
         resetFlags()
       }
       updateToken()
@@ -288,6 +288,7 @@ const Quests: NextPage = () => {
           <>
             <Text>Debug</Text>
             <Text>{tokenIdOf? '✅': '❓'} tokenIdOf: {tokenIdOf.toString()}</Text>
+            <Text>{tokenId? '✅': '❓'} tokenId: {tokenId.toString()}</Text>
             <Text>{point? '✅': '❌'} point: {point?.toString()}</Text>
             <Text>{isSubmitting? '✅': '❌'} isSubmitting</Text>
             <Text>{questSubmitted? '✅': '❌'} questSubmitted</Text>

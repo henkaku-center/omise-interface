@@ -4,7 +4,7 @@ import kamonNFTContract from '@/utils/abis/kamonNFT.json'
 
 export const useUpdateOwnNFT = (
   contract: string,
-  tokenId: number,
+  tokenId: BigInt,
   finalTokenUri: string,
 ) => {
   const [updated, setUpdated] = useState<boolean>(false)
