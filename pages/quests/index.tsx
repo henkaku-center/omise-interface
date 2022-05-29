@@ -205,10 +205,10 @@ const Quests: NextPage = () => {
         const updateResponse = await update()
         setUpdateOwnNftReturned(true)
         console.log('updateResponse', updateResponse)
+        resetFlags()
       }
       updateToken()
     }
-    resetFlags()
   }, [newTokenRequestReturned, finalTokenUri, updated, update, tokenId, tokenIdOf])
 
   const submitForm = () => {
