@@ -195,6 +195,7 @@ const Quests: NextPage = () => {
   useEffect(() => {
     if (
       newTokenRequestReturned == true
+      && updateOwnNftSubmitted !== true
       && finalTokenUri !== undefined
       && updated !== true
       && tokenId !== BigInt(0)
@@ -209,7 +210,7 @@ const Quests: NextPage = () => {
       }
       updateToken()
     }
-  }, [newTokenRequestReturned, finalTokenUri, updated, update, tokenId, tokenIdOf])
+  }, [newTokenRequestReturned, updateOwnNftSubmitted, finalTokenUri, updated, update, tokenId, tokenIdOf])
 
   const submitForm = () => {
     setStillProcessingSomething(true)
