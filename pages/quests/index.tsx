@@ -250,7 +250,8 @@ const Quests: NextPage = () => {
           console.log('updateResponse returned', updateResponse)
           setUpdateOwnNftReturned(true)
         } catch (err) {
-          if (err?.name == 'UserRejectedRequestError') {
+          const error = err as Error;
+          if (error.name == 'UserRejectedRequestError') {
             toast({
               title: 'Transaction Rejected',
               description: 'You rejected the transaction. Please retry if you want to update your Kamon.',
