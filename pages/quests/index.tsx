@@ -135,7 +135,7 @@ const Quests: NextPage = () => {
         const updatedPointsInt = parseInt(updatedPoints.toString())
         // console.log('new point value', updatedPointsInt)
         if(onTokenPoints == updatedPointsInt) {
-          console.log('No need to update the NFT')
+          // console.log('No need to update the NFT')
           resetFlags()
           setFinalTokenUri('')
           setNewTokenImageURI('')
@@ -154,7 +154,6 @@ const Quests: NextPage = () => {
           points: updatedPointsInt,
           date: dateFromToken,
         }
-        console.log('payload', payload)
     
         try {
           const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
@@ -165,8 +164,7 @@ const Quests: NextPage = () => {
           setIpfsReturned(true)
           const TempfinalTokenUri = await ipfsRequest.data.tokenUri
           setFinalTokenUri(TempfinalTokenUri)
-          console.log('ipfsRequest status', ipfsRequest.status)
-          console.log('finalTokenUri', TempfinalTokenUri)
+          // console.log('finalTokenUri', TempfinalTokenUri)
         } catch (err) {
           const error = err as Error | AxiosError;
           let title = ''
@@ -180,7 +178,7 @@ const Quests: NextPage = () => {
             description: 'Could not generate your new image.',
             status: 'error'
           })
-          console.log('Error on setIpfsSubmitted', error)
+          // console.log('Error on setIpfsSubmitted', error)
           resetFlags()
         }
       }
@@ -193,11 +191,9 @@ const Quests: NextPage = () => {
     if (ipfsReturned == true && newTokenRequestSubmitted == false && newTokenJSON == undefined) {
       const getNewToken = async () => {
         setNewTokenRequestSubmitted(true)
-        console.log('getNewToken')
         try {
           const newTokenRequest = await axios.get(finalTokenUri)
           setNewTokenJSON(newTokenRequest.data)
-          console.log('newTokenRequest status', newTokenRequest.status)
           setNewTokenRequestReturned(true)
         } catch (err) {
           const error = err as Error | AxiosError;
@@ -212,7 +208,7 @@ const Quests: NextPage = () => {
             description: 'Could not get the data for your token.',
             status: 'error'
           })
-          console.log('Error on getNewToken', error)
+          // console.log('Error on getNewToken', error)
           resetFlags()
         }
       }
@@ -223,7 +219,7 @@ const Quests: NextPage = () => {
   // Get the new token image URI from the updated token
   useEffect(() => {
     if (newTokenRequestReturned == true) {
-      console.log('newTokenJSON', newTokenJSON)
+      // console.log('newTokenJSON', newTokenJSON)
       if(newTokenJSON !== undefined) {
         const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
         if(theTokenId == BigInt(0)) { return }
@@ -244,7 +240,7 @@ const Quests: NextPage = () => {
     ) {
       const updateToken = async () => {
         setUpdateOwnNftSubmitted(true)
-        console.log('Updating own NFT with', tokenId.toString(), finalTokenUri)
+        // console.log('Updating own NFT with', tokenId.toString(), finalTokenUri)
         try {
           const updateResponse = await update()
           console.log('updateResponse returned', updateResponse)
@@ -264,8 +260,7 @@ const Quests: NextPage = () => {
               status: 'error'
             })
           }
-          console.log('Error on updateToken', err)
-          console.log(JSON.stringify(err))
+          // console.log('Error on updateToken', error)
         }
         resetFlags()
       }
@@ -346,31 +341,6 @@ const Quests: NextPage = () => {
             )}
           </Box>
         </Box>
-        {mounted && tokenIdOf?.gt(0) && tokenImageURI ? (
-          <>
-            <Text>Debug</Text>
-            <Text>{tokenIdOf? '✅': '❓'} tokenIdOf: {tokenIdOf.toString()}</Text>
-            <Text>{tokenId? '✅': '❓'} tokenId: {tokenId.toString()}</Text>
-            <Text>{point? '✅': '❌'} point: {point?.toString()}</Text>
-            <Text>{isSubmitting? '✅': '❌'} isSubmitting</Text>
-            <Text>{questSubmitted? '✅': '❌'} questSubmitted</Text>
-            <Text>{questReturned? '✅': '❌'} questReturned</Text>
-            <Text>{ipfsSubmitted? '✅': '❌'} ipfsSubmitted</Text>
-            <Text>{ipfsReturned? '✅': '❌'} ipfsReturned</Text>
-            <Text>{newTokenRequestSubmitted? '✅': '❌'} newTokenRequestSubmitted</Text>
-            <Text>{newTokenRequestReturned? '✅': '❌'} newTokenRequestReturned</Text>
-            <Text>{finalTokenUri? '✅': '❓'} finalTokenUri</Text>
-            <Text>{newTokenImageURI? '✅': '❓'} newTokenImageURI</Text>
-            <Text>{stillProcessingSomething? '✅': '❌'} stillProcessingSomething</Text>
-            {/* <Text>{ipfsApiEndpoint}</Text> */}
-            {/* <Text>{JSON.stringify(tokenJSON)}</Text> */}
-            <Stack direction='row'>
-              <Image src={tokenImageURI} alt="" boxSize='300px' />
-              {newTokenImageURI !== ''? <Image src={newTokenImageURI} alt="" boxSize='300px' />: <></>}
-            </Stack>
-            <Text>newTokenJSON: {newTokenJSON? JSON.stringify(newTokenJSON): '❓'}</Text>
-          </>
-        ) : (<></>)}
       </Layout>
     </>
   )
