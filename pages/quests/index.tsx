@@ -243,8 +243,13 @@ const Quests: NextPage = () => {
         // console.log('Updating own NFT with', tokenId.toString(), finalTokenUri)
         try {
           const updateResponse = await update()
-          console.log('updateResponse returned', updateResponse)
+          // console.log('updateResponse returned', updateResponse)
           setUpdateOwnNftReturned(true)
+          toast({
+            title: 'Kamon updated',
+            description: 'NFT metadata and image successfully updated.',
+            status: 'success'
+          })
         } catch (err) {
           const error = err as Error;
           if (error.name == 'UserRejectedRequestError') {
