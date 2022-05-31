@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useAccount, useConnect, useNetwork } from 'wagmi'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components/layouts/layout'
@@ -23,6 +23,7 @@ import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
 import { useUpdateOwnNFT } from '@/hooks/useUpdateOwnNFT'
+import { useToast } from '@/hooks/useToast'
 
 interface TokenAttribute {
   display_type: string | undefined
@@ -38,6 +39,7 @@ interface KamonToken {
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
+  const { toast } = useToast()
   const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
@@ -118,6 +120,11 @@ const Quests: NextPage = () => {
     if (questReturned == true && ipfsSubmitted == false && finalTokenUri == '') {
       const hitIpfsApi = async () => {
         setIpfsSubmitted(true)
+        toast({
+          title: 'Updating Kamon NFT',
+          description: 'Generating an image with your new point total. Please wait...',
+          status: 'info'
+        })
         let dateFromToken = 0
         let rolesFromToken: string[] = []
         const onTokenPointsAttr: TokenAttribute | undefined = tokenJSON?.attributes.find(elem => elem.trait_type == 'Points')
@@ -149,34 +156,69 @@ const Quests: NextPage = () => {
         }
         console.log('payload', payload)
     
-        const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
-          headers: {
-            'Content-Type': 'application/json'
+        try {
+          const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          setIpfsReturned(true)
+          const TempfinalTokenUri = await ipfsRequest.data.tokenUri
+          setFinalTokenUri(TempfinalTokenUri)
+          console.log('ipfsRequest status', ipfsRequest.status)
+          console.log('finalTokenUri', TempfinalTokenUri)
+        } catch (err) {
+          const error = err as Error | AxiosError;
+          let title = ''
+          if(axios.isAxiosError(error)){
+            title = 'Error ' + error?.response?.status
+          } else {
+            title = 'Error'
           }
-        })
-        setIpfsReturned(true)
-        const TempfinalTokenUri = await ipfsRequest.data.tokenUri
-        setFinalTokenUri(TempfinalTokenUri)
-        console.log('ipfsRequest status', ipfsRequest.status)
-        console.log('finalTokenUri', TempfinalTokenUri)
+          toast({
+            title: title,
+            description: 'Could not generate your new image.',
+            status: 'error'
+          })
+          console.log('Error on setIpfsSubmitted', error)
+          resetFlags()
+        }
       }
       hitIpfsApi()
     }
-  }, [questReturned, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint, finalTokenUri, ipfsSubmitted])
+  }, [questReturned, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint, finalTokenUri, ipfsSubmitted, toast])
 
   // Manage the new token request after the quest returns
   useEffect(() => {
     if (ipfsReturned == true && newTokenRequestSubmitted == false && newTokenJSON == undefined) {
       const getNewToken = async () => {
         setNewTokenRequestSubmitted(true)
-        const newTokenRequest = await axios.get(finalTokenUri)
-        setNewTokenJSON(newTokenRequest.data)
-        console.log('newTokenRequest status', newTokenRequest.status)
-        setNewTokenRequestReturned(true)
+        console.log('getNewToken')
+        try {
+          const newTokenRequest = await axios.get(finalTokenUri)
+          setNewTokenJSON(newTokenRequest.data)
+          console.log('newTokenRequest status', newTokenRequest.status)
+          setNewTokenRequestReturned(true)
+        } catch (err) {
+          const error = err as Error | AxiosError;
+          let title = ''
+          if(axios.isAxiosError(error)){
+            title = 'Error ' + error?.response?.status
+          } else {
+            title = 'Error'
+          }
+          toast({
+            title: title,
+            description: 'Could not get the data for your token.',
+            status: 'error'
+          })
+          console.log('Error on getNewToken', error)
+          resetFlags()
+        }
       }
       getNewToken()
     }
-  }, [newTokenJSON, finalTokenUri, ipfsReturned, newTokenRequestSubmitted])
+  }, [newTokenJSON, finalTokenUri, ipfsReturned, newTokenRequestSubmitted, toast])
 
   // Get the new token image URI from the updated token
   useEffect(() => {
@@ -203,14 +245,32 @@ const Quests: NextPage = () => {
       const updateToken = async () => {
         setUpdateOwnNftSubmitted(true)
         console.log('Updating own NFT with', tokenId.toString(), finalTokenUri)
-        const updateResponse = await update()
-        console.log('updateResponse returned', updateResponse)
-        setUpdateOwnNftReturned(true)
+        try {
+          const updateResponse = await update()
+          console.log('updateResponse returned', updateResponse)
+          setUpdateOwnNftReturned(true)
+        } catch (err) {
+          if (err?.name == 'UserRejectedRequestError') {
+            toast({
+              title: 'Transaction Rejected',
+              description: 'You rejected the transaction. Please retry if you want to update your Kamon.',
+              status: 'error'
+            })
+          } else {
+            toast({
+              title: 'Error',
+              description: 'The transaction failed.',
+              status: 'error'
+            })
+          }
+          console.log('Error on updateToken', err)
+          console.log(JSON.stringify(err))
+        }
         resetFlags()
       }
       updateToken()
     }
-  }, [newTokenRequestReturned, updateOwnNftSubmitted, finalTokenUri, updated, update, tokenId, tokenIdOf])
+  }, [newTokenRequestReturned, updateOwnNftSubmitted, finalTokenUri, updated, update, tokenId, tokenIdOf, toast])
 
   const submitForm = () => {
     setStillProcessingSomething(true)
