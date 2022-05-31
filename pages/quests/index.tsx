@@ -120,11 +120,6 @@ const Quests: NextPage = () => {
     if (questReturned == true && ipfsSubmitted == false && finalTokenUri == '') {
       const hitIpfsApi = async () => {
         setIpfsSubmitted(true)
-        toast({
-          title: 'Updating Kamon NFT',
-          description: 'Generating an image with your new point total. Please wait...',
-          status: 'info'
-        })
         let dateFromToken = 0
         let rolesFromToken: string[] = []
         const onTokenPointsAttr: TokenAttribute | undefined = tokenJSON?.attributes.find(elem => elem.trait_type == 'Points')
@@ -154,7 +149,12 @@ const Quests: NextPage = () => {
           points: updatedPointsInt,
           date: dateFromToken,
         }
-    
+
+        toast({
+          title: 'Updating Kamon NFT',
+          description: 'Generating an image with your new point total. Please wait...',
+          status: 'info'
+        })
         try {
           const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
             headers: {
