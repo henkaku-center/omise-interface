@@ -23,24 +23,12 @@ import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
 import { useUpdateOwnNFT } from '@/hooks/useUpdateOwnNFT'
+import { useIpfsSubmit, TokenAttribute, KamonToken } from '@/hooks/useIpfsSubmit'
 import { useToast } from '@/hooks/useToast'
-
-interface TokenAttribute {
-  display_type: string | undefined
-  trait_type: string
-  value: number | string
-}
-interface KamonToken {
-  name: string
-  description: string
-  image: string
-  attributes: TokenAttribute[]
-}
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
   const { toast } = useToast()
-  const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -77,6 +65,7 @@ const Quests: NextPage = () => {
     tokenId,
     finalTokenUri,
   )
+  const { ipfsSubmit } = useIpfsSubmit()
 
   const resetFlags = () => {
     setStillProcessingSomething(false)
@@ -118,73 +107,30 @@ const Quests: NextPage = () => {
   // Manage the IPFS request after the quest returns
   useEffect(() => {
     if (questReturned == true && ipfsSubmitted == false && finalTokenUri == '') {
-      const hitIpfsApi = async () => {
-        setIpfsSubmitted(true)
-        let dateFromToken = 0
-        let rolesFromToken: string[] = []
-        const onTokenPointsAttr: TokenAttribute | undefined = tokenJSON?.attributes.find(elem => elem.trait_type == 'Points')
-        const onTokenPoints = onTokenPointsAttr?.value
-        // console.log('point value on token', onTokenPoints)
-        const updatedPointsQuery = await refetchPoint()
-        const updatedPoints = Array.isArray(updatedPointsQuery.data)? updatedPointsQuery.data[0]: 0
-        const updatedPointsInt = parseInt(updatedPoints.toString())
-        // console.log('new point value', updatedPointsInt)
-        if(onTokenPoints == updatedPointsInt) {
-          // console.log('No need to update the NFT')
-          resetFlags()
-          setFinalTokenUri('')
-          setNewTokenImageURI('')
-          return // Comment for debugging
-        }
-        tokenJSON?.attributes.forEach((attr: TokenAttribute) => {
-          if (attr.trait_type == 'Date') {
-            dateFromToken = parseInt(attr.value.toString())
-          } else if (attr.trait_type == 'Role') {
-            rolesFromToken.push(attr.value.toString())
+      if (tokenJSON !== undefined && data?.address !== undefined) {
+        const userAddress = data?.address
+        const ipfsSubmitWrapper = async () => {
+          setIpfsSubmitted(true)
+          const ipfsSubmitRet = await ipfsSubmit(tokenJSON, userAddress)
+          if (ipfsSubmitRet == 'same_points') {
+            resetFlags()
+            setFinalTokenUri('')
+            setNewTokenImageURI('')
+            return
           }
-        })
-        const payload = {
-          address: data?.address,
-          roles: rolesFromToken,
-          points: updatedPointsInt,
-          date: dateFromToken,
-        }
-
-        toast({
-          title: 'Updating Kamon NFT',
-          description: 'Generating an image with your new point total. Please wait...',
-          status: 'info'
-        })
-        try {
-          const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
+          if (ipfsSubmitRet == 'error') {
+            resetFlags()
+            return
+          }
           setIpfsReturned(true)
-          const TempfinalTokenUri = await ipfsRequest.data.tokenUri
+          const TempfinalTokenUri = await ipfsSubmitRet
           setFinalTokenUri(TempfinalTokenUri)
           // console.log('finalTokenUri', TempfinalTokenUri)
-        } catch (err) {
-          const error = err as Error | AxiosError;
-          let title = ''
-          if(axios.isAxiosError(error)){
-            title = 'Error ' + error?.response?.status
-          } else {
-            title = 'Error'
-          }
-          toast({
-            title: title,
-            description: 'Could not generate your new image.',
-            status: 'error'
-          })
-          // console.log('Error on setIpfsSubmitted', error)
-          resetFlags()
         }
+        ipfsSubmitWrapper()
       }
-      hitIpfsApi()
     }
-  }, [questReturned, data?.address, point, tokenJSON, ipfsApiEndpoint, refetchPoint, finalTokenUri, ipfsSubmitted, toast])
+  }, [questReturned, data?.address, point, tokenJSON, refetchPoint, finalTokenUri, ipfsSubmitted, toast, ipfsSubmit])
 
   // Manage the new token request after the quest returns
   useEffect(() => {
