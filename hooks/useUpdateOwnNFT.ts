@@ -12,6 +12,7 @@ export const useUpdateOwnNFT = (
   const {
     data: updateData,
     isError,
+    isLoading: updateOwnNftIsSubmitting,
     writeAsync: update
   } = useContractWrite(
     {
@@ -29,6 +30,7 @@ export const useUpdateOwnNFT = (
 
   return {
     updateData,
+    updateOwnNftIsSubmitting,
     isError,
     update,
     updated

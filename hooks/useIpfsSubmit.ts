@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
 import { useToast } from '@/hooks/useToast'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
@@ -16,10 +17,13 @@ export interface KamonToken {
 
 export const useIpfsSubmit = () => {  
   const { toast } = useToast()
-  const { point, refetchPoint } = useGetPoint()
+  const { refetchPoint } = useGetPoint()
+  const [ipfsSubmitSucceeded, setIpfsSubmitSucceeded] = useState<boolean>()
+  const [ipfsSubmitIsSubmitting, setIpfsSubmitIsSubmitting] = useState<boolean>()
   const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
 
   const ipfsSubmit = async (tokenJSON: KamonToken, userAddress: string) => {
+    setIpfsSubmitIsSubmitting(true)
     let dateFromToken = 0
     let rolesFromToken: string[] = []
     const onTokenPointsAttr: TokenAttribute | undefined = tokenJSON?.attributes.find(elem => elem.trait_type == 'Points')
@@ -29,7 +33,8 @@ export const useIpfsSubmit = () => {
     const updatedPointsInt = parseInt(updatedPoints.toString())
     if(onTokenPoints == updatedPointsInt) {
       // console.log('No need to update the NFT')
-      return('same_points') // Comment for debugging
+      setIpfsSubmitSucceeded(false)
+      return('same_points') // Comment block for debugging
     }
     tokenJSON?.attributes.forEach((attr: TokenAttribute) => {
       if (attr.trait_type == 'Date') {
@@ -56,8 +61,12 @@ export const useIpfsSubmit = () => {
           'Content-Type': 'application/json'
         }
       })
+      setIpfsSubmitIsSubmitting(false)
+      setIpfsSubmitSucceeded(true)
       return(ipfsRequest.data.tokenUri)
     } catch (err) {
+      setIpfsSubmitIsSubmitting(false)
+      setIpfsSubmitSucceeded(false)
       const error = err as Error | AxiosError;
       let title = ''
       if(axios.isAxiosError(error)){
@@ -74,5 +83,5 @@ export const useIpfsSubmit = () => {
     }
   }
 
-  return { ipfsSubmit }
+  return { ipfsSubmit, ipfsSubmitSucceeded, ipfsSubmitIsSubmitting }
 }

@@ -14,6 +14,7 @@ export const useKeywordSubmit = () => {
     chainId: activeChain?.id
   })
   const [keyword, setKeyword] = useState<string>('')
+  const [keywordSubmitSucceeded, setKeywordSubmitSucceeded] = useState<boolean>()
   const { write: submit, isLoading: isSubmitting } = useContractWrite(
     {
       addressOrName: kamonNFT,
@@ -28,6 +29,7 @@ export const useKeywordSubmit = () => {
           description: handleErrorMessage(error),
           status: 'error'
         })
+        setKeywordSubmitSucceeded(false)
       },
       onSuccess() {
         toast({
@@ -35,6 +37,7 @@ export const useKeywordSubmit = () => {
           description: 'Answer was correct.\nYou earn 100 points',
           status: 'success'
         })
+        setKeywordSubmitSucceeded(true)
       }
     }
   )
@@ -56,5 +59,5 @@ export const useKeywordSubmit = () => {
     }
   }, [getError])
 
-  return { keyword, inputChange, submit, isSubmitting }
+  return { keyword, inputChange, submit, isSubmitting, keywordSubmitSucceeded }
 }

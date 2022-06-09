@@ -32,7 +32,7 @@ const Quests: NextPage = () => {
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
   const { data } = useAccount()
-  const { keyword, inputChange, submit, isSubmitting } = useKeywordSubmit()
+  const { keyword, inputChange, submit, isSubmitting, keywordSubmitSucceeded } = useKeywordSubmit()
   const { hasNFT } = useHasNFT()
   const { activeChain } = useNetwork()
   const kamonNFT = getContractAddress({
@@ -47,33 +47,19 @@ const Quests: NextPage = () => {
   const [finalTokenUri, setFinalTokenUri] = useState('')
   const [newTokenImageURI, setNewTokenImageURI] = useState('')
   const [newTokenJSON, setNewTokenJSON] = useState<KamonToken>()
-  const [stillProcessingSomething, setStillProcessingSomething] = useState(false)
-  const [questSubmitted, setQuestSubmitted] = useState(false)
-  const [questReturned, setQuestReturned] = useState(false)
-  const [ipfsSubmitted, setIpfsSubmitted] = useState(false)
-  const [ipfsReturned, setIpfsReturned] = useState(false)
-  const [newTokenRequestSubmitted, setNewTokenRequestSubmitted] = useState(false)
-  const [newTokenRequestReturned, setNewTokenRequestReturned] = useState(false)
-  const [updateOwnNftSubmitted, setUpdateOwnNftSubmitted] = useState(false)
+  const [updateTxFailed, setUpdateTxFailed] = useState<boolean>()
 
-  const { update, updated } = useUpdateOwnNFT(
+  const { ipfsSubmit, ipfsSubmitSucceeded, ipfsSubmitIsSubmitting } = useIpfsSubmit()
+  const { ipfsGet, ipfsGetIsSubmitting } = useIpfsGet()
+  const { update, updated, updateOwnNftIsSubmitting } = useUpdateOwnNFT(
     kamonNFT,
     tokenId,
     finalTokenUri,
   )
-  const { ipfsSubmit } = useIpfsSubmit()
-  const { ipfsGet } = useIpfsGet()
 
-  const resetFlags = () => {
-    setStillProcessingSomething(false)
-    setQuestSubmitted(false)
-    setQuestReturned(false)
-    setIpfsSubmitted(false)
-    setIpfsReturned(false)
-    setNewTokenRequestSubmitted(false)
-    setNewTokenRequestReturned(false)
+  const submittingSomething = () => {
+    return isSubmitting || ipfsSubmitIsSubmitting || ipfsGetIsSubmitting || updateOwnNftIsSubmitting
   }
-
   useEffect(() => {
     if (balanceOf && tokenIdOf && tokenURI) {
       const fetchData = async () => {
@@ -85,80 +71,47 @@ const Quests: NextPage = () => {
     }
   }, [balanceOf, tokenIdOf, tokenURI])
 
-  // Manage when the quest starts and finishes submitting
   useEffect(() => {
-    if (isSubmitting == true) {
-      resetFlags()
-      setFinalTokenUri('')
-      setNewTokenImageURI('')
-      setStillProcessingSomething(true)
-      setQuestSubmitted(true)
-    } else if (questSubmitted) {
-      setQuestReturned(true)
-    }
-  }, [isSubmitting, questSubmitted])
-
-  // Manage the IPFS request after the quest returns
-  useEffect(() => {
-    if (questReturned == true && ipfsSubmitted == false && finalTokenUri == '') {
-      if (tokenJSON !== undefined && data?.address !== undefined) {
-        const userAddress = data?.address
-        const ipfsSubmitWrapper = async () => {
-          setIpfsSubmitted(true)
-          const ipfsSubmitRet = await ipfsSubmit(tokenJSON, userAddress)
-          if (ipfsSubmitRet == 'error' || ipfsSubmitRet == 'same_points') {
-            resetFlags()
-            return
-          }
-          setIpfsReturned(true)
-          const TempfinalTokenUri = await ipfsSubmitRet
-          setFinalTokenUri(TempfinalTokenUri)
+    if (keywordSubmitSucceeded && !ipfsSubmitIsSubmitting
+      && ipfsSubmitSucceeded == undefined
+      && tokenJSON !== undefined && data?.address !== undefined
+    ) {
+      const userAddress = data?.address
+      const ipfsSubmitWrapper = async () => {
+        const ipfsSubmitRet = await ipfsSubmit(tokenJSON, userAddress)
+        if (ipfsSubmitRet !== 'error' && ipfsSubmitRet !== 'same_points') {
+          const tempFinalTokenUri = await ipfsSubmitRet
+          setFinalTokenUri(tempFinalTokenUri)
         }
-        ipfsSubmitWrapper()
       }
+      setUpdateTxFailed(false)
+      ipfsSubmitWrapper()
     }
-  }, [questReturned, data?.address, tokenJSON, finalTokenUri, ipfsSubmitted, ipfsSubmit])
+  }, [keywordSubmitSucceeded, data?.address, tokenJSON, ipfsSubmit, ipfsSubmitIsSubmitting, ipfsSubmitSucceeded])
 
-  // Manage the new token request after the quest returns
   useEffect(() => {
-    if (ipfsReturned == true && newTokenRequestSubmitted == false && newTokenJSON == undefined) {
+    if (finalTokenUri && !ipfsGetIsSubmitting && newTokenJSON == undefined) {
       const getNewToken = async () => {
-        setNewTokenRequestSubmitted(true)
         const ipfsGetRet = await ipfsGet(finalTokenUri)
         if (ipfsGetRet == 'error') {
-          resetFlags()
           return
         }
         setNewTokenJSON(ipfsGetRet)
-        setNewTokenRequestReturned(true)
-      }
-      getNewToken()
-    }
-  }, [newTokenJSON, finalTokenUri, ipfsReturned, newTokenRequestSubmitted, ipfsGet])
-
-  // Get the new token image URI from the updated token
-  useEffect(() => {
-    if (newTokenRequestReturned == true) {
-      if(newTokenJSON !== undefined) {
         const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
         if(theTokenId == BigInt(0)) { return }
         setTokenId(BigInt(parseInt(theTokenId.toString())))
-        setNewTokenImageURI(newTokenJSON.image)
+        setNewTokenImageURI(ipfsGetRet.image)
       }
+      getNewToken()
     }
-  }, [newTokenRequestReturned, newTokenJSON, newTokenImageURI, tokenIdOf, tokenId])
+  }, [newTokenJSON, finalTokenUri, ipfsGet, ipfsGetIsSubmitting, tokenIdOf])
 
-  // Call updateOwnNFT on the contract to update oru own token's URI
   useEffect(() => {
     if (
-      newTokenRequestReturned == true
-      && updateOwnNftSubmitted !== true
-      && finalTokenUri !== undefined
-      && updated !== true
-      && tokenId !== BigInt(0)
+      newTokenImageURI && updateOwnNftIsSubmitting !== true && !updateTxFailed
+      && finalTokenUri && updated !== true && tokenId !== BigInt(0)
     ) {
       const updateToken = async () => {
-        setUpdateOwnNftSubmitted(true)
         try {
           await update()
           toast({
@@ -167,11 +120,12 @@ const Quests: NextPage = () => {
             status: 'success'
           })
         } catch (err) {
+          setUpdateTxFailed(true)
           const error = err as Error;
           if (error.name == 'UserRejectedRequestError') {
             toast({
               title: 'Transaction Rejected',
-              description: 'You rejected the transaction. Please retry if you want to update your Kamon.',
+              description: 'You rejected the transaction to update your Kamon NFT. Please reload this page and retry.',
               status: 'error'
             })
           } else {
@@ -182,16 +136,10 @@ const Quests: NextPage = () => {
             })
           }
         }
-        resetFlags()
       }
       updateToken()
     }
-  }, [newTokenRequestReturned, updateOwnNftSubmitted, finalTokenUri, updated, update, tokenId, tokenIdOf, toast])
-
-  const submitForm = () => {
-    setStillProcessingSomething(true)
-    submit()
-  }
+  }, [updateTxFailed, updateOwnNftIsSubmitting, newTokenImageURI, finalTokenUri, updated, update, tokenId, tokenIdOf, toast])
 
   return (
     <>
@@ -243,10 +191,10 @@ const Quests: NextPage = () => {
                     mt={10}
                     w="100%"
                     colorScheme="teal"
-                    onClick={() => submitForm()}
-                    isLoading={stillProcessingSomething}
+                    onClick={() => submit()}
+                    isLoading={submittingSomething()}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == '' || stillProcessingSomething}
+                    disabled={keyword == '' || submittingSomething() || updateTxFailed}
                   >
                     {t('QUEST.SUBMIT_BUTTON')}
                   </Button>
