@@ -15,12 +15,12 @@ import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components/layouts/layout'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
+import { useUpdateToken } from '@/hooks/quest/useUpdateToken'
 import { useHasNFT } from '@/hooks/useHasNFT'
 import { useBalanceOf } from '@/hooks/useBalanceOf'
 import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
-import { useUpdateOwnNFT } from '@/hooks/useUpdateOwnNFT'
 import { useIpfsSubmit, KamonToken } from '@/hooks/useIpfsSubmit'
 import { useToast } from '@/hooks/useToast'
 import { useIpfsGet } from '@/hooks/useIpfsGet'
@@ -51,14 +51,13 @@ const Quests: NextPage = () => {
 
   const { ipfsSubmit, ipfsSubmitSucceeded, ipfsSubmitIsSubmitting } = useIpfsSubmit()
   const { ipfsGet, ipfsGetIsSubmitting } = useIpfsGet()
-  const { update, updated, updateOwnNftIsSubmitting } = useUpdateOwnNFT(
+  const { updateToken, updateTokenSucceeded, updateTokenIsSubmitting } = useUpdateToken(
     kamonNFT,
     tokenId,
     finalTokenUri,
   )
-
   const submittingSomething = () => {
-    return isSubmitting || ipfsSubmitIsSubmitting || ipfsGetIsSubmitting || updateOwnNftIsSubmitting
+    return isSubmitting || ipfsSubmitIsSubmitting || ipfsGetIsSubmitting || updateTokenIsSubmitting
   }
   useEffect(() => {
     if (balanceOf && tokenIdOf && tokenURI) {
@@ -108,38 +107,15 @@ const Quests: NextPage = () => {
 
   useEffect(() => {
     if (
-      newTokenImageURI && updateOwnNftIsSubmitting !== true && !updateTxFailed
-      && finalTokenUri && updated !== true && tokenId !== BigInt(0)
+      newTokenImageURI && updateTokenIsSubmitting !== true && !updateTxFailed
+      && finalTokenUri && updateTokenSucceeded !== true && tokenId !== BigInt(0)
     ) {
-      const updateToken = async () => {
-        try {
-          await update()
-          toast({
-            title: 'Kamon updated',
-            description: 'NFT metadata and image successfully updated.',
-            status: 'success'
-          })
-        } catch (err) {
-          setUpdateTxFailed(true)
-          const error = err as Error;
-          if (error.name == 'UserRejectedRequestError') {
-            toast({
-              title: 'Transaction Rejected',
-              description: 'You rejected the transaction to update your Kamon NFT. Please reload this page and retry.',
-              status: 'error'
-            })
-          } else {
-            toast({
-              title: 'Error',
-              description: 'The transaction failed.',
-              status: 'error'
-            })
-          }
-        }
+      const updateTokenWrapper = async () => {
+        setUpdateTxFailed(!(await updateToken()))
       }
-      updateToken()
+      updateTokenWrapper()
     }
-  }, [updateTxFailed, updateOwnNftIsSubmitting, newTokenImageURI, finalTokenUri, updated, update, tokenId, tokenIdOf, toast])
+  }, [updateToken, updateTxFailed, updateTokenIsSubmitting, newTokenImageURI, finalTokenUri, updateTokenSucceeded, tokenId, tokenIdOf, toast])
 
   return (
     <>
@@ -185,6 +161,7 @@ const Quests: NextPage = () => {
                     placeholder={t('QUEST.INPUT_PLACEHOLDER')}
                     onChange={inputChange}
                     textTransform="uppercase"
+                    disabled={updateTxFailed}
                   />
 
                   <Button
