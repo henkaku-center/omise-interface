@@ -60,7 +60,7 @@ const Quests: NextPage = () => {
     return isSubmitting || ipfsSubmitIsSubmitting || ipfsGetIsSubmitting || updateTokenIsSubmitting
   }
   useEffect(() => {
-    if (balanceOf && tokenIdOf && tokenURI) {
+    if (tokenURI) {
       const fetchData = async () => {
         const pinataRequest = await fetch(tokenURI.toString())
         const responseJson = await pinataRequest.json()
@@ -68,14 +68,14 @@ const Quests: NextPage = () => {
       }
       fetchData()
     }
-  }, [balanceOf, tokenIdOf, tokenURI])
+  }, [tokenURI])
 
   useEffect(() => {
     if (keywordSubmitSucceeded && !ipfsSubmitIsSubmitting
       && ipfsSubmitSucceeded == undefined
-      && tokenJSON !== undefined && data?.address !== undefined
     ) {
-      const userAddress = data?.address
+      if (data?.address == undefined || tokenJSON == undefined) return
+      const userAddress: string = data?.address
       const ipfsSubmitWrapper = async () => {
         const ipfsSubmitRet = await ipfsSubmit(tokenJSON, userAddress)
         if (ipfsSubmitRet !== 'error' && ipfsSubmitRet !== 'same_points') {
@@ -107,15 +107,15 @@ const Quests: NextPage = () => {
 
   useEffect(() => {
     if (
-      newTokenImageURI && updateTokenIsSubmitting !== true && !updateTxFailed
-      && finalTokenUri && updateTokenSucceeded !== true && tokenId !== BigInt(0)
+      newTokenImageURI && !updateTxFailed
+      && updateTokenIsSubmitting !== true && updateTokenSucceeded !== true
     ) {
       const updateTokenWrapper = async () => {
         setUpdateTxFailed(!(await updateToken()))
       }
       updateTokenWrapper()
     }
-  }, [updateToken, updateTxFailed, updateTokenIsSubmitting, newTokenImageURI, finalTokenUri, updateTokenSucceeded, tokenId, tokenIdOf, toast])
+  }, [updateToken, updateTxFailed, updateTokenIsSubmitting, newTokenImageURI, updateTokenSucceeded])
 
   return (
     <>
