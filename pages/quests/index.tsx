@@ -17,17 +17,14 @@ import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
 import { useUpdateToken } from '@/hooks/quest/useUpdateToken'
 import { useHasNFT } from '@/hooks/useHasNFT'
-import { useBalanceOf } from '@/hooks/useBalanceOf'
 import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useIpfsSubmit, KamonToken } from '@/hooks/useIpfsSubmit'
-import { useToast } from '@/hooks/useToast'
 import { useIpfsGet } from '@/hooks/useIpfsGet'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
-  const { toast } = useToast()
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -39,7 +36,6 @@ const Quests: NextPage = () => {
     name: 'kamonNFT',
     chainId: activeChain?.id
   })
-  const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
   const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
   const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
   const [tokenId, setTokenId] = useState<BigInt>(BigInt(0))

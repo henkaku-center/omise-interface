@@ -1,6 +1,42 @@
-import { useUpdateOwnNFT } from '@/hooks/useUpdateOwnNFT'
-import { useToast } from '@/hooks/useToast'
 import { useState } from 'react'
+import { useContractWrite } from 'wagmi'
+import kamonNFTContract from '@/utils/abis/kamonNFT.json'
+import { useToast } from '@/hooks/useToast'
+
+const useUpdateOwnNFT = (
+  contract: string,
+  tokenId: BigInt,
+  finalTokenUri: string,
+) => {
+  const [updated, setUpdated] = useState<boolean>(false)
+
+  const {
+    data: updateData,
+    isError,
+    isLoading: updateOwnNftIsSubmitting,
+    writeAsync: update
+  } = useContractWrite(
+    {
+      addressOrName: contract,
+      contractInterface: kamonNFTContract.abi
+    },
+    'updateOwnNFT',
+    {
+      args: [tokenId, finalTokenUri],
+      onSuccess() {
+        setUpdated(true)
+      }
+    },
+  )
+
+  return {
+    updateData,
+    updateOwnNftIsSubmitting,
+    isError,
+    update,
+    updated
+  }
+}
 
 export const useUpdateToken = (
   kamonNFT: string,
