@@ -17,7 +17,6 @@ import { useHasNFT } from '@/hooks/useHasNFT'
 import Link from 'next/link'
 import { ethers } from 'ethers'
 import { useCallback } from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const Claim: NextPage = () => {
   const mounted = useMounted()
@@ -101,17 +100,6 @@ const Claim: NextPage = () => {
       </Layout>
     </>
   )
-}
-
-interface GetStaticPropsOptions {
-  locale: string
-}
-export async function getStaticProps({ locale }: GetStaticPropsOptions) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common']))
-    }
-  }
 }
 
 export default Claim

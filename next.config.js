@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
-const { i18n } = require('./next-i18next.config')
+const nextTranslate = require('next-translate');
 
-const nextConfig = {
+const nextConfig = nextTranslate({
   reactStrictMode: true,
-  i18n,
-}
+  trailingSlash: true,
+})
 
 module.exports = nextConfig

@@ -1,5 +1,5 @@
 import { Box, Text, Badge, Image } from '@chakra-ui/react'
-import { useTranslation } from 'next-i18next'
+import useTranslation from 'next-translate/useTranslation'
 import { Watermark } from '@hirohe/react-watermark'
 
 interface Prop {

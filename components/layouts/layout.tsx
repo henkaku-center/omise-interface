@@ -10,11 +10,12 @@ import {
 } from '@chakra-ui/react'
 import { default as NextLink } from 'next/link'
 import { useRouter } from 'next/router'
-import { useTranslation } from 'next-i18next'
+import useTranslation from 'next-translate/useTranslation'
 import { SwitchNetworkAlert } from '@/components/metaMask/SwitchNetworkAlert'
 import { MetaMaskLeadBanner } from '@/components/metaMask/MetaMaskLeadBanner'
 import { Footer } from '@/components/footer'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import setLanguage from 'next-translate/setLanguage'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -22,7 +23,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter()
-  const { t } = useTranslation('common')
+  const { t, lang } = useTranslation('common')
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
@@ -53,13 +54,7 @@ const Layout = ({ children }: LayoutProps) => {
             <NextLink passHref href="/quests" locale={router.locale}>
               <Link p={4}>{t('QUESTS_LINK')}</Link>
             </NextLink>
-            <NextLink
-              passHref
-              href={router.pathname}
-              locale={router.locale === 'en' ? 'ja' : 'en'}
-            >
-              <Link>{t('LANG_SWITCHER')}</Link>
-            </NextLink>
+            <Button onClick={async () => await setLanguage(lang == 'en' ? 'ja' : 'en')}>{lang == 'en' ? '日本語' : 'English'}</Button>
           </Box>
         </Flex>
       </Box>
