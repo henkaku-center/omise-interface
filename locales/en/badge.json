@@ -1,0 +1,7 @@
+{
+  "title": {
+    "mintable": "You can mint this badge with",
+    "notMintable": "You canont mint this badge. to Get this badge you need to met certain criteria",
+    "freeMintable": "You can mint this badge free"
+  }
+}

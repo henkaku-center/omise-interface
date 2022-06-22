@@ -2,6 +2,7 @@
   "locales": ["en", "ja"],
   "defaultLocale": "en",
   "pages": {
-    "*": ["common"]
+    "*": ["common"],
+    "/badges/[id]": ["badge"]
   }
 }
