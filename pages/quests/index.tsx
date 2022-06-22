@@ -11,8 +11,7 @@ import {
 import { useAccount, useConnect } from 'wagmi'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components/layouts/layout'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
@@ -100,14 +99,4 @@ const Quests: NextPage = () => {
   )
 }
 
-interface GetStaticPropsOptions {
-  locale: string
-}
-export async function getStaticProps({ locale }: GetStaticPropsOptions) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common']))
-    }
-  }
-}
 export default Quests

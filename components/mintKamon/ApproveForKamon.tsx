@@ -1,5 +1,5 @@
 import { Heading, Text } from '@chakra-ui/react'
-import { useTranslation } from 'next-i18next'
+import useTranslation from 'next-translate/useTranslation'
 import { Approve } from '@/components/metaMask/Approve'
 
 interface Props {

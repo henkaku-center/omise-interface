@@ -8,7 +8,7 @@ import {
   Input,
   Box
 } from '@chakra-ui/react'
-import { useTranslation } from 'next-i18next'
+import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components/layouts/layout'
 import { useToast } from '@/hooks/useToast'
 import {

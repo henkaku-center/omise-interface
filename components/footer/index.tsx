@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { FaGithubAlt } from 'react-icons/fa'
 import { AiFillTwitterCircle } from "react-icons/ai";
-import { useTranslation } from 'next-i18next'
+import useTranslation from 'next-translate/useTranslation'
 
 const SocialButton = ({
   children,

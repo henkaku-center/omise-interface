@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { chain, useNetwork } from 'wagmi'
-import { useTranslation } from 'next-i18next'
+import useTranslation from 'next-translate/useTranslation'
 
 export const SwitchNetworkAlert: React.FC = () => {
   const { t } = useTranslation('common')
