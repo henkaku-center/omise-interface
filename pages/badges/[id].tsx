@@ -74,8 +74,15 @@ const Badge = () => {
                   <>
                     {t('title.mintable')} {displayValue(badge.amount)} $henkaku
                     {approved ? (
-                      <Button onClick={() => mint()} isLoading={isMinting}>
-                        mint
+                      <Button
+                        width="90%"
+                        onClick={() => mint()}
+                        colorScheme="teal"
+                        mt={2}
+                        loadingText="minting..."
+                        isLoading={isMinting}
+                      >
+                        {t('mint')}
                       </Button>
                     ) : (
                       <Approve
@@ -100,7 +107,7 @@ const Badge = () => {
                         loadingText="minting..."
                         isLoading={isMinting}
                       >
-                        {t('approve')}
+                        {t('mint')}
                       </Button>
                     </Text>
                   </>
