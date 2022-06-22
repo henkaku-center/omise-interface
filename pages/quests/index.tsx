@@ -20,8 +20,8 @@ import { useHasNFT } from '@/hooks/useHasNFT'
 import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
-import { useIpfsSubmit, KamonToken } from '@/hooks/useIpfsSubmit'
-import { useIpfsGet } from '@/hooks/useIpfsGet'
+import { useUpdateTokenMetadata, KamonToken } from '@/hooks/useUpdateTokenMetadata'
+import { useFetchTokenMetadata } from '@/hooks/useFetchTokenMetadata'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
@@ -44,8 +44,8 @@ const Quests: NextPage = () => {
   const [newTokenImageURI, setNewTokenImageURI] = useState('')
   const [updateTxLaunched, setUpdateTxLaunched] = useState<boolean>()
 
-  const { ipfsSubmit, ipfsSubmitIsSubmitting } = useIpfsSubmit()
-  const { ipfsGet } = useIpfsGet()
+  const { updateTokenMetadata, updateTokenMetadataIsSubmitting } = useUpdateTokenMetadata()
+  const { fetchTokenMetadata } = useFetchTokenMetadata()
   const { updateToken, updateTokenIsSubmitting } = useUpdateToken(
     kamonNFT,
     tokenId,
@@ -63,29 +63,29 @@ const Quests: NextPage = () => {
     }
   }, [tokenURI])
 
-  const ipfsSubmitWrapper = async () => {
+  const updateTokenMetadataWrapper = async () => {
     if (data?.address == undefined || tokenJSON == undefined) return
     const userAddress: string = data?.address
-    const ipfsSubmitRet = await ipfsSubmit(tokenJSON, userAddress)
-    if (ipfsSubmitRet === 'error' || ipfsSubmitRet === 'same_points') return
-    setFinalTokenUri(await ipfsSubmitRet)
+    const updateTokenMetadataRet = await updateTokenMetadata(tokenJSON, userAddress)
+    if (updateTokenMetadataRet === 'error' || updateTokenMetadataRet === 'same_points') return
+    setFinalTokenUri(await updateTokenMetadataRet)
     setUpdateTxLaunched(false)
   }
 
   useEffect(() => {
     if (!finalTokenUri) return
     const getNewToken = async () => { 
-      const ipfsGetRet = await ipfsGet(finalTokenUri)
-      if (ipfsGetRet == 'error') {
+      const fetchTokenMetadataRet = await fetchTokenMetadata(finalTokenUri)
+      if (fetchTokenMetadataRet == 'error') {
         return
       }
       const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
       if(theTokenId == BigInt(0)) { return }
       setTokenId(BigInt(parseInt(theTokenId.toString())))
-      setNewTokenImageURI(ipfsGetRet.image)
+      setNewTokenImageURI(fetchTokenMetadataRet.image)
     }
     getNewToken()
-  }, [finalTokenUri, ipfsGet, tokenIdOf])
+  }, [finalTokenUri, fetchTokenMetadata, tokenIdOf])
 
   useEffect(() => {
     if (!newTokenImageURI || updateTxLaunched == true) return
@@ -143,10 +143,10 @@ const Quests: NextPage = () => {
                     mt={10}
                     w="100%"
                     colorScheme="teal"
-                    onClick={() => ipfsSubmitWrapper()}
-                    isLoading={ipfsSubmitIsSubmitting || updateTokenIsSubmitting}
+                    onClick={() => updateTokenMetadataWrapper()}
+                    isLoading={updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == '' || ipfsSubmitIsSubmitting || updateTokenIsSubmitting}
+                    disabled={keyword == '' || updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
                   >
                     {t('QUEST.UPDATE_NFT_BUTTON')}
                   </Button>
@@ -168,7 +168,7 @@ const Quests: NextPage = () => {
                     onClick={() => submit()}
                     isLoading={isSubmitting}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == '' || ipfsSubmitIsSubmitting || updateTokenIsSubmitting}
+                    disabled={keyword == '' || updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
                   >
                     {t('QUEST.SUBMIT_BUTTON')}
                   </Button>

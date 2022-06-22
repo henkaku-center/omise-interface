@@ -2,21 +2,21 @@ import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
 import { useToast } from '@/hooks/useToast'
 
-export const useIpfsGet = () => {  
+export const useFetchTokenMetadata = () => {  
   const { toast } = useToast()
-  const [ipfsGetSucceeded, setIpfsGetSucceeded] = useState<boolean>()
-  const [ipfsGetIsSubmitting, setIpfsGetIsSubmitting] = useState<boolean>()
+  const [fetchTokenMetadataSucceeded, setFetchTokenMetadataSucceeded] = useState<boolean>()
+  const [fetchTokenMetadataIsSubmitting, setFetchTokenMetadataIsSubmitting] = useState<boolean>()
 
-  const ipfsGet = async (tokenUri: string) => {
+  const fetchTokenMetadata = async (tokenUri: string) => {
     try {
-      setIpfsGetIsSubmitting(true)
+      setFetchTokenMetadataIsSubmitting(true)
       const newTokenRequest = await axios.get(tokenUri)
-      setIpfsGetIsSubmitting(false)
-      setIpfsGetSucceeded(true)
+      setFetchTokenMetadataIsSubmitting(false)
+      setFetchTokenMetadataSucceeded(true)
       return newTokenRequest.data
     } catch (err) {
-      setIpfsGetIsSubmitting(false)
-      setIpfsGetSucceeded(false)
+      setFetchTokenMetadataIsSubmitting(false)
+      setFetchTokenMetadataSucceeded(false)
       const error = err as Error | AxiosError;
       let title = ''
       if(axios.isAxiosError(error)){
@@ -33,5 +33,5 @@ export const useIpfsGet = () => {
     }
   }
 
-  return { ipfsGet, ipfsGetSucceeded, ipfsGetIsSubmitting }
+  return { fetchTokenMetadata, fetchTokenMetadataSucceeded, fetchTokenMetadataIsSubmitting }
 }

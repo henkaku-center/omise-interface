@@ -15,15 +15,15 @@ export interface KamonToken {
   attributes: TokenAttribute[]
 }
 
-export const useIpfsSubmit = () => {  
+export const useUpdateTokenMetadata = () => {  
   const { toast } = useToast()
   const { refetchPoint } = useGetPoint()
-  const [ipfsSubmitSucceeded, setIpfsSubmitSucceeded] = useState<boolean>()
-  const [ipfsSubmitIsSubmitting, setIpfsSubmitIsSubmitting] = useState<boolean>()
+  const [updateTokenMetadataSucceeded, setUpdateTokenMetadataSucceeded] = useState<boolean>()
+  const [updateTokenMetadataIsSubmitting, setUpdateTokenMetadataIsSubmitting] = useState<boolean>()
   const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
 
-  const ipfsSubmit = async (tokenJSON: KamonToken, userAddress: string) => {
-    setIpfsSubmitIsSubmitting(true)
+  const updateTokenMetadata = async (tokenJSON: KamonToken, userAddress: string) => {
+    setUpdateTokenMetadataIsSubmitting(true)
     let dateFromToken = 0
     let rolesFromToken: string[] = []
     const onTokenPointsAttr: TokenAttribute | undefined = tokenJSON?.attributes.find(elem => elem.trait_type == 'Points')
@@ -33,7 +33,7 @@ export const useIpfsSubmit = () => {
     const updatedPointsInt = parseInt(updatedPoints.toString())
     if(onTokenPoints == updatedPointsInt) {
       // console.log('No need to update the NFT')
-      setIpfsSubmitSucceeded(false)
+      setUpdateTokenMetadataSucceeded(false)
       return('same_points') // Comment block for debugging
     }
     tokenJSON?.attributes.forEach((attr: TokenAttribute) => {
@@ -61,12 +61,12 @@ export const useIpfsSubmit = () => {
           'Content-Type': 'application/json'
         }
       })
-      setIpfsSubmitIsSubmitting(false)
-      setIpfsSubmitSucceeded(true)
+      setUpdateTokenMetadataIsSubmitting(false)
+      setUpdateTokenMetadataSucceeded(true)
       return(ipfsRequest.data.tokenUri)
     } catch (err) {
-      setIpfsSubmitIsSubmitting(false)
-      setIpfsSubmitSucceeded(false)
+      setUpdateTokenMetadataIsSubmitting(false)
+      setUpdateTokenMetadataSucceeded(false)
       const error = err as Error | AxiosError;
       let title = ''
       if(axios.isAxiosError(error)){
@@ -83,5 +83,5 @@ export const useIpfsSubmit = () => {
     }
   }
 
-  return { ipfsSubmit, ipfsSubmitSucceeded, ipfsSubmitIsSubmitting }
+  return { updateTokenMetadata, updateTokenMetadataIsSubmitting, updateTokenMetadataSucceeded }
 }
