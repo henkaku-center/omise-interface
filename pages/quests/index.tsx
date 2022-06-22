@@ -146,7 +146,7 @@ const Quests: NextPage = () => {
                     onClick={() => updateTokenMetadataWrapper()}
                     isLoading={updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == '' || updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
+                    disabled={updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
                   >
                     {t('QUEST.UPDATE_NFT_BUTTON')}
                   </Button>
@@ -168,7 +168,7 @@ const Quests: NextPage = () => {
                     onClick={() => submit()}
                     isLoading={isSubmitting}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == '' || updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
+                    disabled={keyword == '' || isSubmitting}
                   >
                     {t('QUEST.SUBMIT_BUTTON')}
                   </Button>
