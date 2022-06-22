@@ -1,11 +1,24 @@
 import { Layout } from '@/components/layouts/layout'
-import { Heading, Text, SimpleGrid, Center, Link } from '@chakra-ui/react'
+import {
+  Heading,
+  Text,
+  SimpleGrid,
+  Center,
+  Link,
+  Button
+} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import { useBadge } from '@/hooks/badge/useBadge'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { NFTImage } from '@/components/NFTImage'
 import { BigNumber, ethers } from 'ethers'
+import { getContractAddress } from '@/utils/contractAddress'
+import { useAccount, useNetwork } from 'wagmi'
+import { Approve } from '@/components/metaMask/Approve'
+import { useApproval } from '@/hooks/useApproval'
+import { useMintBadge } from '@/hooks/badge/useMintBadge'
+import { useBadgeBalanceOf } from '@/hooks/badge/useBalanceOf'
 
 const displayValue = (number: BigNumber) => {
   return number.div(BigNumber.from(10).pow(18)).toString()
@@ -14,9 +27,23 @@ const displayValue = (number: BigNumber) => {
 const Badge = () => {
   const router = useRouter()
   const { id } = router.query
-  const { badge } = useBadge(parseInt(id as string))
+  const tokenID = parseInt(id as string)
+  const { activeChain } = useNetwork()
+  const { badge } = useBadge(tokenID)
   const { t } = useTranslation('badge')
+  const { data } = useAccount()
   const { tokenURIJSON } = useFetchTokenURIJSON(badge?.tokenURI)
+  const henkakuErc20 = getContractAddress({
+    name: 'henkakuErc20',
+    chainId: activeChain?.id
+  })
+  const henkakuBadge = getContractAddress({
+    name: 'henkakuBadge',
+    chainId: activeChain?.id
+  })
+  const approved = useApproval(henkakuErc20, henkakuBadge, data?.address)
+  const { isMinting, mint } = useMintBadge(tokenID)
+  const { balanceOf, hasNft } = useBadgeBalanceOf(data?.address, tokenID)
   return (
     <>
       <Layout>
@@ -41,14 +68,42 @@ const Badge = () => {
             <Center mt={5}></Center>
             <Center>
               <Text>
-                {!badge?.mintable && t('title.notMintable')}
-                {badge?.mintable && badge?.amount.gt(0) && (
+                {hasNft && t('title.minted')}
+                {!badge?.mintable && !hasNft && t('title.notMintable')}
+                {badge?.mintable && badge?.amount.gt(0) && !hasNft && (
                   <>
                     {t('title.mintable')} {displayValue(badge.amount)} $henkaku
+                    {approved ? (
+                      <Button onClick={() => mint()} isLoading={isMinting}>
+                        mint
+                      </Button>
+                    ) : (
+                      <Approve
+                        erc20={henkakuErc20}
+                        spender={henkakuBadge}
+                        style={{ width: '90%' }}
+                      >
+                        {t('approve')}
+                      </Approve>
+                    )}
                   </>
                 )}
-                {badge?.mintable && badge?.amount.eq(0) && (
-                  <>{t('title.freeMintable')}</>
+                {badge?.mintable && badge?.amount.eq(0) && !hasNft && (
+                  <>
+                    {t('title.freeMintable')}
+                    <Text>
+                      <Button
+                        width="90%"
+                        onClick={() => mint()}
+                        colorScheme="teal"
+                        mt={2}
+                        loadingText="minting..."
+                        isLoading={isMinting}
+                      >
+                        {t('approve')}
+                      </Button>
+                    </Text>
+                  </>
                 )}
               </Text>
             </Center>
