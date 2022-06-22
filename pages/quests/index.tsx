@@ -42,19 +42,16 @@ const Quests: NextPage = () => {
   const [tokenJSON, setTokenJSON] = useState<KamonToken>()
   const [finalTokenUri, setFinalTokenUri] = useState('')
   const [newTokenImageURI, setNewTokenImageURI] = useState('')
-  const [newTokenJSON, setNewTokenJSON] = useState<KamonToken>()
-  const [updateTxFailed, setUpdateTxFailed] = useState<boolean>()
+  const [updateTxLaunched, setUpdateTxLaunched] = useState<boolean>()
 
-  const { ipfsSubmit, ipfsSubmitSucceeded, ipfsSubmitIsSubmitting } = useIpfsSubmit()
-  const { ipfsGet, ipfsGetIsSubmitting } = useIpfsGet()
-  const { updateToken, updateTokenSucceeded, updateTokenIsSubmitting } = useUpdateToken(
+  const { ipfsSubmit, ipfsSubmitIsSubmitting } = useIpfsSubmit()
+  const { ipfsGet } = useIpfsGet()
+  const { updateToken, updateTokenIsSubmitting } = useUpdateToken(
     kamonNFT,
     tokenId,
     finalTokenUri,
   )
-  const submittingSomething = () => {
-    return isSubmitting || ipfsSubmitIsSubmitting || ipfsGetIsSubmitting || updateTokenIsSubmitting
-  }
+
   useEffect(() => {
     if (tokenURI) {
       const fetchData = async () => {
@@ -72,37 +69,29 @@ const Quests: NextPage = () => {
     const ipfsSubmitRet = await ipfsSubmit(tokenJSON, userAddress)
     if (ipfsSubmitRet === 'error' || ipfsSubmitRet === 'same_points') return
     setFinalTokenUri(await ipfsSubmitRet)
-    setUpdateTxFailed(false)
+    setUpdateTxLaunched(false)
   }
 
   useEffect(() => {
-    if (finalTokenUri && !ipfsGetIsSubmitting && newTokenJSON == undefined) {
-      const getNewToken = async () => {
-        const ipfsGetRet = await ipfsGet(finalTokenUri)
-        if (ipfsGetRet == 'error') {
-          return
-        }
-        setNewTokenJSON(ipfsGetRet)
-        const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
-        if(theTokenId == BigInt(0)) { return }
-        setTokenId(BigInt(parseInt(theTokenId.toString())))
-        setNewTokenImageURI(ipfsGetRet.image)
+    if (!finalTokenUri) return
+    const getNewToken = async () => { 
+      const ipfsGetRet = await ipfsGet(finalTokenUri)
+      if (ipfsGetRet == 'error') {
+        return
       }
-      getNewToken()
+      const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
+      if(theTokenId == BigInt(0)) { return }
+      setTokenId(BigInt(parseInt(theTokenId.toString())))
+      setNewTokenImageURI(ipfsGetRet.image)
     }
-  }, [newTokenJSON, finalTokenUri, ipfsGet, ipfsGetIsSubmitting, tokenIdOf])
+    getNewToken()
+  }, [finalTokenUri, ipfsGet, tokenIdOf])
 
   useEffect(() => {
-    if (
-      newTokenImageURI && !updateTxFailed
-      && updateTokenIsSubmitting !== true && updateTokenSucceeded !== true
-    ) {
-      const updateTokenWrapper = async () => {
-        setUpdateTxFailed(!(await updateToken()))
-      }
-      updateTokenWrapper()
-    }
-  }, [updateToken, updateTxFailed, updateTokenIsSubmitting, newTokenImageURI, updateTokenSucceeded])
+    if (!newTokenImageURI || updateTxLaunched == true) return
+    setUpdateTxLaunched(true) // Avoids multiple transactions
+    updateToken()
+  }, [newTokenImageURI, updateTxLaunched, updateToken])
 
   return (
     <>
@@ -155,9 +144,9 @@ const Quests: NextPage = () => {
                     w="100%"
                     colorScheme="teal"
                     onClick={() => ipfsSubmitWrapper()}
-                    isLoading={submittingSomething()}
+                    isLoading={ipfsSubmitIsSubmitting || updateTokenIsSubmitting}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == '' || submittingSomething()}
+                    disabled={keyword == '' || ipfsSubmitIsSubmitting || updateTokenIsSubmitting}
                   >
                     {t('QUEST.UPDATE_NFT_BUTTON')}
                   </Button>
@@ -177,9 +166,9 @@ const Quests: NextPage = () => {
                     w="100%"
                     colorScheme="teal"
                     onClick={() => submit()}
-                    isLoading={submittingSomething()}
+                    isLoading={isSubmitting}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == '' || submittingSomething()}
+                    disabled={keyword == '' || ipfsSubmitIsSubmitting || updateTokenIsSubmitting}
                   >
                     {t('QUEST.SUBMIT_BUTTON')}
                   </Button>
