@@ -103,9 +103,31 @@ const Quests: NextPage = () => {
 
   useEffect(() => {
     if (!newTokenImageURI || updateTxLaunched == true) return
-    setUpdateTxLaunched(true) // Avoids multiple transactions
-    updateToken()
-  }, [newTokenImageURI, updateTxLaunched, updateToken])
+    setUpdateTxLaunched(true) // Avoids concurrent transactions
+    const updateTokenWrapper = async () => {
+      const updateTokenRet = await updateToken()
+      if (updateTokenRet == 'success') {
+        toast({
+          title: 'Kamon updated',
+          description: 'NFT metadata and image successfully updated.',
+          status: 'success'
+        })
+      } else if (updateTokenRet == 'rejected') {
+        toast({
+          title: 'Transaction Rejected',
+          description: 'You rejected the transaction to update your Kamon NFT.',
+          status: 'error'
+        })
+      } else if (updateTokenRet == 'error') {
+        toast({
+          title: 'Error',
+          description: 'The transaction failed.',
+          status: 'error'
+        })
+      }
+    }
+    updateTokenWrapper()
+  }, [newTokenImageURI, updateTxLaunched, updateToken, toast])
 
   return (
     <>
