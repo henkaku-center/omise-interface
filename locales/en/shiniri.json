@@ -6,6 +6,7 @@
   },
   "button": {
     "connectWallet": "connect your wallet",
-    "switchNetwork": "switch to polygon network"
+    "switchNetwork": "switch to polygon network",
+    "addHenkakuToken": "Add $henkaku Token"
   }
 }

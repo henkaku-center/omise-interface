@@ -6,6 +6,7 @@
   },
   "button": {
     "connectWallet": "メタマスクのウォレットに接続する",
-    "switchNetwork": "Polygonのネットワークに切り替える"
+    "switchNetwork": "Polygonのネットワークに切り替える",
+    "addHenkakuToken": "Henkakuトークンを追加する"
   }
 }
