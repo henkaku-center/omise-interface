@@ -3,6 +3,7 @@
   "defaultLocale": "en",
   "pages": {
     "*": ["common"],
-    "/badges/[id]": ["badge"]
+    "/badges/[id]": ["badge"],
+    "/shiniri": ["shiniri"]
   }
 }

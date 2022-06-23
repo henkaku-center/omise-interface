@@ -1,0 +1,11 @@
+{
+  "title": {
+    "connectWallet": "まずMetamaskのwalletを接続してください",
+    "switchNetwork": "Polygonのネットワークに切り替えてください",
+    "switchedNetwork": "🎉🎉 Polygonのネットワークに切り替えが完了しました🎉🎉"
+  },
+  "button": {
+    "connectWallet": "メタマスクのウォレットに接続する",
+    "switchNetwork": "Polygonのネットワークに切り替える"
+  }
+}
