@@ -8,5 +8,5 @@
   },
   "approve": "Mintするための許可をする",
   "mint": "Mintする",
-  "connectWallet": "メタマスクを接続する"
+  "connectWallet": "メタマスクのウォレットに接続する"
 }
