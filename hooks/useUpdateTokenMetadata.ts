@@ -16,7 +16,6 @@ export interface KamonToken {
 
 export const useUpdateTokenMetadata = () => {  
   const { refetchPoint } = useGetPoint()
-  const [updateTokenMetadataSucceeded, setUpdateTokenMetadataSucceeded] = useState<boolean>()
   const [updateTokenMetadataIsSubmitting, setUpdateTokenMetadataIsSubmitting] = useState<boolean>()
   const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
 
@@ -47,11 +46,9 @@ export const useUpdateTokenMetadata = () => {
         }
       })
       setUpdateTokenMetadataIsSubmitting(false)
-      setUpdateTokenMetadataSucceeded(true)
       return(ipfsRequest.data.tokenUri)
     } catch (err) {
       setUpdateTokenMetadataIsSubmitting(false)
-      setUpdateTokenMetadataSucceeded(false)
       const error = err as Error | AxiosError;
       if(axios.isAxiosError(error)){
         return 'Error ' + error?.response?.status
@@ -61,5 +58,5 @@ export const useUpdateTokenMetadata = () => {
     }
   }
 
-  return { updateTokenMetadata, updateTokenMetadataIsSubmitting, updateTokenMetadataSucceeded }
+  return { updateTokenMetadata, updateTokenMetadataIsSubmitting }
 }

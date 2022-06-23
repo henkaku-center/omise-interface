@@ -87,10 +87,15 @@ const Quests: NextPage = () => {
   }
 
   useEffect(() => {
-    if (!finalTokenUri) return
+    if (!finalTokenUri || newTokenImageURI) return
     const getNewToken = async () => { 
       const fetchTokenMetadataRet = await fetchTokenMetadata(finalTokenUri)
-      if (fetchTokenMetadataRet == 'error') {
+      if (fetchTokenMetadataRet.image.indexOf('Error') === 0) {
+        toast({
+          title: fetchTokenMetadataRet.image,
+          description: 'Could not get the data for your token.',
+          status: 'error'
+        })
         return
       }
       const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
@@ -99,7 +104,7 @@ const Quests: NextPage = () => {
       setNewTokenImageURI(fetchTokenMetadataRet.image)
     }
     getNewToken()
-  }, [finalTokenUri, fetchTokenMetadata, tokenIdOf])
+  }, [finalTokenUri, fetchTokenMetadata, toast])
 
   useEffect(() => {
     if (!newTokenImageURI || updateTxLaunched == true) return
@@ -127,7 +132,7 @@ const Quests: NextPage = () => {
       }
     }
     updateTokenWrapper()
-  }, [newTokenImageURI, updateTxLaunched, updateToken, toast])
+  }, [newTokenImageURI, updateToken, toast])
 
   return (
     <>
