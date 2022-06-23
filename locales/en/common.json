@@ -61,6 +61,30 @@
     "MINT_YOUR_KAMON_EXPLANATION": "You can answer the questions if you own a Kamon NFT.",
     "MINT_BUTTON": "Mint Your NFT",
     "INPUT_PLACEHOLDER": "Keyword",
-    "SUBMIT_BUTTON": "Submit Keyword"
+    "SUBMIT_BUTTON": "Submit Keyword",
+    "TOAST": {
+      "GENERATING": {
+        "TITLE": "Updating Kamon NFT",
+        "DESCRIPTION": "Generating an image with your new point total. Please wait..."
+      },
+      "UPDATETOKENMETADATA_ERROR": {
+        "DESCRIPTION": "Could not generate your new image."
+      },
+      "FETCHTOKENMETADATA_ERROR": {
+        "DESCRIPTION": "Could not get the data for your token."
+      },
+      "UPDATETOKEN_SUCCESS": {
+        "TITLE": "Kamon updated",
+        "DESCRIPTION": "NFT metadata and image successfully updated."
+      },
+      "UPDATETOKEN_REJECTED": {
+        "TITLE": "Transaction Rejected",
+        "DESCRIPTION": "You rejected the transaction to update your Kamon NFT."
+      },
+      "UPDATETOKEN_ERROR": {
+        "TITLE": "Error",
+        "DESCRIPTION": "The transaction to update your NFT failed."
+      }
+    }
   }
 }

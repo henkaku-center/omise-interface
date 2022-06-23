@@ -61,6 +61,30 @@
     "MINT_YOUR_KAMON_EXPLANATION": "NFTを持っているとキーワードを入力できます",
     "MINT_BUTTON": "NFTをミントする",
     "INPUT_PLACEHOLDER": "キーワード",
-    "SUBMIT_BUTTON": "キーワードを送信"
+    "SUBMIT_BUTTON": "キーワードを送信",
+    "TOAST": {
+      "GENERATING": {
+        "TITLE": "Kamon NFTを更新中",
+        "DESCRIPTION": "更新されたポイント数で新しい画像を生成しています。しばらくお待ちください。"
+      },
+      "UPDATETOKENMETADATA_ERROR": {
+        "DESCRIPTION": "新しい画像を生成できませんでした。"
+      },
+      "FETCHTOKENMETADATA_ERROR": {
+        "DESCRIPTION": "新しいトークンのメタデータを取得できませんでした。"
+      },
+      "UPDATETOKEN_SUCCESS": {
+        "TITLE": "Kamon更新完了",
+        "DESCRIPTION": "NFTのメタデータと画像の更新が成功しました。"
+      },
+      "UPDATETOKEN_REJECTED": {
+        "TITLE": "トランザクションが拒否された",
+        "DESCRIPTION": "Kamon NFTを更新するトランザクションを拒否されましたので完了できませんでした。"
+      },
+      "UPDATETOKEN_ERROR": {
+        "TITLE": "Error",
+        "DESCRIPTION": "Kamon NFTを更新するトランザクションが正常に完了できませんでした。"
+      }
+    }
   }
 }

@@ -69,15 +69,15 @@ const Quests: NextPage = () => {
     if (data?.address == undefined || tokenJSON == undefined) return
     const userAddress: string = data?.address
     toast({
-      title: 'Updating Kamon NFT',
-      description: 'Generating an image with your new point total. Please wait...',
+      title: t('QUEST.TOAST.GENERATING.TITLE'),
+      description: t('QUEST.TOAST.GENERATING.DESCRIPTION'),
       status: 'info'
     })
     const updateTokenMetadataRet: string = await updateTokenMetadata(tokenJSON, userAddress)
     if (updateTokenMetadataRet.indexOf('Error') === 0) {
       toast({
         title: updateTokenMetadataRet,
-        description: 'Could not generate your new image.',
+        description: t('QUEST.TOAST.UPDATETOKENMETADATA_ERROR.DESCRIPTION'),
         status: 'error'
       })
       return
@@ -93,7 +93,7 @@ const Quests: NextPage = () => {
       if (fetchTokenMetadataRet.image.indexOf('Error') === 0) {
         toast({
           title: fetchTokenMetadataRet.image,
-          description: 'Could not get the data for your token.',
+          description: t('QUEST.TOAST.FETCHTOKENMETADATA_ERROR.DESCRIPTION'),
           status: 'error'
         })
         return
@@ -113,20 +113,20 @@ const Quests: NextPage = () => {
       const updateTokenRet = await updateToken()
       if (updateTokenRet == 'success') {
         toast({
-          title: 'Kamon updated',
-          description: 'NFT metadata and image successfully updated.',
+          title: t('QUEST.TOAST.UPDATETOKEN_SUCCESS.TITLE'),
+          description: t('QUEST.TOAST.UPDATETOKEN_SUCCESS.DESCRIPTION'),
           status: 'success'
         })
       } else if (updateTokenRet == 'rejected') {
         toast({
-          title: 'Transaction Rejected',
-          description: 'You rejected the transaction to update your Kamon NFT.',
+          title: t('QUEST.TOAST.UPDATETOKEN_REJECTED.TITLE'),
+          description: t('QUEST.TOAST.UPDATETOKEN_REJECTED.DESCRIPTION'),
           status: 'error'
         })
       } else if (updateTokenRet == 'error') {
         toast({
-          title: 'Error',
-          description: 'The transaction failed.',
+          title: t('QUEST.TOAST.UPDATETOKEN_ERROR.TITLE'),
+          description: t('QUEST.TOAST.UPDATETOKEN_ERROR.DESCRIPTION'),
           status: 'error'
         })
       }
