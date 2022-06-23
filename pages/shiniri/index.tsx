@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layouts/layout'
 import { ConnectMetaMask } from '@/components/metaMask/Connect'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
-import { Button, Heading } from '@chakra-ui/react'
+import { Button, Heading, Text } from '@chakra-ui/react'
 import useTranslation from 'next-translate/useTranslation'
 import { chainId, useAccount, useConnect, useNetwork } from 'wagmi'
 
@@ -28,8 +28,11 @@ const Shiniri = () => {
       <Layout>
         <Heading as="h2" color="white.600">
           {t('title.switchNetwork')}
-          wallet address: {data?.address}
         </Heading>
+        <Text mb={5}>
+          wallet address: {data?.address}
+        </Text>
+
         {switchNetwork ? (
           <Button
             ml="1rem"
