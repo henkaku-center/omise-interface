@@ -13,12 +13,13 @@ import { useBadge } from '@/hooks/badge/useBadge'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { NFTImage } from '@/components/NFTImage'
 import { BigNumber, ethers } from 'ethers'
-import { getContractAddress } from '@/utils/contractAddress'
-import { useAccount, useNetwork } from 'wagmi'
+import { defaultChainID, getContractAddress } from '@/utils/contractAddress'
+import { useAccount, useConnect, useNetwork } from 'wagmi'
 import { Approve } from '@/components/metaMask/Approve'
 import { useApproval } from '@/hooks/useApproval'
 import { useMintBadge } from '@/hooks/badge/useMintBadge'
 import { useBadgeBalanceOf } from '@/hooks/badge/useBalanceOf'
+import { ConnectMetaMask } from '@/components/metaMask/Connect'
 
 const displayValue = (number: BigNumber) => {
   return number.div(BigNumber.from(10).pow(18)).toString()
@@ -44,6 +45,21 @@ const Badge = () => {
   const approved = useApproval(henkakuErc20, henkakuBadge, data?.address)
   const { isMinting, mint } = useMintBadge(tokenID)
   const { balanceOf, hasNft } = useBadgeBalanceOf(data?.address, tokenID)
+  const { isConnected } = useConnect()
+
+  if (!isConnected) {
+    return (
+      <>
+        <Layout>
+          <Heading as="h2" color="white.600">
+            {t('title.connectWallet')}
+          </Heading>
+          <ConnectMetaMask style={{with: '60%'}}>{t('connectWallet')}</ConnectMetaMask>
+        </Layout>
+      </>
+    )
+  }
+
   return (
     <>
       <Layout>
