@@ -13,6 +13,7 @@ import { useAccount, useConnect, useNetwork } from 'wagmi'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components/layouts/layout'
+import { useToast } from '@/hooks/useToast'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
 import { useUpdateToken } from '@/hooks/quest/useUpdateToken'
@@ -25,6 +26,7 @@ import { useFetchTokenMetadata } from '@/hooks/useFetchTokenMetadata'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
+  const { toast } = useToast()
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -66,8 +68,20 @@ const Quests: NextPage = () => {
   const updateTokenMetadataWrapper = async () => {
     if (data?.address == undefined || tokenJSON == undefined) return
     const userAddress: string = data?.address
-    const updateTokenMetadataRet = await updateTokenMetadata(tokenJSON, userAddress)
-    if (updateTokenMetadataRet === 'error' || updateTokenMetadataRet === 'same_points') return
+    toast({
+      title: 'Updating Kamon NFT',
+      description: 'Generating an image with your new point total. Please wait...',
+      status: 'info'
+    })
+    const updateTokenMetadataRet: string = await updateTokenMetadata(tokenJSON, userAddress)
+    if (updateTokenMetadataRet.indexOf('Error') === 0) {
+      toast({
+        title: updateTokenMetadataRet,
+        description: 'Could not generate your new image.',
+        status: 'error'
+      })
+      return
+    }
     setFinalTokenUri(await updateTokenMetadataRet)
     setUpdateTxLaunched(false)
   }

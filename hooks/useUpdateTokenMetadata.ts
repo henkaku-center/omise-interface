@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
-import { useToast } from '@/hooks/useToast'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
 
 export interface TokenAttribute {
@@ -16,7 +15,6 @@ export interface KamonToken {
 }
 
 export const useUpdateTokenMetadata = () => {  
-  const { toast } = useToast()
   const { refetchPoint } = useGetPoint()
   const [updateTokenMetadataSucceeded, setUpdateTokenMetadataSucceeded] = useState<boolean>()
   const [updateTokenMetadataIsSubmitting, setUpdateTokenMetadataIsSubmitting] = useState<boolean>()
@@ -26,16 +24,9 @@ export const useUpdateTokenMetadata = () => {
     setUpdateTokenMetadataIsSubmitting(true)
     let dateFromToken = 0
     let rolesFromToken: string[] = []
-    const onTokenPointsAttr: TokenAttribute | undefined = tokenJSON?.attributes.find(elem => elem.trait_type == 'Points')
-    const onTokenPoints = onTokenPointsAttr?.value
     const updatedPointsQuery = await refetchPoint()
     const updatedPoints = Array.isArray(updatedPointsQuery.data)? updatedPointsQuery.data[0]: 0
     const updatedPointsInt = parseInt(updatedPoints.toString())
-    if(onTokenPoints == updatedPointsInt) {
-      // console.log('No need to update the NFT')
-      setUpdateTokenMetadataSucceeded(false)
-      return('same_points') // Comment block for debugging
-    }
     tokenJSON?.attributes.forEach((attr: TokenAttribute) => {
       if (attr.trait_type == 'Date') {
         dateFromToken = parseInt(attr.value.toString())
@@ -49,12 +40,6 @@ export const useUpdateTokenMetadata = () => {
       points: updatedPointsInt,
       date: dateFromToken,
     }
-
-    toast({
-      title: 'Updating Kamon NFT',
-      description: 'Generating an image with your new point total. Please wait...',
-      status: 'info'
-    })
     try {
       const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
         headers: {
@@ -68,18 +53,11 @@ export const useUpdateTokenMetadata = () => {
       setUpdateTokenMetadataIsSubmitting(false)
       setUpdateTokenMetadataSucceeded(false)
       const error = err as Error | AxiosError;
-      let title = ''
       if(axios.isAxiosError(error)){
-        title = 'Error ' + error?.response?.status
+        return 'Error ' + error?.response?.status
       } else {
-        title = 'Error'
+        return 'Error'
       }
-      toast({
-        title: title,
-        description: 'Could not generate your new image.',
-        status: 'error'
-      })
-      return('error')
     }
   }
 
