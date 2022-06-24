@@ -70,9 +70,6 @@
       "UPDATETOKENMETADATA_ERROR": {
         "DESCRIPTION": "新しい画像を生成できませんでした。"
       },
-      "FETCHTOKENMETADATA_ERROR": {
-        "DESCRIPTION": "新しいトークンのメタデータを取得できませんでした。"
-      },
       "UPDATETOKEN_SUCCESS": {
         "TITLE": "Kamon更新完了",
         "DESCRIPTION": "NFTのメタデータと画像の更新が成功しました。"

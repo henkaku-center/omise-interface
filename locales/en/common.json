@@ -70,9 +70,6 @@
       "UPDATETOKENMETADATA_ERROR": {
         "DESCRIPTION": "Could not generate your new image."
       },
-      "FETCHTOKENMETADATA_ERROR": {
-        "DESCRIPTION": "Could not get the data for your token."
-      },
       "UPDATETOKEN_SUCCESS": {
         "TITLE": "Kamon updated",
         "DESCRIPTION": "NFT metadata and image successfully updated."
