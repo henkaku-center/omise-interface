@@ -21,6 +21,10 @@ const contractAddress: ContractAddress = {
     [chainId.rinkeby]: '0x9D8b1775CbEE7ae3Cf9dAE3D2CaCBA4986d7df63',
     [chainId.goerli]: '0x539BCf896f02459dBcB3a2F1D823d2E65DB7211C',
     [chainId.polygon]: '0xbF6F98CB455C73D389B0fB7Ee314C5058569A1A4',
+  },
+  henkakuBadge: {
+    [chainId.goerli]: '0x6beD9e854eC468373B70a00d864E660b9F224D32',
+    [chainId.polygon]: '',
   }
 }
 

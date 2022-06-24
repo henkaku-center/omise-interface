@@ -1,0 +1,12 @@
+{
+  "title": {
+    "connectWallet": "You must connect wallet first",
+    "switchNetwork": "You need to switch to polygon network",
+    "switchedNetwork": "🎉🎉 You swithced Polygon Network 🎉"
+  },
+  "button": {
+    "connectWallet": "connect your wallet",
+    "switchNetwork": "switch to polygon network",
+    "addHenkakuToken": "Add $henkaku Token"
+  }
+}

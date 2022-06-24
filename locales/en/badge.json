@@ -1,0 +1,12 @@
+{
+  "title": {
+    "connectWallet": "You must connect wallet first",
+    "mintable": "You can mint this badge with",
+    "notMintable": "You canont mint this badge. to Get this badge you need to met certain criteria",
+    "freeMintable": "You can mint this badge free",
+    "minted": "🎉🎉🎉 You have Badge already !! "
+  },
+  "approve": "enable to mint",
+  "mint": "mint",
+  "connectWallet": "connect your wallet"
+}
