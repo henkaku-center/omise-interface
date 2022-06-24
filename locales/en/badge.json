@@ -1,12 +1,12 @@
 {
   "title": {
-    "connectWallet": "You must connect wallet first",
-    "mintable": "You can mint this badge with",
-    "notMintable": "You canont mint this badge. to Get this badge you need to met certain criteria",
-    "freeMintable": "You can mint this badge free",
-    "minted": "🎉🎉🎉 You have Badge already !! "
+    "connectWallet": "You must connect to a wallet first!",
+    "mintable": "You can mint this Badge with",
+    "notMintable": "You cannot mint this Badge. To get this Badge you need to meet certain criteria.",
+    "freeMintable": "You can mint this Badge for free.",
+    "minted": "🎉🎉🎉 You have the Badge already! 🎉🎉🎉"
   },
-  "approve": "enable to mint",
-  "mint": "mint",
-  "connectWallet": "connect your wallet"
+  "approve": "Enable to mint",
+  "mint": "Mint",
+  "connectWallet": "Connect your wallet"
 }
