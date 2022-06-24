@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
 
 export interface TokenAttribute {
@@ -39,23 +39,13 @@ export const useUpdateTokenMetadata = () => {
       points: updatedPointsInt,
       date: dateFromToken,
     }
-    try {
-      const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      setUpdateTokenMetadataIsSubmitting(false)
-      return(ipfsRequest.data.tokenUri)
-    } catch (err) {
-      setUpdateTokenMetadataIsSubmitting(false)
-      const error = err as Error | AxiosError;
-      if(axios.isAxiosError(error)){
-        return 'Error ' + error?.response?.status
-      } else {
-        return 'Error'
+    const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    }
+    })
+    setUpdateTokenMetadataIsSubmitting(false)
+    return(ipfsRequest.data.tokenUri)
   }
 
   return { updateTokenMetadata, updateTokenMetadataIsSubmitting }
