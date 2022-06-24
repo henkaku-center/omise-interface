@@ -22,7 +22,6 @@ import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useUpdateTokenMetadata, KamonToken } from '@/hooks/useUpdateTokenMetadata'
-import { useFetchTokenMetadata } from '@/hooks/useFetchTokenMetadata'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
@@ -43,11 +42,9 @@ const Quests: NextPage = () => {
   const [tokenId, setTokenId] = useState<BigInt>(BigInt(0))
   const [tokenJSON, setTokenJSON] = useState<KamonToken>()
   const [finalTokenUri, setFinalTokenUri] = useState('')
-  const [newTokenImageURI, setNewTokenImageURI] = useState('')
   const [updateTxLaunched, setUpdateTxLaunched] = useState<boolean>()
 
   const { updateTokenMetadata, updateTokenMetadataIsSubmitting } = useUpdateTokenMetadata()
-  const { fetchTokenMetadata } = useFetchTokenMetadata()
   const { updateToken, updateTokenIsSubmitting } = useUpdateToken(
     kamonNFT,
     tokenId,
@@ -82,32 +79,17 @@ const Quests: NextPage = () => {
       })
       return
     }
-    setFinalTokenUri(await updateTokenMetadataRet)
+    const finalTokenUri = updateTokenMetadataRet
+
     setUpdateTxLaunched(false)
+    const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
+    if(theTokenId == BigInt(0)) { return }
+    setTokenId(BigInt(parseInt(theTokenId.toString())))
+    setFinalTokenUri(finalTokenUri)
   }
 
   useEffect(() => {
-    if (!finalTokenUri || newTokenImageURI) return
-    const getNewToken = async () => { 
-      const fetchTokenMetadataRet = await fetchTokenMetadata(finalTokenUri)
-      if (fetchTokenMetadataRet.image.indexOf('Error') === 0) {
-        toast({
-          title: fetchTokenMetadataRet.image,
-          description: t('QUEST.TOAST.FETCHTOKENMETADATA_ERROR.DESCRIPTION'),
-          status: 'error'
-        })
-        return
-      }
-      const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
-      if(theTokenId == BigInt(0)) { return }
-      setTokenId(BigInt(parseInt(theTokenId.toString())))
-      setNewTokenImageURI(fetchTokenMetadataRet.image)
-    }
-    getNewToken()
-  }, [finalTokenUri, fetchTokenMetadata, toast])
-
-  useEffect(() => {
-    if (!newTokenImageURI || updateTxLaunched == true) return
+    if (!finalTokenUri || updateTxLaunched == true) return
     setUpdateTxLaunched(true) // Avoids concurrent transactions
     const updateTokenWrapper = async () => {
       const updateTokenRet = await updateToken()
@@ -132,7 +114,7 @@ const Quests: NextPage = () => {
       }
     }
     updateTokenWrapper()
-  }, [newTokenImageURI, updateToken, toast])
+  }, [finalTokenUri, updateToken, toast, t])
 
   return (
     <>
