@@ -2,7 +2,7 @@
   "title": {
     "connectWallet": "You must connect to a wallet first!",
     "mintable": "You can mint this Badge with",
-    "notMintable": "You cannot mint this Badge. To get this Badge you need to meet certain criteria.",
+    "notMintable": "You cannot mint this Badge. To get this Badge you need to meet a certain criteria.",
     "freeMintable": "You can mint this Badge for free.",
     "minted": "🎉🎉🎉 You have the Badge already! 🎉🎉🎉"
   },
