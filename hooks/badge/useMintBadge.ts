@@ -1,13 +1,7 @@
 import { ethers } from 'ethers'
 import { useState } from 'react'
-import {
-  useContractWrite,
-  useContractEvent,
-  useNetwork,
-  useAccount
-} from 'wagmi'
+import { useContractWrite, useContractEvent, useAccount } from 'wagmi'
 import henkakuBadge from '@/utils/abis/henkakuBadge.json'
-import { getContractAddress } from '@/utils/contractAddress'
 
 export const useMintBadge = (
   contract: string,

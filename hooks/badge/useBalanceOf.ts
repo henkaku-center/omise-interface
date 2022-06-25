@@ -1,6 +1,5 @@
-import { useContractRead, useNetwork } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import henkakuBadge from '@/utils/abis/henkakuBadge.json'
-import { getContractAddress } from '@/utils/contractAddress'
 
 export const useBadgeBalanceOf = (
   contract: string,

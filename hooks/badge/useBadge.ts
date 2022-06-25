@@ -1,6 +1,5 @@
-import { chainId, useContractRead, useNetwork } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import henkakuBadge from '@/utils/abis/henkakuBadge.json'
-import { getContractAddress } from '@/utils/contractAddress'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 
