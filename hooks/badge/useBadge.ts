@@ -1,6 +1,5 @@
-import { chainId, useContractRead, useNetwork } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import henkakuBadge from '@/utils/abis/henkakuBadge.json'
-import { getContractAddress } from '@/utils/contractAddress'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 
@@ -14,13 +13,11 @@ export interface Badge {
 
 const BADGE_ELEMENT_SIZE = 5
 
-export const useBadge = (id: number) => {
-  const { activeChain } = useNetwork()
-  const contractAddress = getContractAddress({ name: 'henkakuBadge', chainId: activeChain?.id })
+export const useBadge = (contract: string, id: number) => {
   const [badge, setBadge] = useState<Badge>()
   const { data, isError } = useContractRead(
     {
-      addressOrName: contractAddress,
+      addressOrName: contract,
       contractInterface: henkakuBadge.abi
     },
     'badges',

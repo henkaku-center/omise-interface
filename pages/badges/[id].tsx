@@ -20,6 +20,7 @@ import { useApproval } from '@/hooks/useApproval'
 import { useMintBadge } from '@/hooks/badge/useMintBadge'
 import { useBadgeBalanceOf } from '@/hooks/badge/useBalanceOf'
 import { ConnectMetaMask } from '@/components/metaMask/Connect'
+import { useEffect, useState } from 'react'
 
 const displayValue = (number: BigNumber) => {
   return number.div(BigNumber.from(10).pow(18)).toString()
@@ -30,10 +31,8 @@ const Badge = () => {
   const { id } = router.query
   const tokenID = parseInt(id as string)
   const { activeChain } = useNetwork()
-  const { badge } = useBadge(tokenID)
   const { t } = useTranslation('badge')
   const { data } = useAccount()
-  const { tokenURIJSON } = useFetchTokenURIJSON(badge?.tokenURI)
   const henkakuErc20 = getContractAddress({
     name: 'henkakuErc20',
     chainId: activeChain?.id
@@ -42,19 +41,39 @@ const Badge = () => {
     name: 'henkakuBadge',
     chainId: activeChain?.id
   })
+  const { badge } = useBadge(henkakuBadge, tokenID)
+  const { tokenURIJSON } = useFetchTokenURIJSON(badge?.tokenURI)
   const approved = useApproval(henkakuErc20, henkakuBadge, data?.address)
-  const { isMinting, mint } = useMintBadge(tokenID)
-  const { balanceOf, hasNft } = useBadgeBalanceOf(data?.address, tokenID)
-  const { isConnected } = useConnect()
+  const { isMinting, mint } = useMintBadge(henkakuBadge, data?.address, tokenID)
+  const { balanceOf, hasNft } = useBadgeBalanceOf(
+    henkakuBadge,
+    data?.address,
+    tokenID
+  )
 
-  if (!isConnected) {
+  const [minted, setMinted] = useState(false)
+  const [noMintable, setNoMintable] = useState(false)
+  const [mintable, setMintable] = useState(false)
+  const [freeMintable, setFreeMintable] = useState(false)
+
+  useEffect(() => {
+    setMinted(hasNft)
+    setNoMintable(!badge?.mintable && !hasNft)
+    setMintable(!!badge?.mintable && badge?.amount.gt(0) && !hasNft)
+    setFreeMintable(!!badge?.mintable && badge?.amount.eq(0) && !hasNft)
+  }, [badge?.amount, badge?.mintable, hasNft])
+
+  const { isDisconnected } = useConnect()
+  if (isDisconnected) {
     return (
       <>
         <Layout>
           <Heading as="h2" color="white.600">
             {t('title.connectWallet')}
           </Heading>
-          <ConnectMetaMask style={{with: '60%'}}>{t('connectWallet')}</ConnectMetaMask>
+          <ConnectMetaMask style={{ with: '60%' }}>
+            {t('connectWallet')}
+          </ConnectMetaMask>
         </Layout>
       </>
     )
@@ -84,11 +103,12 @@ const Badge = () => {
             <Center mt={5}></Center>
             <Center>
               <Text>
-                {hasNft && t('title.minted')}
-                {!badge?.mintable && !hasNft && t('title.notMintable')}
-                {badge?.mintable && badge?.amount.gt(0) && !hasNft && (
+                {minted && t('title.minted')}
+                {noMintable && t('title.notMintable')}
+                {mintable && (
                   <>
-                    {t('title.mintable')} {displayValue(badge.amount)} $henkaku
+                    {t('title.mintable')} {badge && displayValue(badge.amount)}{' '}
+                    $henkaku
                     {approved ? (
                       <Button
                         width="90%"
@@ -111,7 +131,8 @@ const Badge = () => {
                     )}
                   </>
                 )}
-                {badge?.mintable && badge?.amount.eq(0) && !hasNft && (
+
+                {freeMintable && (
                   <>
                     {t('title.freeMintable')}
                     <Text>

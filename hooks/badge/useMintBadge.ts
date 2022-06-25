@@ -1,30 +1,29 @@
 import { ethers } from 'ethers'
 import { useState } from 'react'
-import { useContractWrite, useContractEvent, useNetwork, useAccount } from 'wagmi'
+import { useContractWrite, useContractEvent, useAccount } from 'wagmi'
 import henkakuBadge from '@/utils/abis/henkakuBadge.json'
-import { getContractAddress } from '@/utils/contractAddress'
 
 export const useMintBadge = (
+  contract: string,
+  owner: string | undefined,
   tokenID: number
 ) => {
-  const { activeChain } = useNetwork()
   const { data } = useAccount()
-  const contractAddress = getContractAddress({ name: 'henkakuBadge', chainId: activeChain?.id })
   const [minted, setMinted] = useState<boolean>(false)
-  const [isMinting, setIsminting] = useState<boolean>(false)
+  const [isMinting, setIsMinting] = useState<boolean>(false)
 
   try {
     useContractEvent(
       {
-        addressOrName: contractAddress,
+        addressOrName: contract,
         contractInterface: henkakuBadge.abi
       },
       'TransferSingle',
       (event) => {
         const [operator, form, to, id] = event
-        if (to == data?.address && id?.gt(0)) {
+        if (to == owner && id?.gt(0)) {
           setMinted(true)
-          setIsminting(false)
+          setIsMinting(false)
         }
       }
     )
@@ -41,16 +40,16 @@ export const useMintBadge = (
     writeAsync: mint
   } = useContractWrite(
     {
-      addressOrName: contractAddress,
+      addressOrName: contract,
       contractInterface: henkakuBadge.abi
     },
     'mint',
     {
       args: [tokenID],
       onSuccess() {
-        setIsminting(true)
+        setIsMinting(true)
       }
-    },
+    }
   )
 
   return {
