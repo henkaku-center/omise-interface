@@ -12,7 +12,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { useBadge } from '@/hooks/badge/useBadge'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { NFTImage } from '@/components/NFTImage'
-import { BigNumber, ethers } from 'ethers'
+import { displayValue } from '@/utils/bigNumber'
 import { defaultChainID, getContractAddress } from '@/utils/contractAddress'
 import { useAccount, useConnect, useNetwork } from 'wagmi'
 import { Approve } from '@/components/metaMask/Approve'
@@ -20,10 +20,6 @@ import { useApproval } from '@/hooks/useApproval'
 import { useMintBadge } from '@/hooks/badge/useMintBadge'
 import { useBadgeBalanceOf } from '@/hooks/badge/useBalanceOf'
 import { ConnectMetaMask } from '@/components/metaMask/Connect'
-
-const displayValue = (number: BigNumber) => {
-  return number.div(BigNumber.from(10).pow(18)).toString()
-}
 
 const Badge = () => {
   const router = useRouter()
@@ -54,7 +50,9 @@ const Badge = () => {
           <Heading as="h2" color="white.600">
             {t('title.connectWallet')}
           </Heading>
-          <ConnectMetaMask style={{with: '60%'}}>{t('connectWallet')}</ConnectMetaMask>
+          <ConnectMetaMask style={{ with: '60%' }}>
+            {t('connectWallet')}
+          </ConnectMetaMask>
         </Layout>
       </>
     )

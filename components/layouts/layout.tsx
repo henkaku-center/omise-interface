@@ -54,7 +54,17 @@ const Layout = ({ children }: LayoutProps) => {
             <NextLink passHref href="/quests" locale={router.locale}>
               <Link p={4}>{t('QUESTS_LINK')}</Link>
             </NextLink>
-            <Button onClick={async () => await setLanguage(lang == 'en' ? 'ja' : 'en')}>{lang == 'en' ? '日本語' : 'English'}</Button>
+            <Link href="/badges" p={4}>
+              {/*TODO: translate*/}
+              Badge
+            </Link>
+            <Button
+              onClick={async () =>
+                await setLanguage(lang == 'en' ? 'ja' : 'en')
+              }
+            >
+              {lang == 'en' ? '日本語' : 'English'}
+            </Button>
           </Box>
         </Flex>
       </Box>
