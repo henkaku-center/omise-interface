@@ -3,7 +3,7 @@ import { Button, styled } from '@chakra-ui/react'
 import React from 'react'
 
 interface Props {
-  style?: any;
+  style?: any
   children?: React.ReactNode
 }
 

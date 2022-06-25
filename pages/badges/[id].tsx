@@ -20,6 +20,7 @@ import { useApproval } from '@/hooks/useApproval'
 import { useMintBadge } from '@/hooks/badge/useMintBadge'
 import { useBadgeBalanceOf } from '@/hooks/badge/useBalanceOf'
 import { ConnectMetaMask } from '@/components/metaMask/Connect'
+import { useEffect, useState } from 'react'
 
 const displayValue = (number: BigNumber) => {
   return number.div(BigNumber.from(10).pow(18)).toString()
@@ -49,9 +50,21 @@ const Badge = () => {
     data?.address,
     tokenID
   )
-  const { isConnected } = useConnect()
 
-  if (!isConnected) {
+  const [minted, setMinted] = useState(false)
+  const [noMintable, setNoMintable] = useState(false)
+  const [mintable, setMintable] = useState(false)
+  const [freeMintable, setFreeMintable] = useState(false)
+
+  useEffect(() => {
+    setMinted(hasNft)
+    setNoMintable(!badge?.mintable && !hasNft)
+    setMintable(!!badge?.mintable && badge?.amount.gt(0) && !hasNft)
+    setFreeMintable(!!badge?.mintable && badge?.amount.eq(0) && !hasNft)
+  }, [badge?.amount, badge?.mintable, hasNft])
+
+  const { isDisconnected } = useConnect()
+  if (isDisconnected) {
     return (
       <>
         <Layout>
@@ -90,9 +103,9 @@ const Badge = () => {
             <Center mt={5}></Center>
             <Center>
               <Text>
-                {hasNft && t('title.minted')}
-                {!badge?.mintable && !hasNft && t('title.notMintable')}
-                {badge?.mintable && badge?.amount.gt(0) && !hasNft && (
+                {minted && t('title.minted')}
+                {noMintable && t('title.notMintable')}
+                {mintable && (
                   <>
                     {t('title.mintable')} {displayValue(badge.amount)} $henkaku
                     {approved ? (
@@ -117,7 +130,8 @@ const Badge = () => {
                     )}
                   </>
                 )}
-                {badge?.mintable && badge?.amount.eq(0) && !hasNft && (
+
+                {freeMintable && (
                   <>
                     {t('title.freeMintable')}
                     <Text>
