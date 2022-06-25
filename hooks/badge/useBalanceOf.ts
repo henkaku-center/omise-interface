@@ -2,12 +2,14 @@ import { useContractRead, useNetwork } from 'wagmi'
 import henkakuBadge from '@/utils/abis/henkakuBadge.json'
 import { getContractAddress } from '@/utils/contractAddress'
 
-export const useBadgeBalanceOf = (owner: string | undefined, tokenId: number | undefined) => {
-  const { activeChain } = useNetwork()
-  const contractAddress = getContractAddress({ name: 'henkakuBadge', chainId: activeChain?.id })
+export const useBadgeBalanceOf = (
+  contract: string,
+  owner: string | undefined,
+  tokenId: number | undefined
+) => {
   const { data: balanceOf, isError } = useContractRead(
     {
-      addressOrName: contractAddress,
+      addressOrName: contract,
       contractInterface: henkakuBadge.abi
     },
     'balanceOf',

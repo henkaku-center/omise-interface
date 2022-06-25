@@ -30,10 +30,8 @@ const Badge = () => {
   const { id } = router.query
   const tokenID = parseInt(id as string)
   const { activeChain } = useNetwork()
-  const { badge } = useBadge(tokenID)
   const { t } = useTranslation('badge')
   const { data } = useAccount()
-  const { tokenURIJSON } = useFetchTokenURIJSON(badge?.tokenURI)
   const henkakuErc20 = getContractAddress({
     name: 'henkakuErc20',
     chainId: activeChain?.id
@@ -42,9 +40,15 @@ const Badge = () => {
     name: 'henkakuBadge',
     chainId: activeChain?.id
   })
+  const { badge } = useBadge(henkakuBadge, tokenID)
+  const { tokenURIJSON } = useFetchTokenURIJSON(badge?.tokenURI)
   const approved = useApproval(henkakuErc20, henkakuBadge, data?.address)
-  const { isMinting, mint } = useMintBadge(tokenID)
-  const { balanceOf, hasNft } = useBadgeBalanceOf(data?.address, tokenID)
+  const { isMinting, mint } = useMintBadge(henkakuBadge, data?.address, tokenID)
+  const { balanceOf, hasNft } = useBadgeBalanceOf(
+    henkakuBadge,
+    data?.address,
+    tokenID
+  )
   const { isConnected } = useConnect()
 
   if (!isConnected) {
@@ -54,7 +58,9 @@ const Badge = () => {
           <Heading as="h2" color="white.600">
             {t('title.connectWallet')}
           </Heading>
-          <ConnectMetaMask style={{with: '60%'}}>{t('connectWallet')}</ConnectMetaMask>
+          <ConnectMetaMask style={{ with: '60%' }}>
+            {t('connectWallet')}
+          </ConnectMetaMask>
         </Layout>
       </>
     )
