@@ -16,7 +16,7 @@ import { Layout } from '@/components/layouts/layout'
 import { useToast } from '@/hooks/useToast'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
-import { useUpdateToken } from '@/hooks/quest/useUpdateToken'
+import { useUpdateOwnNFT } from '@/hooks/quest/useUpdateToken'
 import { useHasNFT } from '@/hooks/useHasNFT'
 import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
@@ -45,7 +45,7 @@ const Quests: NextPage = () => {
   const [updateTxLaunched, setUpdateTxLaunched] = useState<boolean>()
 
   const { updateTokenMetadata, updateTokenMetadataIsSubmitting } = useUpdateTokenMetadata()
-  const { updateToken, updateTokenIsSubmitting } = useUpdateToken(
+  const { update, isUpdating } = useUpdateOwnNFT(
     kamonNFT,
     tokenId,
     finalTokenUri,
@@ -91,30 +91,8 @@ const Quests: NextPage = () => {
   useEffect(() => {
     if (!finalTokenUri || updateTxLaunched == true) return
     setUpdateTxLaunched(true) // Avoids concurrent transactions
-    const updateTokenWrapper = async () => {
-      const updateTokenRet = await updateToken()
-      if (updateTokenRet == 'success') {
-        toast({
-          title: t('QUEST.TOAST.UPDATETOKEN_SUCCESS.TITLE'),
-          description: t('QUEST.TOAST.UPDATETOKEN_SUCCESS.DESCRIPTION'),
-          status: 'success'
-        })
-      } else if (updateTokenRet == 'rejected') {
-        toast({
-          title: t('QUEST.TOAST.UPDATETOKEN_REJECTED.TITLE'),
-          description: t('QUEST.TOAST.UPDATETOKEN_REJECTED.DESCRIPTION'),
-          status: 'error'
-        })
-      } else if (updateTokenRet == 'error') {
-        toast({
-          title: t('QUEST.TOAST.UPDATETOKEN_ERROR.TITLE'),
-          description: t('QUEST.TOAST.UPDATETOKEN_ERROR.DESCRIPTION'),
-          status: 'error'
-        })
-      }
-    }
-    updateTokenWrapper()
-  }, [finalTokenUri, updateToken, toast, t])
+    update()
+  }, [finalTokenUri, update, toast, t])
 
   return (
     <>
@@ -167,9 +145,9 @@ const Quests: NextPage = () => {
                     w="100%"
                     colorScheme="teal"
                     onClick={() => updateTokenMetadataWrapper()}
-                    isLoading={updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
+                    isLoading={updateTokenMetadataIsSubmitting || isUpdating}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={updateTokenMetadataIsSubmitting || updateTokenIsSubmitting}
+                    disabled={updateTokenMetadataIsSubmitting || isUpdating}
                   >
                     {t('QUEST.UPDATE_NFT_BUTTON')}
                   </Button>
