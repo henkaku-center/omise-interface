@@ -4,8 +4,7 @@ import { Layout } from '@/components/layouts/layout'
 import { SimpleGrid, Button } from '@chakra-ui/react'
 import { useNetwork } from 'wagmi'
 import { getContractAddress } from '@/utils/contractAddress'
-import { useBadges } from '@/hooks/badge/useBadges'
-import { ethers } from 'ethers'
+import { useBadges, BadgeElement } from '@/hooks/badge/useBadges'
 import { useEffect, useState } from 'react'
 import { BadgeBox } from '@/components/badges/BadgeBox'
 
@@ -16,10 +15,10 @@ const Badges: NextPage = () => {
     chainId: activeChain?.id
   })
   const { badges } = useBadges(henkakuBadge)
-  const [badgeList, setBadgeList] = useState<[]>([])
+  const [badgeList, setBadgeList] = useState<BadgeElement[]>([])
 
   useEffect(() => {
-    setBadgeList(badges as [])
+    setBadgeList(badges as BadgeElement[])
   }, [badges])
 
   return (

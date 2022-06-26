@@ -4,9 +4,10 @@ import useTranslation from 'next-translate/useTranslation'
 import { displayValue } from '@/utils/bigNumber'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { useTotalSupply } from '@/hooks/badge/useTotalSupply'
+import { useBadges, BadgeElement } from '@/hooks/badge/useBadges'
 
 export const BadgeBox: React.FC<{
-  badge: [boolean, boolean, ethers.BigNumber, ethers.BigNumber, string]
+  badge: BadgeElement
   tokenId: number
   contractAddress: string
 }> = (data) => {
