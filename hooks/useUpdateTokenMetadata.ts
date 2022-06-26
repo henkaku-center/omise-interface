@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
 
 export interface TokenAttribute {
@@ -13,13 +12,15 @@ export interface KamonToken {
   image: string
   attributes: TokenAttribute[]
 }
-
+interface IpfsRequestReturnJson {
+  tokenUri: string
+}
 export const useUpdateTokenMetadata = () => {  
   const { refetchPoint } = useGetPoint()
   const [updateTokenMetadataIsSubmitting, setUpdateTokenMetadataIsSubmitting] = useState<boolean>()
   const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
 
-  const updateTokenMetadata = async (tokenJSON: KamonToken, userAddress: string) => {
+  const updateTokenMetadata = async (tokenJSON: KamonToken, userAddress: string): Promise<string> => {
     setUpdateTokenMetadataIsSubmitting(true)
     let dateFromToken = 0
     let rolesFromToken: string[] = []
@@ -39,13 +40,17 @@ export const useUpdateTokenMetadata = () => {
       points: updatedPointsInt,
       date: dateFromToken,
     }
-    const ipfsRequest = await axios.post(ipfsApiEndpoint, payload, {
+    const settings = {
+      body: JSON.stringify(payload),
       headers: {
         'Content-Type': 'application/json'
-      }
-    })
+      },
+      method: 'POST'
+    }
+    const ipfsRequest = await fetch(ipfsApiEndpoint, settings)
+    const ipfsRequestReturnJson: IpfsRequestReturnJson = await ipfsRequest.json()
     setUpdateTokenMetadataIsSubmitting(false)
-    return(ipfsRequest.data.tokenUri)
+    return ipfsRequestReturnJson.tokenUri
   }
 
   return { updateTokenMetadata, updateTokenMetadataIsSubmitting }
