@@ -34,7 +34,11 @@ const Badges: NextPage = () => {
         {badgeList &&
           badgeList.map((data, index) => (
             <div key={index}>
-              <BadgeBox badge={data} tokenId={index + 1} />
+              <BadgeBox
+                badge={data}
+                tokenId={index + 1}
+                contractAddress={henkakuBadge}
+              />
             </div>
           ))}
       </SimpleGrid>
