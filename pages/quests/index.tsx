@@ -66,23 +66,14 @@ const Quests: NextPage = () => {
     }
   }, [tokenURI])
 
-  useEffect(() => {
-    if (keywordSubmitSucceeded && !ipfsSubmitIsSubmitting
-      && ipfsSubmitSucceeded == undefined
-    ) {
-      if (data?.address == undefined || tokenJSON == undefined) return
-      const userAddress: string = data?.address
-      const ipfsSubmitWrapper = async () => {
-        const ipfsSubmitRet = await ipfsSubmit(tokenJSON, userAddress)
-        if (ipfsSubmitRet !== 'error' && ipfsSubmitRet !== 'same_points') {
-          const tempFinalTokenUri = await ipfsSubmitRet
-          setFinalTokenUri(tempFinalTokenUri)
-        }
-      }
-      setUpdateTxFailed(false)
-      ipfsSubmitWrapper()
-    }
-  }, [keywordSubmitSucceeded, data?.address, tokenJSON, ipfsSubmit, ipfsSubmitIsSubmitting, ipfsSubmitSucceeded])
+  const ipfsSubmitWrapper = async () => {
+    if (data?.address == undefined || tokenJSON == undefined) return
+    const userAddress: string = data?.address
+    const ipfsSubmitRet = await ipfsSubmit(tokenJSON, userAddress)
+    if (ipfsSubmitRet === 'error' || ipfsSubmitRet === 'same_points') return
+    setFinalTokenUri(await ipfsSubmitRet)
+    setUpdateTxFailed(false)
+  }
 
   useEffect(() => {
     if (finalTokenUri && !ipfsGetIsSubmitting && newTokenJSON == undefined) {
@@ -126,7 +117,12 @@ const Quests: NextPage = () => {
           </Box>
           <Box p={2}>
             <Box w="100%" p={4}>
-              {hasNFT ? (
+              {keywordSubmitSucceeded ? (
+                <>
+                  <Heading size="md">{t('QUEST.PRE_UPDATE_HEADING')}</Heading>
+                  <Text>{t('QUEST.PRE_UPDATE_BODY')}</Text>
+                </>
+              ) : hasNFT ? (
                 <>
                   <Heading size="md">{t('QUEST.EXPLANATION_HEADING')}</Heading>
                   <Text>{t('QUEST.EXPLANATION_BODY')}</Text>
@@ -150,6 +146,23 @@ const Quests: NextPage = () => {
               >
                 {t('CONNECT_WALLET_BUTTON')}
               </Button>
+            ) : keywordSubmitSucceeded ? (
+              <Box mt={4}>
+                <Stack>
+
+                  <Button
+                    mt={10}
+                    w="100%"
+                    colorScheme="teal"
+                    onClick={() => ipfsSubmitWrapper()}
+                    isLoading={submittingSomething()}
+                    loadingText={t('BUTTON_SUBMITTING')}
+                    disabled={keyword == '' || submittingSomething()}
+                  >
+                    {t('QUEST.UPDATE_NFT_BUTTON')}
+                  </Button>
+                </Stack>
+              </Box>
             ) : hasNFT ? (
               <Box mt={4}>
                 <Stack>
@@ -157,7 +170,6 @@ const Quests: NextPage = () => {
                     placeholder={t('QUEST.INPUT_PLACEHOLDER')}
                     onChange={inputChange}
                     textTransform="uppercase"
-                    disabled={updateTxFailed}
                   />
 
                   <Button
@@ -167,7 +179,7 @@ const Quests: NextPage = () => {
                     onClick={() => submit()}
                     isLoading={submittingSomething()}
                     loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={keyword == '' || submittingSomething() || updateTxFailed}
+                    disabled={keyword == '' || submittingSomething()}
                   >
                     {t('QUEST.SUBMIT_BUTTON')}
                   </Button>

@@ -71,7 +71,7 @@ export const useUpdateToken = (
       if (error.name == 'UserRejectedRequestError') {
         toast({
           title: 'Transaction Rejected',
-          description: 'You rejected the transaction to update your Kamon NFT. Please reload this page and retry.',
+          description: 'You rejected the transaction to update your Kamon NFT.',
           status: 'error'
         })
       } else {
