@@ -13,7 +13,6 @@ import { useAccount, useConnect, useNetwork } from 'wagmi'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components/layouts/layout'
-import { useToast } from '@/hooks/useToast'
 import { useMounted } from '@/hooks/useMounted'
 import { useKeywordSubmit } from '@/hooks/quest/useKeywordSubmit'
 import { useUpdateOwnNFT } from '@/hooks/quest/useUpdateToken'
@@ -25,7 +24,6 @@ import { useUpdateTokenMetadata, KamonToken } from '@/hooks/useUpdateTokenMetada
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
-  const { toast } = useToast()
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -63,36 +61,18 @@ const Quests: NextPage = () => {
   }, [tokenURI])
 
   const updateTokenMetadataWrapper = async () => {
-    if (data?.address == undefined || tokenJSON == undefined) return
-    const userAddress: string = data?.address
-    toast({
-      title: t('QUEST.TOAST.GENERATING.TITLE'),
-      description: t('QUEST.TOAST.GENERATING.DESCRIPTION'),
-      status: 'info'
-    })
-    const updateTokenMetadataRet: string = await updateTokenMetadata(tokenJSON, userAddress)
-    if (updateTokenMetadataRet.indexOf('Error') === 0) {
-      toast({
-        title: updateTokenMetadataRet,
-        description: t('QUEST.TOAST.UPDATETOKENMETADATA_ERROR.DESCRIPTION'),
-        status: 'error'
-      })
-      return
-    }
-    const finalTokenUri = updateTokenMetadataRet
-
+    if (tokenJSON == undefined || !tokenIdOf) { return }
+    const updateTokenMetadataRet: string = await updateTokenMetadata(tokenJSON, data?.address as string)
+    setTokenId(BigInt(parseInt(tokenIdOf.toString())))
+    setFinalTokenUri(updateTokenMetadataRet)
     setUpdateTxLaunched(false)
-    const theTokenId = tokenIdOf? tokenIdOf: BigInt(0)
-    if(theTokenId == BigInt(0)) { return }
-    setTokenId(BigInt(parseInt(theTokenId.toString())))
-    setFinalTokenUri(finalTokenUri)
   }
 
   useEffect(() => {
     if (!finalTokenUri || updateTxLaunched == true) return
     setUpdateTxLaunched(true) // Avoids concurrent transactions
     update()
-  }, [finalTokenUri, update, toast, t])
+  }, [finalTokenUri, update, t])
 
   return (
     <>

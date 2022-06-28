@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useGetPoint } from '@/hooks/quest/useGetPoint'
+import { useToast } from '@/hooks/useToast'
+import useTranslation from 'next-translate/useTranslation'
 
 export interface TokenAttribute {
   display_type: string | undefined
@@ -16,12 +18,19 @@ interface IpfsRequestReturnJson {
   tokenUri: string
 }
 export const useUpdateTokenMetadata = () => {  
+  const { toast } = useToast()
+  const { t } = useTranslation('common')
   const { refetchPoint } = useGetPoint()
   const [updateTokenMetadataIsSubmitting, setUpdateTokenMetadataIsSubmitting] = useState<boolean>()
   const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
 
   const updateTokenMetadata = async (tokenJSON: KamonToken, userAddress: string): Promise<string> => {
     setUpdateTokenMetadataIsSubmitting(true)
+    toast({
+      title: t('QUEST.TOAST.GENERATING.TITLE'),
+      description: t('QUEST.TOAST.GENERATING.DESCRIPTION'),
+      status: 'info'
+    })
     let dateFromToken = 0
     let rolesFromToken: string[] = []
     const updatedPointsQuery = await refetchPoint()
@@ -50,6 +59,13 @@ export const useUpdateTokenMetadata = () => {
     const ipfsRequest = await fetch(ipfsApiEndpoint, settings)
     const ipfsRequestReturnJson: IpfsRequestReturnJson = await ipfsRequest.json()
     setUpdateTokenMetadataIsSubmitting(false)
+    if (ipfsRequestReturnJson.tokenUri.indexOf('Error') === 0) {
+      toast({
+        title: ipfsRequestReturnJson.tokenUri,
+        description: t('QUEST.TOAST.UPDATETOKENMETADATA_ERROR.DESCRIPTION'),
+        status: 'error'
+      })
+    }
     return ipfsRequestReturnJson.tokenUri
   }
 
