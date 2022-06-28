@@ -112,10 +112,12 @@ const Home: NextPage = () => {
         </NextLink>
         <SimpleGrid mt="1rem" columns={2}>
           <div>
-            <NextLink href="/quests" locale={router.locale} passHref>
+            <NextLink href="/badges" locale={router.locale} passHref>
+              <Link>
               <Button as="a" size="lg" colorScheme="teal">
               {t('BADGE_STORE_BUTTON')}
               </Button>
+              </Link>
             </NextLink>
           </div>
         </SimpleGrid>
