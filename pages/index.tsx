@@ -107,17 +107,17 @@ const Home: NextPage = () => {
         <Heading as="h2" mt="1rem" color="white.600">
           {t('BADGE_STORE_HEADING')}{' '}
         </Heading>
-        <NextLink href="/quests" locale={router.locale} passHref>
+        <NextLink href="/badges" locale={router.locale} passHref>
+          <Link>
           <Image src="/storeBanner.png" mt="1rem" alt="" />
+          </Link>
         </NextLink>
         <SimpleGrid mt="1rem" columns={2}>
           <div>
             <NextLink href="/badges" locale={router.locale} passHref>
-              <Link>
               <Button as="a" size="lg" colorScheme="teal">
               {t('BADGE_STORE_BUTTON')}
               </Button>
-              </Link>
             </NextLink>
           </div>
         </SimpleGrid>
