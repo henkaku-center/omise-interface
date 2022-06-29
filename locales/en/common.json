@@ -54,10 +54,34 @@
     "IMAGE_ALT": "JOI ITO 変革への道",
     "EXPLANATION_HEADING": "Enter weekly keyword",
     "EXPLANATION_BODY": "By answering this question you will earn 100 points, which you can redeem for $HENKAKU tokens.",
+    "PRE_UPDATE_HEADING": "That's correct!",
+    "PRE_UPDATE_BODY": "You may now update your Kamon NFT for it to reflect your point total. You will need to confirm and pay the gas (MATIC) for 1 transaction. You still have the points even if you don't update your NFT.",
+    "UPDATE_NFT_BUTTON": "Update Kamon NFT",
     "MINT_YOUR_KAMON_HEADING": "Let's get the Kamon NFT first!",
     "MINT_YOUR_KAMON_EXPLANATION": "You can answer the questions if you own a Kamon NFT.",
     "MINT_BUTTON": "Mint Your NFT",
     "INPUT_PLACEHOLDER": "Keyword",
-    "SUBMIT_BUTTON": "Submit Keyword"
+    "SUBMIT_BUTTON": "Submit Keyword",
+    "TOAST": {
+      "GENERATING": {
+        "TITLE": "Updating Kamon NFT",
+        "DESCRIPTION": "Generating an image with your new point total. Please wait..."
+      },
+      "UPDATETOKENMETADATA_ERROR": {
+        "DESCRIPTION": "Could not generate your new image."
+      },
+      "UPDATETOKEN_SUCCESS": {
+        "TITLE": "Kamon updated",
+        "DESCRIPTION": "NFT metadata and image successfully updated."
+      },
+      "UPDATETOKEN_REJECTED": {
+        "TITLE": "Transaction Rejected",
+        "DESCRIPTION": "You rejected the transaction to update your Kamon NFT."
+      },
+      "UPDATETOKEN_ERROR": {
+        "TITLE": "Error",
+        "DESCRIPTION": "The transaction to update your NFT failed."
+      }
+    }
   }
 }

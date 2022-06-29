@@ -54,10 +54,34 @@
     "IMAGE_ALT": "JOI ITO 変革への道",
     "EXPLANATION_HEADING": "今週のキーワードを入力して下さい",
     "EXPLANATION_BODY": "このキーワードを当てることであなたは$HENKAKUトークンと交換できる100ポイントを獲得できます。",
+    "PRE_UPDATE_HEADING": "正解です！",
+    "PRE_UPDATE_BODY": "Kamon NFTを更新することで、ポイント数を反映させるができます。トランザクション1つを確認し、ガス代を支払う必要があります。また、NFTを更新しなくてもポイント数が保持されます。",
+    "UPDATE_NFT_BUTTON": "Kamon NFTを更新する",
     "MINT_YOUR_KAMON_HEADING": "まず家紋NFTをミントしましょう",
     "MINT_YOUR_KAMON_EXPLANATION": "NFTを持っているとキーワードを入力できます",
     "MINT_BUTTON": "NFTをミントする",
     "INPUT_PLACEHOLDER": "キーワード",
-    "SUBMIT_BUTTON": "キーワードを送信"
+    "SUBMIT_BUTTON": "キーワードを送信",
+    "TOAST": {
+      "GENERATING": {
+        "TITLE": "Kamon NFTを更新中",
+        "DESCRIPTION": "更新されたポイント数で新しい画像を生成しています。しばらくお待ちください。"
+      },
+      "UPDATETOKENMETADATA_ERROR": {
+        "DESCRIPTION": "新しい画像を生成できませんでした。"
+      },
+      "UPDATETOKEN_SUCCESS": {
+        "TITLE": "Kamon更新完了",
+        "DESCRIPTION": "NFTのメタデータと画像の更新が成功しました。"
+      },
+      "UPDATETOKEN_REJECTED": {
+        "TITLE": "トランザクションが拒否された",
+        "DESCRIPTION": "Kamon NFTを更新するトランザクションを拒否されましたので完了できませんでした。"
+      },
+      "UPDATETOKEN_ERROR": {
+        "TITLE": "Error",
+        "DESCRIPTION": "Kamon NFTを更新するトランザクションが正常に完了できませんでした。"
+      }
+    }
   }
 }
