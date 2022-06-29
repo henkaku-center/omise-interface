@@ -32,7 +32,7 @@ const Home: NextPage = () => {
     name: 'kamonNFT',
     chainId: activeChain?.id
   })
-  const openSeaTokenBaseUrl = `https://opensea.io/assets/matic/${kamonNFT}/`
+  const openSeaTokenBaseUrl = `https://opensea.io/assets/matic/${kamonNFT}`
   const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
   const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
   const { totalSupply } = useTotalSupply(kamonNFT)
@@ -89,7 +89,7 @@ const Home: NextPage = () => {
                     {t('MINT_YOUR_KAMON_DISABLED_BUTTON_HOLDER')}
                   </Button>
                   <Spacer mt={5} />
-                  <Link href={`${openSeaTokenBaseUrl}`} isExternal>
+                  <Link href={`${openSeaTokenBaseUrl}/${tokenIdOf?.toNumber() || 1}`} isExternal>
                     {t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION')}
                     <ExternalLinkIcon mx="2px" />
                   </Link>
