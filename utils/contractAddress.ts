@@ -25,6 +25,10 @@ const contractAddress: ContractAddress = {
   henkakuBadge: {
     [chainId.goerli]: '0x6beD9e854eC468373B70a00d864E660b9F224D32',
     [chainId.polygon]: '',
+  },
+  dalabsWSBadge: {
+    [chainId.goerli]: '0x6beD9e854eC468373B70a00d864E660b9F224D32',
+    [chainId.polygon]: '',
   }
 }
 
