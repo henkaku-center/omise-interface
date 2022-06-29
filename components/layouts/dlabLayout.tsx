@@ -37,7 +37,7 @@ const DAlabLayout = ({ children }: LayoutProps) => {
       <Box p="4">
         <Flex>
           <Box p={2}>
-            <Heading size="md">Degital Archtecture Lab</Heading>
+            <Heading size="md">Digital Architecture Lab</Heading>
           </Box>
           <Spacer />
           <Box p={2}>

@@ -65,7 +65,7 @@ export const DALabFooter = () => {
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}
       >
-        <Text>© 2022 Degital Archtecture Lab</Text>
+        <Text>© 2022 Digital Architecture Lab</Text>
         <Stack direction={'row'} spacing={6}>
           <SocialButton
             label={'github'}
