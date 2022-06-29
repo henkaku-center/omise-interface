@@ -39,7 +39,7 @@ const MintKamon: NextPage = () => {
     name: 'kamonNFT',
     chainId: activeChain?.id
   })
-  const openSeaTokenBaseUrl = `https://opensea.io/assets/matic/${kamonNFT}/`
+  const openSeaCollectionUrl = 'https://opensea.io/collection/henkaku-kamon'
 
   // useState
   const [tokenURI, setTokenURI] = useState('')
@@ -115,7 +115,7 @@ const MintKamon: NextPage = () => {
                   </Heading>
                 </Center>
                 <Center mt={5}>
-                  <Link href={`${openSeaTokenBaseUrl}}`} isExternal>
+                  <Link href={openSeaCollectionUrl} isExternal>
                     {t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION')}
                     <ExternalLinkIcon mx="2px" />
                   </Link>
