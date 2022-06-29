@@ -1,0 +1,17 @@
+{
+  "notConnected": {
+    "title": "web3 garage NFTをMintしましょう!",
+    "description": "まず、ウォレットを接続する必要があります。",
+    "button": "メタマスクのウォレットに接続する"
+  },
+  "connected": {
+    "title": "メタマスクのウォレットに接続できました",
+    "description": "ウォレットが接続できたので、これでNFTをMINTできます。",
+    "button": "NFTをMINTする 💥"
+  },
+  "afterMint": {
+    "title": "Mintできました!",
+    "description": "MintしたNFTはウォレットに紐づいているので、すでにこのNFTを所有していることになります。",
+    "notice": "Openseaを確認してみてください! MINTしたNFTを確認できたと思います。それでは、次のワークショップに進んでください。"
+  }
+}
