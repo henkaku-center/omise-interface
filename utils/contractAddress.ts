@@ -27,7 +27,7 @@ const contractAddress: ContractAddress = {
     [chainId.polygon]: '',
   },
   dalabsWSBadge: {
-    [chainId.goerli]: '0xB47a29e95c736bB9175C8eF511ff1f8e688b89bf',
+    [chainId.goerli]: '0x9711954b5E6C9a43320CceD7aE567e8175b6cA7c',
     [chainId.polygon]: '',
   }
 }
