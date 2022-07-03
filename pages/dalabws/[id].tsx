@@ -5,13 +5,13 @@ import {
   Button,
   Box
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import { useBadge } from '@/hooks/badge/useBadge'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { NFTImage } from '@/components/NFTImage'
 import { getContractAddress } from '@/utils/contractAddress'
-import { useAccount, useConnect, useNetwork } from 'wagmi'
+import { chainId, useAccount, useConnect, useNetwork } from 'wagmi'
 import { useApproval } from '@/hooks/useApproval'
 import { useMintBadge } from '@/hooks/badge/useMintBadge'
 import { useBadgeBalanceOf } from '@/hooks/badge/useBalanceOf'
@@ -19,12 +19,13 @@ import { ConnectMetaMask } from '@/components/metaMask/Connect'
 import { useEffect, useState } from 'react'
 import { DAlabLayout } from '@/components/layouts/dlabLayout'
 import setLanguage from 'next-translate/setLanguage'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
 
 const DAlabBadge = () => {
   const router = useRouter()
   const { id } = router.query
   const tokenID = parseInt(id as string)
-  const { activeChain } = useNetwork()
+  const { activeChain, switchNetwork } = useNetwork()
   const { t } = useTranslation('dalabws')
   const { data } = useAccount()
   const henkakuBadge = getContractAddress({
@@ -73,6 +74,33 @@ const DAlabBadge = () => {
     )
   }
 
+  if (!isDisconnected && activeChain?.id != chainId.polygon && activeChain?.id != chainId.goerli) {
+    return (
+      <DAlabLayout>
+        <Heading as="h2" color="white.600">
+          {t('connected.switchNetwork')}
+        </Heading>
+        <Text mb={5}>wallet address: {data?.address}</Text>
+
+        {switchNetwork ? (
+          <Button
+            ml="1rem"
+            colorScheme="teal"
+            variant="outline"
+            rightIcon={<ArrowForwardIcon />}
+            onClick={() => {
+              switchNetwork(chainId.polygon)
+              Router.reload();
+             }}
+          >
+            {t('connected.switchNetwork')}
+          </Button>
+        ) : (
+          <p>hmmm, wait something is wrong. maybe reload</p>
+        )}
+      </DAlabLayout>
+    )
+  }
   const title = minted ? t('afterMint.title') : t('connected.title')
   const description = minted
     ? t('afterMint.description')

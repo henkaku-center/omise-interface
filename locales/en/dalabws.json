@@ -7,7 +7,9 @@
   "connected": {
     "title": "Connected!",
     "description": "Now that our wallets are connected We can go ahead and mint the NFT.",
-    "button": "Mint that NFT 💥"
+    "button": "Mint that NFT 💥",
+    "switchNetwork": "You need to switch to the Polygon network",
+    "switchNetworkButton": "Switch to Polygon Mainnet"
   },
   "afterMint": {
     "title": "Minted!",

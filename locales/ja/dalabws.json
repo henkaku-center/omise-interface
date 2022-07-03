@@ -7,7 +7,9 @@
   "connected": {
     "title": "メタマスクのウォレットに接続できました",
     "description": "ウォレットが接続できたので、これでNFTをMINTできます。",
-    "button": "NFTをMINTする 💥"
+    "button": "NFTをMINTする 💥",
+    "switchNetwork": "Polygonネットワークへの切り替えが必要です",
+    "switchNetworkButton": "Polygonネットワークへ切り替える"
   },
   "afterMint": {
     "title": "Mintできました!",
