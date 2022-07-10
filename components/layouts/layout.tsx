@@ -33,7 +33,11 @@ const Layout = ({ children }: LayoutProps) => {
       <Box p="4">
         <Flex>
           <Box p={2}>
-            <Heading size="md">{t('LAYOUT_HEADING')}</Heading>
+            <NextLink passHref href="/" locale={router.locale}>
+              <Link href="/">
+                <Heading size="md">{t('LAYOUT_HEADING')}</Heading>
+              </Link>
+            </NextLink>
           </Box>
           <Spacer />
           <Box p={2}>
