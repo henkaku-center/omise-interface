@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
-import { useBadge } from '@/hooks/badge/useBadge'
+import { useBadge } from '@/hooks/badge/useBadgeDalabws'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { NFTImage } from '@/components/NFTImage'
 import { getContractAddress } from '@/utils/contractAddress'

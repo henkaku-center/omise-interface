@@ -9,10 +9,9 @@ export interface Badge {
   amount: ethers.BigNumber
   maxSupply: ethers.BigNumber
   tokenURI: string
-  maxMintPerWallet: ethers.BigNumber
 }
 
-const BADGE_ELEMENT_SIZE = 6
+const BADGE_ELEMENT_SIZE = 5
 
 export const useBadge = (contract: string, id: number) => {
   const [badge, setBadge] = useState<Badge>()
@@ -29,10 +28,9 @@ export const useBadge = (contract: string, id: number) => {
 
   useEffect(() => {
     if (data && data.length == BADGE_ELEMENT_SIZE) {
-      const [mintable, transferable, amount, maxSupply, tokenURI, maxMintPerWallet] = data
-      setBadge({ mintable, transferable, amount, maxSupply, tokenURI, maxMintPerWallet})
+      const [mintable, transferable, amount, maxSupply, tokenURI] = data
+      setBadge({ mintable, transferable, amount, maxSupply, tokenURI })
     }
-    console.log('badge', badge)
   }, [data])
 
   return {
