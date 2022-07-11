@@ -104,7 +104,7 @@ const Badge = () => {
                 {mintable && (
                   <>
                     {t('title.mintable')} {badge && displayValue(badge.amount)}{' '}
-                    $henkaku
+                    $HENKAKU
                     {approved ? (
                       <Button
                         width="90%"
