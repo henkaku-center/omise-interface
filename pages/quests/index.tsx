@@ -68,12 +68,6 @@ const Quests: NextPage = () => {
     setUpdateTxLaunched(false)
   }
 
-  useEffect(() => {
-    if (!finalTokenUri || updateTxLaunched == true) return
-    setUpdateTxLaunched(true) // Avoids concurrent transactions
-    update()
-  }, [finalTokenUri, update, t])
-
   return (
     <>
       <Layout>
@@ -87,10 +81,15 @@ const Quests: NextPage = () => {
           </Box>
           <Box p={2}>
             <Box w="100%" p={4}>
-              {keywordSubmitSucceeded ? (
+              {finalTokenUri ? (
                 <>
                   <Heading size="md">{t('QUEST.PRE_UPDATE_HEADING')}</Heading>
                   <Text>{t('QUEST.PRE_UPDATE_BODY')}</Text>
+                </>
+              ) : keywordSubmitSucceeded ? (
+                <>
+                  <Heading size="md">{t('QUEST.PRE_GENERATE_HEADING')}</Heading>
+                  <Text>{t('QUEST.PRE_GENERATE_BODY')}</Text>
                 </>
               ) : hasNFT ? (
                 <>
@@ -116,20 +115,35 @@ const Quests: NextPage = () => {
               >
                 {t('CONNECT_WALLET_BUTTON')}
               </Button>
-            ) : keywordSubmitSucceeded ? (
+            ) : finalTokenUri ? (
               <Box mt={4}>
                 <Stack>
-
                   <Button
                     mt={10}
                     w="100%"
                     colorScheme="teal"
-                    onClick={() => updateTokenMetadataWrapper()}
-                    isLoading={updateTokenMetadataIsSubmitting || isUpdating}
-                    loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={updateTokenMetadataIsSubmitting || isUpdating}
+                    onClick={() => update()}
+                    isLoading={isUpdating}
+                    loadingText={t('QUEST.UPDATE_NFT_BUTTON_SENDING')}
+                    disabled={isUpdating}
                   >
                     {t('QUEST.UPDATE_NFT_BUTTON')}
+                  </Button>
+                </Stack>
+              </Box>
+            ) : keywordSubmitSucceeded ? (
+              <Box mt={4}>
+                <Stack>
+                  <Button
+                    mt={10}
+                    w="100%"
+                    colorScheme="teal"
+                    onClick={() => generateTokenMetadata()}
+                    isLoading={updateTokenMetadataIsSubmitting}
+                    loadingText={t('QUEST.GENERATE_METADATA_SENDING')}
+                    disabled={updateTokenMetadataIsSubmitting}
+                  >
+                    {t('QUEST.GENERATE_METADATA_BUTTON')}
                   </Button>
                 </Stack>
               </Box>
