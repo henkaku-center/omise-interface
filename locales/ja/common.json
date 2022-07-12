@@ -52,6 +52,17 @@
   "LANG_SWITCHER": "English",
   "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved.",
 
+  "claim": {
+    "toast": {
+      "submitted": "Submitted",
+      "error": "Error",
+      "success": "$HENKAKUを受けとりました.",
+      "insufficientAmount": "$HENKAKUを受けとれるポイントがありません。",
+      "insufficientFound": "現在受けとりできません。",
+      "txFailed": "トランザクションが失敗しました。",
+      "defaultError": "不明なサーバーエラー"
+    }
+  },
   "QUEST": {
     "HEADING": "クエスト",
     "IMAGE_ALT": "JOI ITO 変革への道",
