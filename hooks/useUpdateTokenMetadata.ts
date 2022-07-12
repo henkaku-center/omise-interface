@@ -26,11 +26,6 @@ export const useUpdateTokenMetadata = () => {
 
   const updateTokenMetadata = async (tokenJSON: KamonToken, userAddress: string): Promise<string> => {
     setUpdateTokenMetadataIsSubmitting(true)
-    toast({
-      title: t('QUEST.TOAST.GENERATING.TITLE'),
-      description: t('QUEST.TOAST.GENERATING.DESCRIPTION'),
-      status: 'info'
-    })
     let dateFromToken = 0
     let rolesFromToken: string[] = []
     const updatedPointsQuery = await refetchPoint()
