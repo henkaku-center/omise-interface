@@ -20,7 +20,10 @@ import { useHasNFT } from '@/hooks/useHasNFT'
 import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
-import { useUpdateTokenMetadata, KamonToken } from '@/hooks/useUpdateTokenMetadata'
+import {
+  useUpdateTokenMetadata,
+  KamonToken
+} from '@/hooks/useUpdateTokenMetadata'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
@@ -28,7 +31,8 @@ const Quests: NextPage = () => {
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
   const { data } = useAccount()
-  const { keyword, inputChange, submit, isSubmitting, keywordSubmitSucceeded } = useKeywordSubmit()
+  const { keyword, inputChange, submit, isSubmitting, keywordSubmitSucceeded } =
+    useKeywordSubmit()
   const { hasNFT } = useHasNFT()
   const { activeChain } = useNetwork()
   const kamonNFT = getContractAddress({
@@ -42,11 +46,12 @@ const Quests: NextPage = () => {
   const [finalTokenUri, setFinalTokenUri] = useState('')
   const [updateTxLaunched, setUpdateTxLaunched] = useState<boolean>()
 
-  const { updateTokenMetadata, updateTokenMetadataIsSubmitting } = useUpdateTokenMetadata()
+  const { updateTokenMetadata, updateTokenMetadataIsSubmitting } =
+    useUpdateTokenMetadata()
   const { update, isUpdating } = useUpdateOwnNFT(
     kamonNFT,
     tokenId,
-    finalTokenUri,
+    finalTokenUri
   )
 
   useEffect(() => {
@@ -60,9 +65,14 @@ const Quests: NextPage = () => {
     }
   }, [tokenURI])
 
-  const updateTokenMetadataWrapper = async () => {
-    if (tokenJSON == undefined || !tokenIdOf) { return }
-    const updateTokenMetadataRet: string = await updateTokenMetadata(tokenJSON, data?.address as string)
+  const generateTokenMetadata = async () => {
+    if (tokenJSON == undefined || !tokenIdOf) {
+      return
+    }
+    const updateTokenMetadataRet: string = await updateTokenMetadata(
+      tokenJSON,
+      data?.address as string
+    )
     setTokenId(BigInt(parseInt(tokenIdOf.toString())))
     setFinalTokenUri(updateTokenMetadataRet)
     setUpdateTxLaunched(false)
