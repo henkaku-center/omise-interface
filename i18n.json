@@ -5,6 +5,7 @@
     "*": ["common"],
     "/badges": ["badge"],
     "/badges/[id]": ["badge"],
+    "/claim": ["claim"],
     "/dalabws": ["dalabws"],
     "/dalabws/[id]": ["dalabws"],
     "/shiniri": ["shiniri"]

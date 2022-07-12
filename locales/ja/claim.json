@@ -1,0 +1,17 @@
+{
+  "heading": {
+    "title": "$HENKAKUを受けとる",
+    "getKamonFirst": "まずはKamon NFTを取得しましょう！",
+    "claim": "トークンを受けとろう！"
+  },
+  "info": {
+    "canClaim": "$HENKAKU受けとり可能です。",
+    "cannotClaim": "$HENKAKUを受けとるにはKamon NFTが必要です。",
+    "hasThisManyPoints": "現在{{points}} $HENKAKUを受けとることができます。",
+    "hasNoPoints": "しかし、$HENKAKUを受けとれるほどのポイントをお持ちではありません。"
+  },
+  "claimButton": "受けとる",
+  "isClaiming": "受けとり中...",
+  "mintKamonButton": "Kamon NFTをミント",
+  "connectWallet": "ウォレットを接続"
+}
