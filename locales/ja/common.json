@@ -66,6 +66,15 @@
     "INPUT_PLACEHOLDER": "キーワード",
     "SUBMIT_BUTTON": "キーワードを送信",
     "TOAST": {
+      "keyword": {
+        "submitted": "Submitted",
+        "error": "Error",
+        "correct": "回答は正解でした。\n100ポイントを獲得しました。",
+        "mustBeHolder": "クエストはKamonの持ち主しか回答できません。",
+        "wrongAnswer": "回答は不正解です。",
+        "alreadyAnswered": "今週のクエストは既に回答済みです。",
+        "defaultError": "不明なサーバーエラー"
+      },
       "GENERATING": {
         "TITLE": "Kamon NFTを更新中",
         "DESCRIPTION": "更新されたポイント数で新しい画像を生成しています。しばらくお待ちください。"

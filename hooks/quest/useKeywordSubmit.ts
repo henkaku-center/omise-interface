@@ -4,9 +4,11 @@ import { useContractWrite, useNetwork } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useGetError } from '@/hooks/useGetError'
+import useTranslation from 'next-translate/useTranslation'
 
 export const useKeywordSubmit = () => {
   const { toast } = useToast()
+  const { t } = useTranslation('common')
   const { activeChain } = useNetwork()
   const { getError } = useGetError()
   const kamonNFT = getContractAddress({
@@ -25,7 +27,7 @@ export const useKeywordSubmit = () => {
       args: keyword.toUpperCase(),
       onError(error) {
         toast({
-          title: 'Error',
+          title: t('QUEST.TOAST.keyword.error'),
           description: handleErrorMessage(error),
           status: 'error'
         })
@@ -33,8 +35,8 @@ export const useKeywordSubmit = () => {
       },
       onSuccess() {
         toast({
-          title: 'Submitted',
-          description: 'Answer was correct.\nYou earn 100 points',
+          title: t('QUEST.TOAST.keyword.submitted'),
+          description: t('QUEST.TOAST.keyword.correct'),
           status: 'success'
         })
         setKeywordSubmitSucceeded(true)
@@ -49,15 +51,15 @@ export const useKeywordSubmit = () => {
   const handleErrorMessage = useCallback((error: Error): string => {
     switch (getError(error)) {
       case 'MUST BE HOLDER':
-        return 'Only token holders may answer.'
+        return t('QUEST.TOAST.keyword.mustBeHolder')
       case 'WRONG ANSWER':
-        return 'Your answer is wrong.'
+        return t('QUEST.TOAST.keyword.wrongAnswer')
       case 'ALREADY ANSWERED':
-        return "You have already answered this week's question."
+        return t('QUEST.TOAST.keyword.alreadyAnswered')
       default:
-        return 'Unknown Server Error'
+        return t('QUEST.TOAST.keyword.defaultError')
     }
-  }, [getError])
+  }, [getError, t])
 
   return { keyword, inputChange, submit, isSubmitting, keywordSubmitSucceeded }
 }

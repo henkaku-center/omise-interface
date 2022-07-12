@@ -66,6 +66,15 @@
     "INPUT_PLACEHOLDER": "Keyword",
     "SUBMIT_BUTTON": "Submit Keyword",
     "TOAST": {
+      "keyword": {
+        "submitted": "Submitted",
+        "error": "Error",
+        "correct": "Your answer was correct.\nYou earn 100 points.",
+        "mustBeHolder": "Only Kamon holders may answer quests.",
+        "wrongAnswer": "Your answer is wrong.",
+        "alreadyAnswered": "You have already answered this week's question.",
+        "defaultError": "Unknown Server Error"
+      },
       "GENERATING": {
         "TITLE": "Updating Kamon NFT",
         "DESCRIPTION": "Generating an image with your new point total. Please wait..."
