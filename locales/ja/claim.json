@@ -7,7 +7,7 @@
   "info": {
     "canClaim": "$HENKAKU受けとり可能です。",
     "cannotClaim": "$HENKAKUを受けとるにはKamon NFTが必要です。",
-    "hasThisManyPoints": "現在{{points}} $HENKAKUを受けとることができます。",
+    "hasThisManyPoints": "現在{{points}} $HENKAKUを受け取ることができます。",
     "hasNoPoints": "しかし、$HENKAKUを受けとれるほどのポイントをお持ちではありません。"
   },
   "claimButton": "受け取る",
