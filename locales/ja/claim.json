@@ -11,7 +11,7 @@
     "hasNoPoints": "しかし、$HENKAKUを受けとれるほどのポイントをお持ちではありません。"
   },
   "claimButton": "受けとる",
-  "isClaiming": "受けとり中...",
+  "isClaiming": "受け取り中...",
   "mintKamonButton": "Kamon NFTをミント",
   "connectWallet": "ウォレットを接続"
 }
