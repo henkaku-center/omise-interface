@@ -91,38 +91,38 @@ const Quests: NextPage = () => {
           </Box>
           <Box p={2}>
             <Box w="100%" p={4}>
-              {!hasNFT ? (
+              {!hasNFT && (
                 <>
                   <Heading size="md">
                     {t('QUEST.MINT_YOUR_KAMON_HEADING')}
                   </Heading>
                   <Text>{t('QUEST.MINT_YOUR_KAMON_EXPLANATION')}</Text>
                 </>
-              ) : ""}
+              )}
 
-              {hasNFT && !keywordSubmitSucceeded? (
+              {hasNFT && !keywordSubmitSucceeded && (
                 <>
                   <Heading size="md">{t('QUEST.EXPLANATION_HEADING')}</Heading>
                   <Text>{t('QUEST.EXPLANATION_BODY')}</Text>
                 </>
-              ) : ""}
+              )}
 
-              {keywordSubmitSucceeded && !finalTokenUri ? (
+              {keywordSubmitSucceeded && !finalTokenUri && (
                 <>
                   <Heading size="md">{t('QUEST.PRE_GENERATE_HEADING')}</Heading>
                   <Text>{t('QUEST.PRE_GENERATE_BODY')}</Text>
                 </>
-              ) : ""}
+              )}
 
-              {finalTokenUri ? (
+              {finalTokenUri && (
                 <>
                   <Heading size="md">{t('QUEST.PRE_UPDATE_HEADING')}</Heading>
                   <Text>{t('QUEST.PRE_UPDATE_BODY')}</Text>
                 </>
-              ) : ""}
+              )}
             </Box>
 
-            {mounted && !data?.address ? (
+            {mounted && !data?.address && (
               <Button
                 mt={10}
                 w="100%"
@@ -131,17 +131,17 @@ const Quests: NextPage = () => {
               >
                 {t('CONNECT_WALLET_BUTTON')}
               </Button>
-            ) : ""}
+            )}
 
-            {mounted && data?.address && !hasNFT ? (
+            {mounted && data?.address && !hasNFT && (
               <Link href="/" passHref>
                 <Button mt={10} w="100%" colorScheme="teal">
                   {t('QUEST.MINT_BUTTON')}
                 </Button>
               </Link>
-            ) : ""}
+            )}
 
-            {hasNFT && !keywordSubmitSucceeded ? (
+            {hasNFT && !keywordSubmitSucceeded && (
               <Box mt={4}>
                 <Stack>
                   <Input
@@ -163,9 +163,9 @@ const Quests: NextPage = () => {
                   </Button>
                 </Stack>
               </Box>
-            ) : ""}
+            )}
 
-            {keywordSubmitSucceeded && !finalTokenUri ? (
+            {keywordSubmitSucceeded && !finalTokenUri && (
               <Box mt={4}>
                 <Stack>
                   <Button
@@ -181,9 +181,9 @@ const Quests: NextPage = () => {
                   </Button>
                 </Stack>
               </Box>
-            ) : ""}
+            )}
 
-            {finalTokenUri ? (
+            {finalTokenUri && (
               <Box mt={4}>
                 <Stack>
                   <Button
@@ -199,7 +199,7 @@ const Quests: NextPage = () => {
                   </Button>
                 </Stack>
               </Box>
-            ) : ""}
+            )}
           </Box>
         </Box>
       </Layout>
