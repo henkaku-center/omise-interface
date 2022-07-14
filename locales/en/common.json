@@ -80,7 +80,7 @@
       "keyword": {
         "submitted": "Submitted",
         "error": "Error",
-        "correct": "Your answer was correct.\nYou earn 100 points.",
+        "correct": "Your answer was correct. You earn 100 points.",
         "mustBeHolder": "Only Kamon holders may answer quests.",
         "wrongAnswer": "Your answer is wrong.",
         "alreadyAnswered": "You have already answered this week's question.",

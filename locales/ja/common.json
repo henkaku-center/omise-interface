@@ -80,7 +80,7 @@
       "keyword": {
         "submitted": "Submitted",
         "error": "Error",
-        "correct": "回答は正解でした。\n100ポイントを獲得しました。",
+        "correct": "回答は正解でした。100ポイントを獲得しました。",
         "mustBeHolder": "クエストはKamonの持ち主しか回答できません。",
         "wrongAnswer": "回答は不正解です。",
         "alreadyAnswered": "今週のクエストは既に回答済みです。",
