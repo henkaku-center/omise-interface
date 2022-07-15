@@ -20,7 +20,10 @@ import { useHasNFT } from '@/hooks/useHasNFT'
 import { useTokenIdOf } from '@/hooks/useTokenIdOf'
 import { useTokenURI } from '@/hooks/useTokenURI'
 import { getContractAddress } from '@/utils/contractAddress'
-import { useUpdateTokenMetadata, KamonToken } from '@/hooks/useUpdateTokenMetadata'
+import {
+  useUpdateTokenMetadata,
+  KamonToken
+} from '@/hooks/useUpdateTokenMetadata'
 
 const Quests: NextPage = () => {
   const { t } = useTranslation('common')
@@ -28,7 +31,8 @@ const Quests: NextPage = () => {
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
   const { data } = useAccount()
-  const { keyword, inputChange, submit, isSubmitting, keywordSubmitSucceeded } = useKeywordSubmit()
+  const { keyword, inputChange, submit, isSubmitting, keywordSubmitSucceeded } =
+    useKeywordSubmit()
   const { hasNFT } = useHasNFT()
   const { activeChain } = useNetwork()
   const kamonNFT = getContractAddress({
@@ -42,11 +46,12 @@ const Quests: NextPage = () => {
   const [finalTokenUri, setFinalTokenUri] = useState('')
   const [updateTxLaunched, setUpdateTxLaunched] = useState<boolean>()
 
-  const { updateTokenMetadata, updateTokenMetadataIsSubmitting } = useUpdateTokenMetadata()
+  const { updateTokenMetadata, updateTokenMetadataIsSubmitting } =
+    useUpdateTokenMetadata()
   const { update, isUpdating } = useUpdateOwnNFT(
     kamonNFT,
     tokenId,
-    finalTokenUri,
+    finalTokenUri
   )
 
   useEffect(() => {
@@ -60,19 +65,18 @@ const Quests: NextPage = () => {
     }
   }, [tokenURI])
 
-  const updateTokenMetadataWrapper = async () => {
-    if (tokenJSON == undefined || !tokenIdOf) { return }
-    const updateTokenMetadataRet: string = await updateTokenMetadata(tokenJSON, data?.address as string)
+  const generateTokenMetadata = async () => {
+    if (tokenJSON == undefined || !tokenIdOf) {
+      return
+    }
+    const updateTokenMetadataRet: string = await updateTokenMetadata(
+      tokenJSON,
+      data?.address as string
+    )
     setTokenId(BigInt(parseInt(tokenIdOf.toString())))
     setFinalTokenUri(updateTokenMetadataRet)
     setUpdateTxLaunched(false)
   }
-
-  useEffect(() => {
-    if (!finalTokenUri || updateTxLaunched == true) return
-    setUpdateTxLaunched(true) // Avoids concurrent transactions
-    update()
-  }, [finalTokenUri, update, t])
 
   return (
     <>
@@ -87,17 +91,7 @@ const Quests: NextPage = () => {
           </Box>
           <Box p={2}>
             <Box w="100%" p={4}>
-              {keywordSubmitSucceeded ? (
-                <>
-                  <Heading size="md">{t('QUEST.PRE_UPDATE_HEADING')}</Heading>
-                  <Text>{t('QUEST.PRE_UPDATE_BODY')}</Text>
-                </>
-              ) : hasNFT ? (
-                <>
-                  <Heading size="md">{t('QUEST.EXPLANATION_HEADING')}</Heading>
-                  <Text>{t('QUEST.EXPLANATION_BODY')}</Text>
-                </>
-              ) : (
+              {!hasNFT && (
                 <>
                   <Heading size="md">
                     {t('QUEST.MINT_YOUR_KAMON_HEADING')}
@@ -105,9 +99,30 @@ const Quests: NextPage = () => {
                   <Text>{t('QUEST.MINT_YOUR_KAMON_EXPLANATION')}</Text>
                 </>
               )}
+
+              {hasNFT && !keywordSubmitSucceeded && (
+                <>
+                  <Heading size="md">{t('QUEST.EXPLANATION_HEADING')}</Heading>
+                  <Text>{t('QUEST.EXPLANATION_BODY')}</Text>
+                </>
+              )}
+
+              {keywordSubmitSucceeded && !finalTokenUri && (
+                <>
+                  <Heading size="md">{t('QUEST.PRE_GENERATE_HEADING')}</Heading>
+                  <Text>{t('QUEST.PRE_GENERATE_BODY')}</Text>
+                </>
+              )}
+
+              {finalTokenUri && (
+                <>
+                  <Heading size="md">{t('QUEST.PRE_UPDATE_HEADING')}</Heading>
+                  <Text>{t('QUEST.PRE_UPDATE_BODY')}</Text>
+                </>
+              )}
             </Box>
 
-            {mounted && !data?.address && !hasNFT ? (
+            {mounted && !data?.address && (
               <Button
                 mt={10}
                 w="100%"
@@ -116,24 +131,17 @@ const Quests: NextPage = () => {
               >
                 {t('CONNECT_WALLET_BUTTON')}
               </Button>
-            ) : keywordSubmitSucceeded ? (
-              <Box mt={4}>
-                <Stack>
+            )}
 
-                  <Button
-                    mt={10}
-                    w="100%"
-                    colorScheme="teal"
-                    onClick={() => updateTokenMetadataWrapper()}
-                    isLoading={updateTokenMetadataIsSubmitting || isUpdating}
-                    loadingText={t('BUTTON_SUBMITTING')}
-                    disabled={updateTokenMetadataIsSubmitting || isUpdating}
-                  >
-                    {t('QUEST.UPDATE_NFT_BUTTON')}
-                  </Button>
-                </Stack>
-              </Box>
-            ) : hasNFT ? (
+            {mounted && data?.address && !hasNFT && (
+              <Link href="/" passHref>
+                <Button mt={10} w="100%" colorScheme="teal">
+                  {t('QUEST.MINT_BUTTON')}
+                </Button>
+              </Link>
+            )}
+
+            {hasNFT && !keywordSubmitSucceeded && (
               <Box mt={4}>
                 <Stack>
                   <Input
@@ -155,12 +163,42 @@ const Quests: NextPage = () => {
                   </Button>
                 </Stack>
               </Box>
-            ) : (
-              <Link href="/" passHref>
-                <Button mt={10} w="100%" colorScheme="teal">
-                  {t('QUEST.MINT_BUTTON')}
-                </Button>
-              </Link>
+            )}
+
+            {keywordSubmitSucceeded && !finalTokenUri && (
+              <Box mt={4}>
+                <Stack>
+                  <Button
+                    mt={10}
+                    w="100%"
+                    colorScheme="teal"
+                    onClick={() => generateTokenMetadata()}
+                    isLoading={updateTokenMetadataIsSubmitting}
+                    loadingText={t('QUEST.GENERATE_METADATA_SENDING')}
+                    disabled={updateTokenMetadataIsSubmitting}
+                  >
+                    {t('QUEST.GENERATE_METADATA_BUTTON')}
+                  </Button>
+                </Stack>
+              </Box>
+            )}
+
+            {finalTokenUri && (
+              <Box mt={4}>
+                <Stack>
+                  <Button
+                    mt={10}
+                    w="100%"
+                    colorScheme="teal"
+                    onClick={() => update()}
+                    isLoading={isUpdating}
+                    loadingText={t('QUEST.UPDATE_NFT_BUTTON_SENDING')}
+                    disabled={isUpdating}
+                  >
+                    {t('QUEST.UPDATE_NFT_BUTTON')}
+                  </Button>
+                </Stack>
+              </Box>
             )}
           </Box>
         </Box>
