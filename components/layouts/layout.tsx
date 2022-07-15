@@ -49,18 +49,15 @@ const Layout = ({ children }: LayoutProps) => {
                 {t('HOME_LINK')}
               </Link>
             </NextLink>
-            {/*<NextLink passHref href="/quests" locale={router.locale}>*/}
-            <Link href="/claim" p={4}>
-              {/*TODO: translate*/}
-              Claim
-            </Link>
-            {/*</NextLink>*/}
+            <NextLink passHref href="/claim" locale={router.locale}>
+              <Link p={4}>{t('CLAIM_LINK')}</Link>
+            </NextLink>
             <NextLink passHref href="/quests" locale={router.locale}>
               <Link p={4}>{t('QUESTS_LINK')}</Link>
             </NextLink>
-            {/* <Link href="/badges" p={4}>
-              Badge
-            </Link> */}
+            {/* <NextLink passHref href="/badges" locale={router.locale}>
+              <Link p={4}>{t('BADGES_LINK')}</Link>
+            </NextLink> */}
             <Button
               onClick={async () =>
                 await setLanguage(lang == 'en' ? 'ja' : 'en')

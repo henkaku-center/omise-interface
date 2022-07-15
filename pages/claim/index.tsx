@@ -1,6 +1,7 @@
 import { NextPage } from 'next'
 import { useMounted } from '@/hooks/useMounted'
 import { useAccount, useConnect } from 'wagmi'
+import useTranslation from 'next-translate/useTranslation'
 import { Layout } from '@/components/layouts/layout'
 import {
   Box,
@@ -19,6 +20,7 @@ import { ethers } from 'ethers'
 import { useCallback } from 'react'
 
 const Claim: NextPage = () => {
+  const { t } = useTranslation('claim')
   const mounted = useMounted()
   const { connect, connectors } = useConnect()
   const [metaMask] = connectors
@@ -35,7 +37,7 @@ const Claim: NextPage = () => {
   return (
     <>
       <Layout>
-        <Heading mt={50}>Claim</Heading>
+        <Heading mt={50}>{t('heading.title')}</Heading>
         <Flex direction={{ base: 'column', sm: 'row' }}>
           <Flex
             px={2}
@@ -46,20 +48,19 @@ const Claim: NextPage = () => {
           >
             <Box w="100%" p={4}>
               <Heading size="md">
-                {hasNFT ? 'Claim your token' : "Let's get NFT first!"}
+                {hasNFT ? t('heading.claim') : t('heading.getKamonFirst')}
               </Heading>
               <Text>
                 {hasNFT
-                  ? 'You can claim your $HENKAKU.'
-                  : 'You can claim $HENKAKU if you own NFT.'}
+                  ? t('info.canClaim')
+                  : t('info.cannotClaim')}
               </Text>
               {hasNFT && claimableToken != undefined ? (
                 <Text>
                   {claimableToken == BigInt(0)
-                    ? 'You currently have no points to claim'
-                    : `You can get ${ethers.utils.formatEther(
-                        claimableToken
-                      )} $HENKAKU`}
+                    ? t('info.hasNoPoints')
+                    : t('info.hasThisManyPoints', {points: ethers.utils.formatEther(claimableToken)})
+                  }
                 </Text>
               ) : null}
             </Box>
@@ -70,7 +71,7 @@ const Claim: NextPage = () => {
                 colorScheme="teal"
                 onClick={() => connect(metaMask)}
               >
-                Connect Wallet
+                {t('connectWallet')}
               </Button>
             ) : hasNFT ? (
               <Button
@@ -79,15 +80,15 @@ const Claim: NextPage = () => {
                 colorScheme="teal"
                 onClick={handleClaim}
                 isLoading={isClaiming}
-                loadingText="claiming..."
+                loadingText={t('isClaiming')}
                 disabled={claimableToken == BigInt(0)}
               >
-                Claim
+                {t('claimButton')}
               </Button>
             ) : (
               <Link href="/" passHref>
                 <Button mt={10} w="100%" colorScheme="teal">
-                  Mint Your NFT
+                  {t('mintKamonButton')}
                 </Button>
               </Link>
             )}

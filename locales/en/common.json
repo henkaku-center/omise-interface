@@ -46,9 +46,11 @@
   "SWITCH_NETWORK_MSG_2": ". To use this app, switch to the Polygon (Matic) network.",
   "SWITCH_NETWORK_BUTTON": "Switch to Polygon",
 
-  "LAYOUT_HEADING": "Omise - HENKAKU",
+  "LAYOUT_HEADING": "Omise – HENKAKU",
   "HOME_LINK": "Home",
+  "CLAIM_LINK": "Claim",
   "QUESTS_LINK": "Quests",
+  "BADGES_LINK": "Badges",
   "LANG_SWITCHER": "日本語",
   "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved.",
 

@@ -1,0 +1,17 @@
+{
+  "heading": {
+    "title": "Claim $HENKAKU",
+    "getKamonFirst": "First, get your Kamon NFT!",
+    "claim": "Claim your tokens!"
+  },
+  "info": {
+    "canClaim": "You can claim $HENKAKU.",
+    "cannotClaim": "You will be able to claim $HENKAKU when you own a Kamon NFT.",
+    "hasThisManyPoints": "You can claim {{points}} $HENKAKU.",
+    "hasNoPoints": "But you currently have no points to claim $HENKAKU."
+  },
+  "claimButton": "Claim",
+  "isClaiming": "Claiming...",
+  "mintKamonButton": "Mint Kamon NFT",
+  "connectWallet": "Connect your wallet"
+}
