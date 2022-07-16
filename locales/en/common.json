@@ -54,6 +54,17 @@
   "LANG_SWITCHER": "日本語",
   "COPYRIGHT_LINE": "© 2022 henkaku.org. All rights reserved.",
 
+  "claim": {
+    "toast": {
+      "submitted": "Submitted",
+      "error": "Error",
+      "success": "You got $HENKAKU.",
+      "insufficientAmount": "You don't have points to claim $HENKAKU.",
+      "insufficientFound": "Currently unable to claim.",
+      "txFailed": "Transaction failed.",
+      "defaultError": "Unknown Server Error"
+    }
+  },
   "QUEST": {
     "HEADING": "Quests",
     "IMAGE_ALT": "JOI ITO 変革への道",
@@ -73,6 +84,15 @@
     "INPUT_PLACEHOLDER": "Keyword",
     "SUBMIT_BUTTON": "Submit Keyword",
     "TOAST": {
+      "keyword": {
+        "submitted": "Submitted",
+        "error": "Error",
+        "correct": "Your answer was correct. You earn 100 points.",
+        "mustBeHolder": "Only Kamon holders may answer quests.",
+        "wrongAnswer": "Your answer is wrong.",
+        "alreadyAnswered": "You have already answered this week's question.",
+        "defaultError": "Unknown Server Error"
+      },
       "GENERATING": {
         "TITLE": "Updating Kamon NFT",
         "DESCRIPTION": "Generating an image with your new point total. Please wait..."
