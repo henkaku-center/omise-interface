@@ -10,6 +10,7 @@ export const BadgeBox: React.FC<{
   badge: BadgeElement
   tokenId: number
   contractAddress: string
+  prefix?: string
 }> = (data) => {
   const [, , amount, maxSupply, tokenURI] = data.badge
   const { t } = useTranslation('common')
@@ -21,7 +22,7 @@ export const BadgeBox: React.FC<{
   }
 
   return (
-    <Link href={`/badges/${data.tokenId}`}>
+    <Link href={ data.prefix ? `/${data.prefix}/${data.tokenId}` : `/badges/${data.tokenId}` }>
       <Box boxShadow="xs" p="6" rounded="md" bg="whiteAlpha.100">
         <Image mt={1} src={tokenURIJSON.image} alt={t('IMAGE_PREVIEW_ALT')} />
         <Badge variant="outline" colorScheme="green">
