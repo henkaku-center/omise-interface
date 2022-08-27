@@ -7,7 +7,6 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
-import { useBadge } from '@/hooks/badge/useBadgeDalabws'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { NFTImage } from '@/components/NFTImage'
 import { getContractAddress } from '@/utils/contractAddress'
@@ -19,6 +18,7 @@ import { ConnectMetaMask } from '@/components/metaMask/Connect'
 import { useEffect, useState } from 'react'
 import { DAlabLayout } from '@/components/layouts/dlabLayout'
 import setLanguage from 'next-translate/setLanguage'
+import { useBadge } from '@/hooks/badge/useBadge'
 
 const DAlabBadge = () => {
   const router = useRouter()
@@ -35,7 +35,6 @@ const DAlabBadge = () => {
   const { tokenURIJSON } = useFetchTokenURIJSON(badge?.tokenURI)
   const { isMinting, mint } = useMintBadge(henkakuBadge, data?.address, tokenID)
   const { hasNft } = useBadgeBalanceOf(henkakuBadge, data?.address, tokenID)
-
   const [minted, setMinted] = useState(false)
 
   useEffect(() => {
@@ -51,12 +50,6 @@ const DAlabBadge = () => {
     return (
       <DAlabLayout>
         <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing={5} color="white">
-          <Box>
-            <Heading mt={50} size="lg">
-              MINT NFT
-            </Heading>
-            <NFTImage imageUrl={'/dalab_ws1.png'} />
-          </Box>
           <Box m={5}>
             <Heading mt={50} size="lg">
               {t('notConnected.title')}
