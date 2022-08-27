@@ -14,7 +14,7 @@ const Badges: NextPage = () => {
   const { t } = useTranslation('badge')
   const { activeChain } = useNetwork()
   const henkakuBadge = getContractAddress({
-    name: 'henkakuBadge',
+    name: 'dalabsWSBadge',
     chainId: activeChain?.id
   })
   const { badges } = useBadges(henkakuBadge)
@@ -57,6 +57,7 @@ const Badges: NextPage = () => {
                 badge={data}
                 tokenId={index + 1}
                 contractAddress={henkakuBadge}
+                prefix='w3g'
               />
             </div>
           ))}

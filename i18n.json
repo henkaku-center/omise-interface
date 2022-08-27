@@ -6,7 +6,7 @@
     "/badges": ["badge"],
     "/badges/[id]": ["badge"],
     "/claim": ["claim"],
-    "/w3g": ["dalabws"],
+    "/w3g/": ["dalabws"],
     "/w3g/[id]": ["dalabws"],
     "/shiniri": ["shiniri"]
   }
