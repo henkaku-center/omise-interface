@@ -6,7 +6,8 @@ import {
   Flex,
   Spacer,
   useColorMode,
-  Button
+  Button,
+  Stack
 } from '@chakra-ui/react'
 import { default as NextLink } from 'next/link'
 import { useRouter } from 'next/router'
@@ -40,32 +41,40 @@ const Layout = ({ children }: LayoutProps) => {
             </NextLink>
           </Box>
           <Spacer />
-          <Box p={2}>
-            <Button size="md" onClick={toggleColorMode} p={4}>
-              {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
-            </Button>
+          <Stack direction="row" spacing={4}>
             <NextLink passHref href="/" locale={router.locale}>
-              <Link href="/" p={4}>
+              <Link _focus={{ boxShadow: 'none' }} href="/" p={4}>
                 {t('HOME_LINK')}
               </Link>
             </NextLink>
             <NextLink passHref href="/claim" locale={router.locale}>
-              <Link p={4}>{t('CLAIM_LINK')}</Link>
+              <Link _focus={{ boxShadow: 'none' }} p={4}>
+                {t('CLAIM_LINK')}
+              </Link>
             </NextLink>
             <NextLink passHref href="/quests" locale={router.locale}>
-              <Link p={4}>{t('QUESTS_LINK')}</Link>
+              <Link _focus={{ boxShadow: 'none' }} p={4}>
+                {t('QUESTS_LINK')}
+              </Link>
             </NextLink>
             <NextLink passHref href="/badges" locale={router.locale}>
-              <Link p={4}>{t('BADGES_LINK')}</Link>
+              <Link _focus={{ boxShadow: 'none' }} p={4}>
+                {t('BADGES_LINK')}
+              </Link>
             </NextLink>
+
+            <Button size="md" onClick={toggleColorMode} p={4}>
+              {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
+            </Button>
             <Button
+              size="md"
               onClick={async () =>
                 await setLanguage(lang == 'en' ? 'ja' : 'en')
               }
             >
               {lang == 'en' ? '日本語' : 'English'}
             </Button>
-          </Box>
+          </Stack>
         </Flex>
       </Box>
       <Container maxW="4xl">{children}</Container>
