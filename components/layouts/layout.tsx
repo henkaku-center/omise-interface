@@ -55,9 +55,9 @@ const Layout = ({ children }: LayoutProps) => {
             <NextLink passHref href="/quests" locale={router.locale}>
               <Link p={4}>{t('QUESTS_LINK')}</Link>
             </NextLink>
-            {/* <NextLink passHref href="/badges" locale={router.locale}>
+            <NextLink passHref href="/badges" locale={router.locale}>
               <Link p={4}>{t('BADGES_LINK')}</Link>
-            </NextLink> */}
+            </NextLink>
             <Button
               onClick={async () =>
                 await setLanguage(lang == 'en' ? 'ja' : 'en')
