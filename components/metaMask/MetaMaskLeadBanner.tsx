@@ -40,11 +40,11 @@ const MetaMaskLeadBanner = () => {
 
       onOpen()
     }
-  }, [])
+  }, [onOpen, t])
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
+      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{t('MMASK_LEAD_HEADER')}</ModalHeader>
@@ -56,15 +56,15 @@ const MetaMaskLeadBanner = () => {
           </ModalBody>
           <ModalFooter>
             <Button
-              as='a'
+              as="a"
               href={modal?.link}
-              colorScheme='teal'
-              target='_blank'
+              colorScheme="teal"
+              target="_blank"
             >
               {modal?.cta}
             </Button>
             &nbsp;
-            <Button variant='ghost' mr={3} onClick={onClose}>
+            <Button variant="ghost" mr={3} onClick={onClose}>
               {t('BUTTON_CANCEL')}
             </Button>
           </ModalFooter>

@@ -8,7 +8,7 @@ import { providers } from 'ethers'
 import { defaultChainID } from '@/utils/contractAddress'
 
 const connector = new MetaMaskConnector({
-  chains: [chain.polygon, chain.rinkeby, chain.goerli]
+  chains: [chain.polygon, chain.goerli]
 })
 
 const client = createClient({
