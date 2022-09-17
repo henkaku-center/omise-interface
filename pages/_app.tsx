@@ -1,10 +1,11 @@
-import { Provider, createClient, chainId } from 'wagmi'
+import { Provider, createClient, chain } from 'wagmi'
 import { ChakraProvider } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
 import { theme } from '@/components/layouts/theme'
-import { chain } from 'wagmi'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { providers } from 'ethers'
+
+import { defaultChainID } from '@/utils/contractAddress'
 
 const connector = new MetaMaskConnector({
   chains: [chain.polygon, chain.rinkeby, chain.goerli]
@@ -13,14 +14,14 @@ const connector = new MetaMaskConnector({
 const client = createClient({
   autoConnect: true,
   connectors: [connector],
-  provider(config) {
-    if (config.chainId == chain.polygon.id) {
+  provider() {
+    if (defaultChainID == chain.polygon.id) {
       return new providers.AlchemyProvider(
-        config.chainId,
+        chain.polygon.id,
         process.env.ALCHEMY_API_KEY
       )
     }
-    return new providers.AlchemyProvider(config.chainId)
+    return new providers.AlchemyProvider(defaultChainID)
   }
 })
 
