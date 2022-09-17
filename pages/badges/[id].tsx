@@ -81,11 +81,7 @@ const Badge = () => {
         <Heading as="h2" color="white.600">
           {tokenURIJSON?.name}
         </Heading>
-        <SimpleGrid
-          columns={{ sm: 1, md: 1, lg: 2 }}
-          spacing={5}
-          color="gray.600"
-        >
+        <SimpleGrid columns={{ sm: 1, md: 1, lg: 2 }} spacing={5}>
           <div>
             {tokenURIJSON?.image && <NFTImage imageUrl={tokenURIJSON?.image} />}
             <Text m="1rem">{tokenURIJSON?.description}</Text>
