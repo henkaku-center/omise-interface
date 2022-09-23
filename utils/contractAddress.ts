@@ -17,6 +17,12 @@ const contractAddress: ContractAddress = {
     [chainId.goerli]: '0x02Dd992774aBCacAD7D46155Da2301854903118D',
     [chainId.polygon]: '0xd59FFEE93A55F67CeD0F56fa4A991d4c8c8f5C4E',
   },
+  henkakuV2Erc20: {
+    [chainId.goerli]: '0x77F37AcB17d4C80702dFfF728ff08499A6227D2d',
+  },
+  koukan: {
+    [chainId.goerli]: '0xee7Aea6F80378536998a642f924ccaC31F1c3C59', // 0xfd25553ce802ca67db4010f97dac6dcec94513e5',
+  },
   kamonNFT: {
     [chainId.rinkeby]: '0x9D8b1775CbEE7ae3Cf9dAE3D2CaCBA4986d7df63',
     [chainId.goerli]: '0x539BCf896f02459dBcB3a2F1D823d2E65DB7211C',
