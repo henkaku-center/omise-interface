@@ -17,6 +17,11 @@ const contractAddress: ContractAddress = {
     [chainId.goerli]: '0x02Dd992774aBCacAD7D46155Da2301854903118D',
     [chainId.polygon]: '0xd59FFEE93A55F67CeD0F56fa4A991d4c8c8f5C4E',
   },
+  henkakuV1Erc20: {
+    [chainId.rinkeby]: '0x6FDDbe89B90795Eb0652F80fc3dBC2c61e753b1C',
+    [chainId.goerli]: '0x02Dd992774aBCacAD7D46155Da2301854903118D',
+    [chainId.polygon]: '0xd59FFEE93A55F67CeD0F56fa4A991d4c8c8f5C4E',
+  },
   henkakuV2Erc20: {
     [chainId.goerli]: '0x77F37AcB17d4C80702dFfF728ff08499A6227D2d',
   },

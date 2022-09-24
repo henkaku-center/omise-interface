@@ -27,18 +27,18 @@ const Koukan: NextPage = () => {
     name: 'koukan',
     chainId: activeChain?.id
   })
-  const henkakuErc20 = getContractAddress({
-    name: 'henkakuErc20',
+  const henkakuV1Erc20 = getContractAddress({
+    name: 'henkakuV1Erc20',
     chainId: activeChain?.id
   })
-  const approved = useApproval(henkakuErc20, koukan, data?.address)
+  const approved = useApproval(henkakuV1Erc20, koukan, data?.address)
   const { isClaiming, isClaimed, claim } = useKoukanClaimToken(
     koukan,
     data?.address
   )
   const { data: balanceOf } = useContractRead(
     {
-      addressOrName: henkakuErc20,
+      addressOrName: henkakuV1Erc20,
       contractInterface: erc20ABI
     },
     'balanceOf',
@@ -65,7 +65,7 @@ const Koukan: NextPage = () => {
   if (mounted && isConnected && !approved) {
     return (
       <Layout>
-        <Approve erc20={henkakuErc20} spender={koukan}>
+        <Approve erc20={henkakuV1Erc20} spender={koukan}>
           {t('enable')}
         </Approve>
       </Layout>
