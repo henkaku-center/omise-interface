@@ -65,6 +65,7 @@ const Koukan: NextPage = () => {
   if (mounted && isConnected && !approved) {
     return (
       <Layout>
+        <Heading mt={50}>{t('heading.title')}</Heading>
         <Approve erc20={henkakuV1Erc20} spender={koukan}>
           {t('enable')}
         </Approve>
