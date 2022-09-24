@@ -15,7 +15,20 @@ const contractAddress: ContractAddress = {
   henkakuErc20: {
     [chainId.rinkeby]: '0x6FDDbe89B90795Eb0652F80fc3dBC2c61e753b1C',
     [chainId.goerli]: '0x02Dd992774aBCacAD7D46155Da2301854903118D',
+    [chainId.polygon]: '0x0cc91a5FFC2E9370eC565Ab42ECE33bbC08C11a2',
+  },
+  henkakuV1Erc20: {
+    [chainId.rinkeby]: '0x6FDDbe89B90795Eb0652F80fc3dBC2c61e753b1C',
+    [chainId.goerli]: '0x02Dd992774aBCacAD7D46155Da2301854903118D',
     [chainId.polygon]: '0xd59FFEE93A55F67CeD0F56fa4A991d4c8c8f5C4E',
+  },
+  henkakuV2Erc20: {
+    [chainId.goerli]: '0x77F37AcB17d4C80702dFfF728ff08499A6227D2d',
+    [chainId.polygon]: '0x0cc91a5FFC2E9370eC565Ab42ECE33bbC08C11a2',
+  },
+  koukan: {
+    [chainId.goerli]: '0xee7Aea6F80378536998a642f924ccaC31F1c3C59', // 0xfd25553ce802ca67db4010f97dac6dcec94513e5',
+    [chainId.polygon]: '0x59003a93a80a807E24a896e14bAA8203d0819398',
   },
   kamonNFT: {
     [chainId.rinkeby]: '0x9D8b1775CbEE7ae3Cf9dAE3D2CaCBA4986d7df63',
