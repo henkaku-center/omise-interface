@@ -15,7 +15,6 @@ import { useApproval } from '@/hooks/useApproval'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useKoukanClaimToken } from '@/hooks/useKoukanCliamToken'
 import { Approve } from '@/components/metaMask/Approve'
-import { useEffect, useState } from 'react'
 
 const Koukan: NextPage = () => {
   const { t } = useTranslation('koukan')
@@ -63,13 +62,6 @@ const Koukan: NextPage = () => {
       watch: true
     }
   )
-
-  useEffect(() => {
-    console.log(henkakuV2Erc20)
-    console.log(data?.address)
-    console.log(balanceOfv1)
-    console.log(balanceOfv2)
-  }, [])
 
   if (mounted && !isConnected) {
     return (
