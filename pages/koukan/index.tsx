@@ -31,19 +31,34 @@ const Koukan: NextPage = () => {
     name: 'henkakuV1Erc20',
     chainId: activeChain?.id
   })
+  const henkakuV2Erc20 = getContractAddress({
+    name: 'henkakuV2Erc20',
+    chainId: activeChain?.id
+  })
   const approved = useApproval(henkakuV1Erc20, koukan, data?.address)
   const { isClaiming, isClaimed, claim } = useKoukanClaimToken(
     koukan,
     data?.address
   )
-  const { data: balanceOf } = useContractRead(
+  const { data: balanceOfv1 } = useContractRead(
     {
       addressOrName: henkakuV1Erc20,
       contractInterface: erc20ABI
     },
     'balanceOf',
     {
-      args: data?.address,
+      args: data?.address || '',
+      watch: true
+    }
+  )
+  const { data: balanceOfv2 } = useContractRead(
+    {
+      addressOrName: henkakuV2Erc20,
+      contractInterface: erc20ABI
+    },
+    'balanceOf',
+    {
+      args: data?.address || '',
       watch: true
     }
   )
@@ -66,6 +81,14 @@ const Koukan: NextPage = () => {
     return (
       <Layout>
         <Heading mt={50}>{t('heading.title')}</Heading>
+        <Text>
+          {t('v1-amount')}
+          {ethers.utils.formatEther(balanceOfv1?.toString() || 0)} $HENKAKU
+        </Text>
+        <Text>
+          {t('v2-amount')}
+          {ethers.utils.formatEther(balanceOfv2?.toString() || 0)} $HENKAKU
+        </Text>
         <Approve erc20={henkakuV1Erc20} spender={koukan}>
           {t('enable')}
         </Approve>
@@ -82,9 +105,14 @@ const Koukan: NextPage = () => {
             {mounted && !isClaimed && (
               <>
                 <Text>
-                  {t('amount')}
-                  {ethers.utils.formatEther(balanceOf?.toString() || 0)} $henaku
-                  v1-token
+                  {t('v1-amount')}
+                  {ethers.utils.formatEther(balanceOfv1?.toString() || 0)}{' '}
+                  $HENKAKU
+                </Text>
+                <Text>
+                  {t('v2-amount')}
+                  {ethers.utils.formatEther(balanceOfv2?.toString() || 0)}{' '}
+                  $HENKAKU
                 </Text>
                 <Button
                   mt={10}

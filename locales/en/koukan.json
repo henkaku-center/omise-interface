@@ -16,5 +16,6 @@
   "ClaimButton": "Claim Henkaku-v2 Token!",
   "connectWallet": "Connect your wallet",
   "congrats": "Congrats !! you have now v2-token",
-  "amount": "balance of v1-token: "
+  "v1-amount": "balance of v1-token: ",
+  "v2-amount": "balance of v2-token: "
 }

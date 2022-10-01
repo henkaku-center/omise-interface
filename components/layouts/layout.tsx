@@ -6,7 +6,12 @@ import {
   Flex,
   Spacer,
   useColorMode,
-  Button
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Stack
 } from '@chakra-ui/react'
 import { default as NextLink } from 'next/link'
 import { useRouter } from 'next/router'
@@ -14,7 +19,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { SwitchNetworkAlert } from '@/components/metaMask/SwitchNetworkAlert'
 import { MetaMaskLeadBanner } from '@/components/metaMask/MetaMaskLeadBanner'
 import { Footer } from '@/components/footer'
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { MoonIcon, SunIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import setLanguage from 'next-translate/setLanguage'
 
 interface LayoutProps {
@@ -40,32 +45,53 @@ const Layout = ({ children }: LayoutProps) => {
             </NextLink>
           </Box>
           <Spacer />
-          <Box p={2}>
-            <Button size="md" onClick={toggleColorMode} p={4}>
-              {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
-            </Button>
+          <Stack direction="row" spacing={4}>
             <NextLink passHref href="/" locale={router.locale}>
-              <Link href="/" p={4}>
+              <Link _focus={{ boxShadow: 'none' }} href="/" p={4}>
                 {t('HOME_LINK')}
               </Link>
             </NextLink>
             <NextLink passHref href="/claim" locale={router.locale}>
-              <Link p={4}>{t('CLAIM_LINK')}</Link>
+              <Link _focus={{ boxShadow: 'none' }} p={4}>
+                {t('CLAIM_LINK')}
+              </Link>
             </NextLink>
             <NextLink passHref href="/quests" locale={router.locale}>
-              <Link p={4}>{t('QUESTS_LINK')}</Link>
+              <Link _focus={{ boxShadow: 'none' }} p={4}>
+                {t('QUESTS_LINK')}
+              </Link>
             </NextLink>
-            {/* <NextLink passHref href="/badges" locale={router.locale}>
-              <Link p={4}>{t('BADGES_LINK')}</Link>
-            </NextLink> */}
+            <NextLink passHref href="/badges" locale={router.locale}>
+              <Link _focus={{ boxShadow: 'none' }} p={4}>
+                {t('BADGES_LINK')}
+              </Link>
+            </NextLink>
+            <Menu>
+              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                {t('TOOL_LINK')}
+              </MenuButton>
+              <MenuList>
+                <MenuItem>
+                  <Link href="/shiniri">{t('SHINIRI_LINK')}</Link>{' '}
+                </MenuItem>
+                <MenuItem>
+                  {' '}
+                  <Link href="/koukan">{t('KOUKAN_LINK')}</Link>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+            <Button size="md" onClick={toggleColorMode} p={4}>
+              {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
+            </Button>
             <Button
+              size="md"
               onClick={async () =>
                 await setLanguage(lang == 'en' ? 'ja' : 'en')
               }
             >
               {lang == 'en' ? '日本語' : 'English'}
             </Button>
-          </Box>
+          </Stack>
         </Flex>
       </Box>
       <Container maxW="4xl">{children}</Container>

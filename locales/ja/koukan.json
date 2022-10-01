@@ -16,5 +16,6 @@
   "ClaimButton": "Henkaku v2トークンを受け取る",
   "connectWallet": "ウォレットを接続",
   "congrats": "おめでとう！これでv2-tokenを受け取れました",
-  "amount": "今のv1-tokenの残高: "
+  "v1-amount": "v1-tokenの残高: ",
+  "v2-amount": "v2-tokenの残高: "
 }
