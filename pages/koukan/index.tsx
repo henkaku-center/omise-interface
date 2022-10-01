@@ -15,6 +15,7 @@ import { useApproval } from '@/hooks/useApproval'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useKoukanClaimToken } from '@/hooks/useKoukanCliamToken'
 import { Approve } from '@/components/metaMask/Approve'
+import { useEffect, useState } from 'react'
 
 const Koukan: NextPage = () => {
   const { t } = useTranslation('koukan')
@@ -31,22 +32,44 @@ const Koukan: NextPage = () => {
     name: 'henkakuV1Erc20',
     chainId: activeChain?.id
   })
+  const henkakuV2Erc20 = getContractAddress({
+    name: 'henkakuV2Erc20',
+    chainId: activeChain?.id
+  })
   const approved = useApproval(henkakuV1Erc20, koukan, data?.address)
   const { isClaiming, isClaimed, claim } = useKoukanClaimToken(
     koukan,
     data?.address
   )
-  const { data: balanceOf } = useContractRead(
+  const { data: balanceOfv1 } = useContractRead(
     {
       addressOrName: henkakuV1Erc20,
       contractInterface: erc20ABI
     },
     'balanceOf',
     {
-      args: data?.address,
+      args: data?.address || '',
       watch: true
     }
   )
+  const { data: balanceOfv2 } = useContractRead(
+    {
+      addressOrName: henkakuV2Erc20,
+      contractInterface: erc20ABI
+    },
+    'balanceOf',
+    {
+      args: data?.address || '',
+      watch: true
+    }
+  )
+
+  useEffect(() => {
+    console.log(henkakuV2Erc20)
+    console.log(data?.address)
+    console.log(balanceOfv1)
+    console.log(balanceOfv2)
+  }, [])
 
   if (mounted && !isConnected) {
     return (
@@ -66,6 +89,14 @@ const Koukan: NextPage = () => {
     return (
       <Layout>
         <Heading mt={50}>{t('heading.title')}</Heading>
+        <Text>
+          {t('v1-amount')}
+          {ethers.utils.formatEther(balanceOfv1?.toString() || 0)} $HENKAKU
+        </Text>
+        <Text>
+          {t('v2-amount')}
+          {ethers.utils.formatEther(balanceOfv2?.toString() || 0)} $HENKAKU
+        </Text>
         <Approve erc20={henkakuV1Erc20} spender={koukan}>
           {t('enable')}
         </Approve>
@@ -82,9 +113,14 @@ const Koukan: NextPage = () => {
             {mounted && !isClaimed && (
               <>
                 <Text>
-                  {t('amount')}
-                  {ethers.utils.formatEther(balanceOf?.toString() || 0)} $henaku
-                  v1-token
+                  {t('v1-amount')}
+                  {ethers.utils.formatEther(balanceOfv1?.toString() || 0)}{' '}
+                  $HENKAKU
+                </Text>
+                <Text>
+                  {t('v2-amount')}
+                  {ethers.utils.formatEther(balanceOfv2?.toString() || 0)}{' '}
+                  $HENKAKU
                 </Text>
                 <Button
                   mt={10}
