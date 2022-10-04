@@ -1,0 +1,21 @@
+{
+  "heading": {
+    "title": "Claim v2 Henkaku Token",
+    "description": "Exchange v1 token to v2 Token",
+    "claim": "Claim henkaku-v2 token!"
+  },
+  "info": {
+    "canClaim": "You can claim $HENKAKU.",
+    "cannotClaim": "You will be able to claim $HENKAKU when you own a Kamon NFT.",
+    "hasThisManyPoints": "You can claim {{points}} $HENKAKU.",
+    "hasNoPoints": "But you currently have no points to claim $HENKAKU."
+  },
+  "enable": "enable to claim",
+  "claimButton": "Claim",
+  "isClaiming": "Claiming...",
+  "ClaimButton": "Claim Henkaku-v2 Token!",
+  "connectWallet": "Connect your wallet",
+  "congrats": "Congrats !! you have now v2-token",
+  "v1-amount": "balance of v1-token: ",
+  "v2-amount": "balance of v2-token: "
+}

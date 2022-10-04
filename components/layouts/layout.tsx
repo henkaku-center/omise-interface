@@ -7,6 +7,10 @@ import {
   Spacer,
   useColorMode,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   Stack
 } from '@chakra-ui/react'
 import { default as NextLink } from 'next/link'
@@ -15,7 +19,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { SwitchNetworkAlert } from '@/components/metaMask/SwitchNetworkAlert'
 import { MetaMaskLeadBanner } from '@/components/metaMask/MetaMaskLeadBanner'
 import { Footer } from '@/components/footer'
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { MoonIcon, SunIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import setLanguage from 'next-translate/setLanguage'
 
 interface LayoutProps {
@@ -62,7 +66,20 @@ const Layout = ({ children }: LayoutProps) => {
                 {t('BADGES_LINK')}
               </Link>
             </NextLink>
-
+            <Menu>
+              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                {t('TOOL_LINK')}
+              </MenuButton>
+              <MenuList>
+                <MenuItem>
+                  <Link href="/shiniri">{t('SHINIRI_LINK')}</Link>{' '}
+                </MenuItem>
+                <MenuItem>
+                  {' '}
+                  <Link href="/koukan">{t('KOUKAN_LINK')}</Link>
+                </MenuItem>
+              </MenuList>
+            </Menu>
             <Button size="md" onClick={toggleColorMode} p={4}>
               {colorMode == 'dark' ? <SunIcon /> : <MoonIcon />}
             </Button>

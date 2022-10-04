@@ -1,0 +1,21 @@
+{
+  "heading": {
+    "title": "v2 Henkakuトークンを受けとろう",
+    "description": "v1 tokenをv2 tokenに交換してください",
+    "claim": "トークンを受け取ろう！"
+  },
+  "info": {
+    "canClaim": "$HENKAKU受け取り可能です。",
+    "cannotClaim": "$HENKAKUを受けとるにはKamon NFTが必要です。",
+    "hasThisManyPoints": "現在{{points}} $HENKAKUを受け取ることができます。",
+    "hasNoPoints": "しかし、$HENKAKUを受け取るためのポイントを持っていません。"
+  },
+  "enable": "受け取る許可をする",
+  "claimButton": "受け取る",
+  "isClaiming": "受け取り中...",
+  "ClaimButton": "Henkaku v2トークンを受け取る",
+  "connectWallet": "ウォレットを接続",
+  "congrats": "おめでとう！これでv2-tokenを受け取れました",
+  "v1-amount": "v1-tokenの残高: ",
+  "v2-amount": "v2-tokenの残高: "
+}
