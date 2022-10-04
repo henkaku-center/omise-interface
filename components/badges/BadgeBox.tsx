@@ -15,21 +15,46 @@ export const BadgeBox: React.FC<{
   const [, , amount, maxSupply, tokenURI] = data.badge
   const { t } = useTranslation('common')
   const { totalSupply } = useTotalSupply(data.contractAddress, data.tokenId)
+
   const { tokenURIJSON } = useFetchTokenURIJSON(tokenURI)
 
   if (!tokenURIJSON) {
     return <></>
   }
 
-  return (
-    <Link href={ data.prefix ? `/${data.prefix}/${data.tokenId}` : `/badges/${data.tokenId}` }>
+  const inventory = Number(maxSupply) - Number(totalSupply)
+
+  if (inventory <= 0) {
+    return (
       <Box boxShadow="xs" p="6" rounded="md" bg="whiteAlpha.100">
         <Image mt={1} src={tokenURIJSON.image} alt={t('IMAGE_PREVIEW_ALT')} />
         <Badge variant="outline" colorScheme="green">
-          Supply: {totalSupply?.toString()} / {maxSupply.toString()}
+          {displayValue(amount)} $HENKAKU
         </Badge>
         <Badge variant="outline" colorScheme="green">
+          Supply: {inventory.toString()} / {maxSupply.toString()}
+        </Badge>
+        <Badge mt="5" size="sm" colorScheme="red">
+          SOLD OUT
+        </Badge>
+      </Box>
+    )
+  }
+  return (
+    <Link
+      href={
+        data.prefix
+          ? `/${data.prefix}/${data.tokenId}`
+          : `/badges/${data.tokenId}`
+      }
+    >
+      <Box boxShadow="xs" p="6" rounded="md" bg="whiteAlpha.100">
+        <Image mt={1} src={tokenURIJSON.image} alt={t('IMAGE_PREVIEW_ALT')} />
+        <Badge variant="outline" colorScheme="green">
           {displayValue(amount)} $HENKAKU
+        </Badge>
+        <Badge variant="outline" colorScheme="green">
+          Supply: {inventory.toString()} / {maxSupply.toString()}
         </Badge>
         <Button mt="5" size="sm" colorScheme="teal">
           Mint this badge

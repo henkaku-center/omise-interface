@@ -89,7 +89,12 @@ const Home: NextPage = () => {
                     {t('MINT_YOUR_KAMON_DISABLED_BUTTON_HOLDER')}
                   </Button>
                   <Spacer mt={5} />
-                  <Link href={`${openSeaTokenBaseUrl}/${tokenIdOf?.toNumber() || 1}`} isExternal>
+                  <Link
+                    href={`${openSeaTokenBaseUrl}/${
+                      tokenIdOf?.toNumber() || 1
+                    }`}
+                    isExternal
+                  >
                     {t('MINT_YOUR_KAMON_OPENSEA_INSTRUCTION')}
                     <ExternalLinkIcon mx="2px" />
                   </Link>
@@ -104,22 +109,24 @@ const Home: NextPage = () => {
             </Box>
           </div>
         </SimpleGrid>
-        <Heading as="h2" mt="1rem" color="white.600">
+        <Heading as="h2" mt="2rem" color="white.600">
           {t('BADGE_STORE_HEADING')}{' '}
         </Heading>
-        <NextLink href="/badges" locale={router.locale} passHref>
-          <Link>
-          <Image src="/storeBanner.png" mt="1rem" alt="" />
-          </Link>
-        </NextLink>
-        <SimpleGrid mt="1rem" columns={2}>
-          <div>
+        <SimpleGrid mt="1rem" columns={2} spacing="20px">
+          <Box>
+            <NextLink href="/badges" locale={router.locale} passHref>
+              <Link>
+                <Image src="/storeBanner.png" alt="store" />
+              </Link>
+            </NextLink>
+          </Box>
+          <Box>
             <NextLink href="/badges" locale={router.locale} passHref>
               <Button as="a" size="lg" colorScheme="teal">
-              {t('BADGE_STORE_BUTTON')}
+                {t('BADGE_STORE_BUTTON')}
               </Button>
             </NextLink>
-          </div>
+          </Box>
         </SimpleGrid>
       </Layout>
     </>
