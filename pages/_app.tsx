@@ -5,8 +5,6 @@ import { theme } from '@/components/layouts/theme'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { providers } from 'ethers'
 
-import { defaultChainID } from '@/utils/contractAddress'
-
 const connector = new MetaMaskConnector({
   chains: [chain.polygon, chain.goerli]
 })
@@ -14,14 +12,14 @@ const connector = new MetaMaskConnector({
 const client = createClient({
   autoConnect: true,
   connectors: [connector],
-  provider() {
-    if (defaultChainID == chain.polygon.id) {
+  provider(config) {
+    if (config.chainId == chain.polygon.id) {
       return new providers.AlchemyProvider(
-        chain.polygon.id,
+        config.chainId,
         process.env.ALCHEMY_API_KEY
       )
     }
-    return new providers.AlchemyProvider(defaultChainID)
+    return new providers.AlchemyProvider(config.chainId)
   }
 })
 
