@@ -16,7 +16,7 @@ const client = createClient({
     if (config.chainId == chain.polygon.id) {
       return new providers.AlchemyProvider(
         config.chainId,
-        process.env.ALCHEMY_API_KEY
+        process.env.NEXT_PUBLIC_ALCHEMY_API_KEY
       )
     }
     return new providers.AlchemyProvider(config.chainId)
