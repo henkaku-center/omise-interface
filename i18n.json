@@ -8,6 +8,8 @@
     "/claim": ["claim"],
     "/w3g": ["badge"],
     "/w3g/[id]": ["dalabws"],
+    "/dg": ["badge"],
+    "/dg/[id]": ["dg"],
     "/shiniri": ["shiniri"],
     "/koukan": ["koukan"]
   }
