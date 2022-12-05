@@ -4,7 +4,7 @@ import {
   Text,
   SimpleGrid,
   Center,
-  Link,
+  Box,
   Button
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -54,10 +54,20 @@ const Badge = () => {
 
   useEffect(() => {
     setMinted(hasNft)
-    setNoMintable(!badge?.mintable && !hasNft)
-    setMintable(!!badge?.mintable && badge?.amount.gt(0) && !hasNft)
-    setFreeMintable(!!badge?.mintable && badge?.amount.eq(0) && !hasNft)
-  }, [badge?.amount, badge?.mintable, hasNft])
+    setNoMintable(!badge?.mintable)
+    setMintable(
+      !!badge?.mintable &&
+        badge.amount.gt(0) &&
+        badge.maxMintPerWallet.gt(balanceOf || 0)
+    )
+    setFreeMintable(!!badge?.mintable && badge?.amount.eq(0))
+  }, [
+    badge?.amount,
+    badge?.maxMintPerWallet,
+    badge?.mintable,
+    balanceOf,
+    hasNft
+  ])
 
   const { isDisconnected } = useConnect()
   if (isDisconnected) {
@@ -94,13 +104,15 @@ const Badge = () => {
             </Center>
             <Center mt={5}></Center>
             <Center>
-              <Text>
-                {minted && t('title.minted')}
-                {noMintable && t('title.notMintable')}
+              <Box>
+                {minted && <Text m="1rem">{t('title.minted')}</Text>}
+                {noMintable && <Text m="1rem">{t('title.notMintable')} </Text>}
                 {mintable && (
                   <>
-                    {t('title.mintable')} {badge && displayValue(badge.amount)}{' '}
-                    $HENKAKU
+                    <Text m="1rem">
+                      {t('title.mintable')}{' '}
+                      {badge && displayValue(badge.amount)} $HENKAKU
+                    </Text>
                     {approved ? (
                       <Button
                         width="90%"
@@ -126,22 +138,20 @@ const Badge = () => {
 
                 {freeMintable && (
                   <>
-                    {t('title.freeMintable')}
-                    <Text>
-                      <Button
-                        width="90%"
-                        onClick={() => mint()}
-                        colorScheme="teal"
-                        mt={2}
-                        loadingText="minting..."
-                        isLoading={isMinting}
-                      >
-                        {t('mint')}
-                      </Button>
-                    </Text>
+                    <Text m="1rem">{t('title.freeMintable')}</Text>
+                    <Button
+                      width="90%"
+                      onClick={() => mint()}
+                      colorScheme="teal"
+                      mt={2}
+                      loadingText="minting..."
+                      isLoading={isMinting}
+                    >
+                      {t('mint')}
+                    </Button>
                   </>
                 )}
-              </Text>
+              </Box>
             </Center>
           </div>
         </SimpleGrid>
