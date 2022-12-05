@@ -4,7 +4,7 @@
     "mintable": "このバッジは次の$henkakuでmintできます: ",
     "notMintable": "このバッジはmintして手に入れることができません。手に入れるためには、条件を満たす必要があります",
     "freeMintable": "このバッジは無料でmintできます",
-    "minted": "🎉🎉🎉 すでにあなたはこのBadgeを持ってます！"
+    "minted": "🎉 すでにあなたはこのBadgeを持ってます！"
   },
   "approve": "Mintするための許可をする",
   "mint": "Mintする",

@@ -2,7 +2,7 @@
   "title": {
     "connectWallet": "You must connect your wallet first",
     "switchNetwork": "You need to switch to the Polygon (Matic) network",
-    "switchedNetwork": "🎉🎉 You switched to the Polygon Network 🎉🎉"
+    "switchedNetwork": "🎉 You switched to the Polygon Network 🎉"
   },
   "button": {
     "connectWallet": "Connect your wallet",

@@ -4,7 +4,7 @@
     "mintable": "You can mint this badge with",
     "notMintable": "You cannot mint this badge. To get this badge you need to meet a certain criteria.",
     "freeMintable": "You can mint this badge for free.",
-    "minted": "🎉🎉🎉 Congratulations! You minted a new badge! 🎉🎉🎉"
+    "minted": "🎉 Congratulations! You minted a new badge!"
   },
   "approve": "Enable to mint",
   "mint": "Mint",
