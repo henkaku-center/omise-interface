@@ -19,7 +19,10 @@ const client = createClient({
         process.env.NEXT_PUBLIC_ALCHEMY_API_KEY
       )
     }
-    return new providers.AlchemyProvider(config.chainId)
+    return new providers.AlchemyProvider(
+      config.chainId,
+      process.env.NEXT_PUBLIC_ALCHEMY_API_KEY_DEV
+    )
   }
 })
 
