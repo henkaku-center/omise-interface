@@ -1,17 +1,10 @@
-import {
-  Heading,
-  Text,
-  SimpleGrid,
-  Button,
-  Box
-} from '@chakra-ui/react'
+import { Heading, Text, SimpleGrid, Button, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { NFTImage } from '@/components/NFTImage'
 import { getContractAddress } from '@/utils/contractAddress'
 import { useAccount, useConnect, useNetwork } from 'wagmi'
-import { useApproval } from '@/hooks/useApproval'
 import { useMintBadge } from '@/hooks/badge/useMintBadge'
 import { useBadgeBalanceOf } from '@/hooks/badge/useBalanceOf'
 import { ConnectMetaMask } from '@/components/metaMask/Connect'

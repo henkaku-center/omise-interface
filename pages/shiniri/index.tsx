@@ -33,10 +33,6 @@ const Shiniri = () => {
     name: 'henkakuErc20',
     chainId: activeChain?.id
   })
-  const { data: henkakuToken } = useToken({
-    address: henkakuErc20
-  })
-
   if (!isConnected) {
     return (
       <Layout>
@@ -81,22 +77,6 @@ const Shiniri = () => {
         <Heading as="h2" color="white.600">
           {t('title.switchedNetwork')}
         </Heading>
-
-        {henkakuToken && (
-          <>
-            <Divider mt={10} />
-            <Button
-              mt={5}
-              ml="1rem"
-              colorScheme="yellow"
-              variant="outline"
-              rightIcon={<ArrowForwardIcon />}
-              onClick={() => addToken(henkakuToken)}
-            >
-              {t('button.addHenkakuToken')}
-            </Button>
-          </>
-        )}
       </Layout>
     )
   }
