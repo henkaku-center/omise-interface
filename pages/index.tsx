@@ -28,6 +28,7 @@ const Home: NextPage = () => {
   const { t } = useTranslation('common')
   const { activeChain } = useNetwork()
   const { data } = useAccount()
+
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
     chainId: activeChain?.id

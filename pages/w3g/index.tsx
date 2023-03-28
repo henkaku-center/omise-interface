@@ -9,6 +9,16 @@ import { useEffect, useState } from 'react'
 import { BadgeBox } from '@/components/badges/BadgeBox'
 import { ConnectMetaMask } from '@/components/metaMask/Connect'
 import useTranslation from 'next-translate/useTranslation'
+import { ethers } from 'ethers'
+
+type BadgeItem = {
+  tokenId: number
+  mintable: boolean
+  transferable: boolean
+  amount: ethers.BigNumber
+  maxSupply: ethers.BigNumber
+  tokenURI: string
+}
 
 const Badges: NextPage = () => {
   const { t } = useTranslation('badge')
@@ -18,10 +28,20 @@ const Badges: NextPage = () => {
     chainId: activeChain?.id
   })
   const { badges } = useBadges(henkakuBadge)
-  const [badgeList, setBadgeList] = useState<BadgeElement[]>([])
+  const [badgeList, setBadgeList] = useState<BadgeItem[]>([])
 
   useEffect(() => {
-    setBadgeList(badges as BadgeElement[])
+    const badgeArray = badges?.map((badge, index) => {
+      return {
+        tokenId: index + 1,
+        mintable: badge[0],
+        transferable: badge[1],
+        amount: badge[2],
+        maxSupply: badge[3],
+        tokenURI: badge[4]
+      }
+    })
+    setBadgeList(badgeArray as BadgeItem[])
   }, [badges])
 
   const { isConnected } = useConnect()
@@ -51,14 +71,9 @@ const Badges: NextPage = () => {
         rounded="lg"
       >
         {badgeList &&
-          badgeList.map((data, index) => (
-            <div key={index}>
-              <BadgeBox
-                badge={data}
-                tokenId={index + 1}
-                contractAddress={henkakuBadge}
-                prefix='w3g'
-              />
+          badgeList.map((data) => (
+            <div key={data.tokenId}>
+              <BadgeBox badge={data} contractAddress={henkakuBadge} />
             </div>
           ))}
       </SimpleGrid>

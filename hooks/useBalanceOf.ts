@@ -1,5 +1,6 @@
 import { useContractRead } from 'wagmi'
 import kamonNFTContract from '@/utils/abis/kamonNFT.json'
+import { ethers } from 'ethers'
 
 export const useBalanceOf = (contract: string, owner: string | undefined) => {
   const { data: balanceOf, isError } = useContractRead(
@@ -9,7 +10,7 @@ export const useBalanceOf = (contract: string, owner: string | undefined) => {
     },
     'balanceOf',
     {
-      args: owner,
+      args: owner || ethers.constants.AddressZero,
       watch: true
     }
   )
