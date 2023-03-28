@@ -19,7 +19,6 @@ export const ConnectMetaMask: React.FC<Props> = ({ style, children }) => {
         colorScheme="teal"
         mt={2}
         loadingText="connecting..."
-        isLoading={isConnecting}
       >
         {children}
       </Button>
