@@ -21,7 +21,7 @@ const Badges: NextPage = () => {
   const [badgeList, setBadgeList] = useState<BadgeElement[]>([])
 
   useEffect(() => {
-    setBadgeList(badges as BadgeElement[])
+    setBadgeList(badges?.reverse() as BadgeElement[])
   }, [badges])
 
   const { isConnected } = useConnect()
