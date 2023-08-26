@@ -20,7 +20,7 @@ type BadgeItem = {
   tokenURI: string
 }
 
-const PAST_EVENT_ID = [5, 6, 7, 8, 9, 10, 11, 12]
+const PAST_EVENT_ID = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 const Badges: NextPage = () => {
   const { t } = useTranslation('badge')
   const { activeChain } = useNetwork()
@@ -33,36 +33,36 @@ const Badges: NextPage = () => {
   const [pastBadgeList, setPastBadgeList] = useState<BadgeItem[]>([])
 
   useEffect(() => {
-    const badgeArray = badges?.map((badge, index) => {
-      if (!PAST_EVENT_ID.includes(index + 1)) {
+    const badgeArray = badges
+      ?.filter((badge) => !PAST_EVENT_ID.includes(badge[0]))
+      .map((badge) => {
+        const [tokenId, mintable, transferable, amount, maxSupply, tokenURI] =
+          badge
         return {
-          tokenId: index + 1,
-          mintable: badge[0],
-          transferable: badge[1],
-          amount: badge[2],
-          maxSupply: badge[3],
-          tokenURI: badge[4]
+          tokenId,
+          mintable,
+          transferable,
+          amount,
+          maxSupply,
+          tokenURI
         }
-      } else {
-        return {}
-      }
-    })
+      })
     setBadgeList(badgeArray as BadgeItem[])
 
-    const pastBadgeArray = badges?.map((badge, index) => {
-      if (!PAST_EVENT_ID.includes(index + 1)) {
-        return {}
-      } else {
+    const pastBadgeArray = badges
+      ?.filter((badge) => PAST_EVENT_ID.includes(badge[0]))
+      .map((badge) => {
+        const [tokenId, mintable, transferable, amount, maxSupply, tokenURI] =
+          badge
         return {
-          tokenId: index + 1,
-          mintable: badge[0],
-          transferable: badge[1],
-          amount: badge[2],
-          maxSupply: badge[3],
-          tokenURI: badge[4]
+          tokenId,
+          mintable,
+          transferable,
+          amount,
+          maxSupply,
+          tokenURI
         }
-      }
-    })
+      })
     setPastBadgeList(pastBadgeArray as BadgeItem[])
   }, [badges])
 
@@ -70,16 +70,14 @@ const Badges: NextPage = () => {
 
   if (!isConnected) {
     return (
-      <>
-        <Layout>
-          <Heading as="h2" color="white.600">
-            {t('title.connectWallet')}
-          </Heading>
-          <ConnectMetaMask style={{ with: '60%' }}>
-            {t('connectWallet')}
-          </ConnectMetaMask>
-        </Layout>
-      </>
+      <Layout>
+        <Heading as="h2" color="white.600">
+          {t('title.connectWallet')}
+        </Heading>
+        <ConnectMetaMask style={{ with: '60%' }}>
+          {t('connectWallet')}
+        </ConnectMetaMask>
+      </Layout>
     )
   }
 
