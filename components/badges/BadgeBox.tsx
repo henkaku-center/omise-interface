@@ -4,7 +4,6 @@ import useTranslation from 'next-translate/useTranslation'
 import { displayValue } from '@/utils/bigNumber'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
 import { useTotalSupply } from '@/hooks/badge/useTotalSupply'
-import { useBadges } from '@/hooks/badge/useBadges'
 
 type BadgeItem = {
   tokenId: number

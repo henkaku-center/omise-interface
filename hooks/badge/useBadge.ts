@@ -29,8 +29,22 @@ export const useBadge = (contract: string, id: number) => {
 
   useEffect(() => {
     if (data && data.length == BADGE_ELEMENT_SIZE) {
-      const [mintable, transferable, amount, maxSupply, tokenURI, maxMintPerWallet] = data
-      setBadge({ mintable, transferable, amount, maxSupply, tokenURI, maxMintPerWallet})
+      const [
+        mintable,
+        transferable,
+        amount,
+        maxSupply,
+        tokenURI,
+        maxMintPerWallet
+      ] = data
+      setBadge({
+        mintable,
+        transferable,
+        amount,
+        maxSupply,
+        tokenURI,
+        maxMintPerWallet
+      })
     }
     console.log('badge', badge)
   }, [data])

@@ -31,14 +31,16 @@ const Badges: NextPage = () => {
   const [badgeList, setBadgeList] = useState<BadgeItem[]>([])
 
   useEffect(() => {
-    const badgeArray = badges?.map((badge, index) => {
+    const badgeArray = badges?.map((badge) => {
+      const [tokenId, mintable, transferable, amount, maxSupply, tokenURI] =
+        badge
       return {
-        tokenId: index + 1,
-        mintable: badge[0],
-        transferable: badge[1],
-        amount: badge[2],
-        maxSupply: badge[3],
-        tokenURI: badge[4]
+        tokenId,
+        mintable,
+        transferable,
+        amount,
+        maxSupply,
+        tokenURI
       }
     })
     setBadgeList(badgeArray as BadgeItem[])

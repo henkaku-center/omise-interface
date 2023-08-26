@@ -3,6 +3,7 @@ import henkakuBadge from '@/utils/abis/henkakuBadge.json'
 import { ethers } from 'ethers'
 
 export type BadgeElement = [
+  number,
   boolean,
   boolean,
   ethers.BigNumber,
@@ -11,12 +12,16 @@ export type BadgeElement = [
 ]
 
 export const useBadges = (contract: string) => {
-  const { data: badges, isError } = useContractRead(
+  const { data: badgeList, isError } = useContractRead(
     {
       addressOrName: contract,
       contractInterface: henkakuBadge.abi
     },
     'getBadges'
+  )
+
+  const badges = badgeList?.map(
+    (subArray, index) => [index + 1, ...subArray] as BadgeElement
   )
 
   return {
