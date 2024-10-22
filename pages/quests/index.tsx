@@ -59,6 +59,10 @@ const Quests: NextPage = () => {
       const fetchData = async () => {
         const pinataRequest = await fetch(tokenURI.toString())
         const responseJson = await pinataRequest.json()
+        responseJson.image = responseJson.image.replace(
+          'https://sakazuki.mypinata.cloud/',
+          'https://gateway.pinata.cloud/'
+        )
         setTokenJSON(responseJson)
       }
       fetchData()
@@ -165,7 +169,7 @@ const Quests: NextPage = () => {
               </Box>
             )}
 
-            {keywordSubmitSucceeded && !finalTokenUri && (
+            {hasNFT && !finalTokenUri && (
               <Box mt={4}>
                 <Stack>
                   <Button

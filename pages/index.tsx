@@ -49,7 +49,12 @@ const Home: NextPage = () => {
         const pinataRequest = await fetch(tokenURI.toString())
         const responseJson = await pinataRequest.json()
 
-        setTokenImageURI(responseJson.image)
+        setTokenImageURI(
+          responseJson.image.replace(
+            'https://sakazuki.mypinata.cloud/',
+            'https://gateway.pinata.cloud/'
+          )
+        )
       }
 
       fetchData()
