@@ -14,7 +14,12 @@ export const useTokenURI = (contract: string, tokenId: number) => {
   )
 
   return {
-    tokenURI,
+    tokenURI: tokenURI
+      ? tokenURI.replace(
+          'https://sakazuki.mypinata.cloud/',
+          'https://gateway.pinata.cloud/'
+        )
+      : undefined,
     isError
   }
 }

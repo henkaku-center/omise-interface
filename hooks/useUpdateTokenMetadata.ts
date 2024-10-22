@@ -17,19 +17,27 @@ export interface KamonToken {
 interface IpfsRequestReturnJson {
   tokenUri: string
 }
-export const useUpdateTokenMetadata = () => {  
+export const useUpdateTokenMetadata = () => {
   const { toast } = useToast()
   const { t } = useTranslation('common')
   const { refetchPoint } = useGetPoint()
-  const [updateTokenMetadataIsSubmitting, setUpdateTokenMetadataIsSubmitting] = useState<boolean>()
+  const [updateTokenMetadataIsSubmitting, setUpdateTokenMetadataIsSubmitting] =
+    useState<boolean>()
   const ipfsApiEndpoint = process.env.NEXT_PUBLIC_IPFS_API_URI + ''
 
-  const updateTokenMetadata = async (tokenJSON: KamonToken, userAddress: string): Promise<string> => {
+  const updateTokenMetadata = async (
+    tokenJSON: KamonToken,
+    userAddress: string
+  ): Promise<string> => {
+    console.log('tokenJSON', tokenJSON)
+
     setUpdateTokenMetadataIsSubmitting(true)
     let dateFromToken = 0
     let rolesFromToken: string[] = []
     const updatedPointsQuery = await refetchPoint()
-    const updatedPoints = Array.isArray(updatedPointsQuery.data)? updatedPointsQuery.data[0]: 0
+    const updatedPoints = Array.isArray(updatedPointsQuery.data)
+      ? updatedPointsQuery.data[0]
+      : 0
     const updatedPointsInt = parseInt(updatedPoints.toString())
     tokenJSON?.attributes.forEach((attr: TokenAttribute) => {
       if (attr.trait_type == 'Date') {
@@ -42,7 +50,7 @@ export const useUpdateTokenMetadata = () => {
       address: userAddress,
       roles: rolesFromToken,
       points: updatedPointsInt,
-      date: dateFromToken,
+      date: dateFromToken
     }
     const settings = {
       body: JSON.stringify(payload),
@@ -52,7 +60,8 @@ export const useUpdateTokenMetadata = () => {
       method: 'POST'
     }
     const ipfsRequest = await fetch(ipfsApiEndpoint, settings)
-    const ipfsRequestReturnJson: IpfsRequestReturnJson = await ipfsRequest.json()
+    const ipfsRequestReturnJson: IpfsRequestReturnJson =
+      await ipfsRequest.json()
     setUpdateTokenMetadataIsSubmitting(false)
     if (ipfsRequestReturnJson.tokenUri.indexOf('Error') === 0) {
       toast({
