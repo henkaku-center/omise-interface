@@ -25,6 +25,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# Yarn modern
+.yarn/
+
 # local env files
 .env*.local
 .env
@@ -42,3 +45,5 @@ cypress/videos
 
 # vscode 
 .vscode
+.yarnrc.yml
+
