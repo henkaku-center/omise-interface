@@ -34,10 +34,10 @@ const Quests: NextPage = () => {
   const { keyword, inputChange, submit, isSubmitting, keywordSubmitSucceeded } =
     useKeywordSubmit()
   const { hasNFT } = useHasNFT()
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const { tokenIdOf } = useTokenIdOf(kamonNFT, data?.address)
   const { tokenURI } = useTokenURI(kamonNFT, tokenIdOf?.toNumber() || 0)
@@ -131,7 +131,7 @@ const Quests: NextPage = () => {
                 mt={10}
                 w="100%"
                 colorScheme="teal"
-                onClick={() => connect(metaMask)}
+                onClick={() => connect({ connector: metaMask })}
               >
                 {t('CONNECT_WALLET_BUTTON')}
               </Button>

@@ -5,11 +5,11 @@ import { useAccount, useNetwork } from 'wagmi'
 
 export const useHasNFT = () => {
   const [hasNFT, setHasNFT] = useState(false)
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const { data } = useAccount()
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const { balanceOf } = useBalanceOf(kamonNFT, data?.address)
 

@@ -5,29 +5,24 @@ import kamonNFTContract from '@/utils/abis/kamonNFT.json'
 export const useUpdateOwnNFT = (
   contract: string,
   tokenId: BigInt,
-  finalTokenUri: string,
+  finalTokenUri: string
 ) => {
-
   const {
     data: updateData,
     isError,
     isLoading: isUpdating,
     writeAsync: update
-  } = useContractWrite(
-    {
-      addressOrName: contract,
-      contractInterface: kamonNFTContract.abi
-    },
-    'updateOwnNFT',
-    {
-      args: [tokenId, finalTokenUri],
-    },
-  )
+  } = useContractWrite({
+    address: contract,
+    abi: kamonNFTContract.abi,
+    functionName: 'updateOwnNFT',
+    args: [tokenId, finalTokenUri]
+  })
 
   return {
     updateData,
     isError,
     update,
-    isUpdating,
+    isUpdating
   }
 }

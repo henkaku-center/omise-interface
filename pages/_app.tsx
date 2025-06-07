@@ -1,38 +1,44 @@
-import { Provider, createClient, chain } from 'wagmi'
+import { WagmiConfig, createConfig, configureChains } from 'wagmi'
+import { polygon, goerli } from 'wagmi/chains'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { ChakraProvider } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
 import { theme } from '@/components/layouts/theme'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { providers } from 'ethers'
 
-const connector = new MetaMaskConnector({
-  chains: [chain.polygon, chain.goerli]
-})
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [polygon, goerli],
+  [
+    jsonRpcProvider({
+      rpc: (chain) => {
+        if (chain.id === polygon.id)
+          return {
+            http: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
+          }
+        if (chain.id === goerli.id)
+          return {
+            http: `https://eth-goerli.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY_DEV}`
+          }
+        return null
+      }
+    })
+  ]
+)
 
-const client = createClient({
+const config = createConfig({
   autoConnect: true,
-  connectors: [connector],
-  provider(config) {
-    if (config.chainId == chain.polygon.id) {
-      return new providers.AlchemyProvider(
-        config.chainId,
-        process.env.NEXT_PUBLIC_ALCHEMY_API_KEY
-      )
-    }
-    return new providers.AlchemyProvider(
-      config.chainId,
-      process.env.NEXT_PUBLIC_ALCHEMY_API_KEY_DEV
-    )
-  }
+  connectors: [new MetaMaskConnector({ chains })],
+  publicClient,
+  webSocketPublicClient
 })
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <Provider client={client}>
+    <WagmiConfig config={config}>
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
-    </Provider>
+    </WagmiConfig>
   )
 }
 

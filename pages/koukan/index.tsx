@@ -22,18 +22,18 @@ const Koukan: NextPage = () => {
   const { connect, connectors, isConnected } = useConnect()
   const [metaMask] = connectors
   const { data } = useAccount()
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const koukan = getContractAddress({
     name: 'koukan',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const henkakuV1Erc20 = getContractAddress({
     name: 'henkakuV1Erc20',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const henkakuV2Erc20 = getContractAddress({
     name: 'henkakuV2Erc20',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const approved = useApproval(henkakuV1Erc20, koukan, data?.address)
   const { isClaiming, isClaimed, claim } = useKoukanClaimToken(
@@ -70,7 +70,7 @@ const Koukan: NextPage = () => {
           mt={10}
           w="100%"
           colorScheme="teal"
-          onClick={() => connect(metaMask)}
+          onClick={() => connect({ connector: metaMask })}
         >
           {t('connectWallet')}
         </Button>

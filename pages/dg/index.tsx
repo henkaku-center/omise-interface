@@ -22,10 +22,10 @@ type BadgeItem = {
 
 const Badges: NextPage = () => {
   const { t } = useTranslation('badge')
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const henkakuBadge = getContractAddress({
     name: 'dgPoap',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const { badges } = useBadges(henkakuBadge)
   const [badgeList, setBadgeList] = useState<BadgeItem[]>([])

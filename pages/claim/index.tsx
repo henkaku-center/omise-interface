@@ -69,7 +69,7 @@ const Claim: NextPage = () => {
                 mt={10}
                 w="100%"
                 colorScheme="teal"
-                onClick={() => connect(metaMask)}
+                onClick={() => connect({ connector: metaMask })}
               >
                 {t('connectWallet')}
               </Button>

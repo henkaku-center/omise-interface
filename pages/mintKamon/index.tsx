@@ -29,15 +29,15 @@ import { useBalanceOf } from '@/hooks/useBalanceOf'
 const MintKamon: NextPage = () => {
   const { t } = useTranslation('common')
   const mounted = useMounted()
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const { data } = useAccount()
   const henkakuErc20 = getContractAddress({
     name: 'henkakuErc20',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const openSeaCollectionUrl = 'https://opensea.io/collection/henkaku-kamon'
 
@@ -99,7 +99,10 @@ const MintKamon: NextPage = () => {
             {!isConnected && (
               <>
                 <Text mb="1rem">{t('MINT_YOUR_KAMON_WALLET_INSTRUCTION')}</Text>
-                <Button colorScheme="teal" onClick={() => connect(metaMask)}>
+                <Button
+                  colorScheme="teal"
+                  onClick={() => connect({ connector: metaMask })}
+                >
                   {t('CONNECT_WALLET_BUTTON')}
                 </Button>
               </>

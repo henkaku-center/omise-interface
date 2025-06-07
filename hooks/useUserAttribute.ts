@@ -11,17 +11,13 @@ export const useUserAttribute = (
     isError,
     error,
     refetch
-  } = useContractRead(
-    {
-      addressOrName: contract,
-      contractInterface: kamonNFTContract.abi
-    },
-    'userAttribute',
-    {
-      args: owner || ethers.constants.AddressZero,
-      watch: true
-    }
-  )
+  } = useContractRead({
+    address: contract,
+    abi: kamonNFTContract.abi,
+    functionName: 'userAttribute',
+    args: [owner || ethers.constants.AddressZero],
+    watch: true
+  })
 
   return {
     data:

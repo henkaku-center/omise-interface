@@ -26,12 +26,12 @@ import { useTokenURI } from '@/hooks/useTokenURI'
 const Home: NextPage = () => {
   const router = useRouter()
   const { t } = useTranslation('common')
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const { data } = useAccount()
 
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const openSeaTokenBaseUrl = `https://opensea.io/assets/matic/${kamonNFT}`
   const { balanceOf } = useBalanceOf(kamonNFT, data?.address)

@@ -23,10 +23,10 @@ type BadgeItem = {
 const PAST_EVENT_ID = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 const Badges: NextPage = () => {
   const { t } = useTranslation('badge')
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const henkakuBadge = getContractAddress({
     name: 'henkakuBadge',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const { badges } = useBadges(henkakuBadge)
   const [badgeList, setBadgeList] = useState<BadgeItem[]>([])

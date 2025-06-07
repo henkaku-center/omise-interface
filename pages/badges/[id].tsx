@@ -26,16 +26,16 @@ const Badge = () => {
   const router = useRouter()
   const { id } = router.query
   const tokenID = parseInt(id as string)
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const { t } = useTranslation('badge')
   const { data } = useAccount()
   const henkakuErc20 = getContractAddress({
     name: 'henkakuErc20',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const henkakuBadge = getContractAddress({
     name: 'henkakuBadge',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const { badge } = useBadge(henkakuBadge, tokenID)
   const { tokenURIJSON } = useFetchTokenURIJSON(badge?.tokenURI)

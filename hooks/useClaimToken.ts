@@ -7,20 +7,18 @@ import { getContractAddress } from '@/utils/contractAddress'
 export const useClaimToken = (
   option?: Partial<WriteContractConfig> & UseContractWriteConfig
 ) => {
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
 
-  const { write: claim, isLoading: isClaiming } = useContractWrite(
-    {
-      addressOrName: kamonNFT,
-      contractInterface: kamonNFTContract.abi
-    },
-    'claimToken',
-    option
-  )
+  const { write: claim, isLoading: isClaiming } = useContractWrite({
+    address: kamonNFT,
+    abi: kamonNFTContract.abi,
+    functionName: 'claimToken',
+    ...option
+  })
 
   return { claim, isClaiming }
 }

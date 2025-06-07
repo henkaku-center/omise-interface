@@ -3,10 +3,10 @@ import { useAccount, useNetwork } from 'wagmi'
 import { useUserAttribute } from '@/hooks/useUserAttribute'
 
 export const useGetClaimableToken = () => {
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const kamonNFT = getContractAddress({
     name: 'kamonNFT',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const { data } = useAccount()
 

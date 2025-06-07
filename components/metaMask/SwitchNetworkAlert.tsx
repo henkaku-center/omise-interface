@@ -7,15 +7,17 @@ import {
   useMediaQuery
 } from '@chakra-ui/react'
 import React from 'react'
-import { chain, useNetwork } from 'wagmi'
+import { polygon } from 'wagmi/chains'
+import { useNetwork, useSwitchNetwork } from 'wagmi'
 import useTranslation from 'next-translate/useTranslation'
 
 export const SwitchNetworkAlert: React.FC = () => {
   const { t } = useTranslation('common')
-  const { activeChain, switchNetwork } = useNetwork()
+  const { chain } = useNetwork()
+  const { switchNetwork } = useSwitchNetwork()
   const [isDesktopOrTablet] = useMediaQuery('(min-width:600px)')
 
-  if (activeChain?.id == chain.polygon.id) {
+  if (chain?.id == polygon.id) {
     return <></>
   }
 
@@ -27,7 +29,7 @@ export const SwitchNetworkAlert: React.FC = () => {
       <AlertIcon />
       <AlertDescription>
         {t('SWITCH_NETWORK_MSG_1')}
-        {activeChain?.name}
+        {chain?.name}
         {t('SWITCH_NETWORK_MSG_2')}
       </AlertDescription>
 
@@ -36,7 +38,7 @@ export const SwitchNetworkAlert: React.FC = () => {
         colorScheme="teal"
         variant="outline"
         rightIcon={<ArrowForwardIcon />}
-        onClick={() => switchNetwork(chain.polygon.id)}
+        onClick={() => switchNetwork?.(polygon.id)}
       >
         {t('SWITCH_NETWORK_BUTTON')}
       </Button>

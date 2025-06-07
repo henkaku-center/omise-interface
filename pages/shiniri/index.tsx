@@ -6,7 +6,14 @@ import { Button, Divider, Heading, Text } from '@chakra-ui/react'
 import { FetchTokenResult } from '@wagmi/core'
 import { ethers } from 'ethers'
 import useTranslation from 'next-translate/useTranslation'
-import { chainId, useAccount, useConnect, useNetwork, useToken } from 'wagmi'
+import {
+  useAccount,
+  useConnect,
+  useNetwork,
+  useSwitchNetwork,
+  useToken
+} from 'wagmi'
+import { polygon } from 'wagmi/chains'
 
 const addToken = async (token: FetchTokenResult) => {
   if (window.ethereum) {
@@ -28,10 +35,11 @@ const Shiniri = () => {
   const { t } = useTranslation('shiniri')
   const { data } = useAccount()
   const { isConnected } = useConnect()
-  const { activeChain, switchNetwork } = useNetwork()
+  const { chain } = useNetwork()
+  const { switchNetwork } = useSwitchNetwork()
   const henkakuErc20 = getContractAddress({
     name: 'henkakuErc20',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const { data: henkakuToken } = useToken({
     address: henkakuErc20
@@ -50,7 +58,7 @@ const Shiniri = () => {
     )
   }
 
-  if (isConnected && activeChain?.id != chainId.polygon) {
+  if (isConnected && chain?.id != polygon.id) {
     return (
       <Layout>
         <Heading as="h2" color="white.600">
@@ -64,7 +72,7 @@ const Shiniri = () => {
             colorScheme="teal"
             variant="outline"
             rightIcon={<ArrowForwardIcon />}
-            onClick={() => switchNetwork(chainId.polygon)}
+            onClick={() => switchNetwork?.(polygon.id)}
           >
             {t('button.switchNetwork')}
           </Button>
@@ -75,7 +83,7 @@ const Shiniri = () => {
     )
   }
 
-  if (isConnected && activeChain?.id == chainId.polygon) {
+  if (isConnected && chain?.id == polygon.id) {
     return (
       <Layout>
         <Heading as="h2" color="white.600">

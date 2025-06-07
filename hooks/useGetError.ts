@@ -1,4 +1,5 @@
-import { chainId, useNetwork } from 'wagmi'
+import { useNetwork } from 'wagmi'
+import { polygon, goerli } from 'wagmi/chains'
 
 type ErrorWithData = Error & {
   data: {
@@ -9,17 +10,17 @@ type ErrorWithData = Error & {
 }
 
 export const useGetError = () => {
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
 
   const getError = (error: Error): string => {
     let errorMessage = ''
 
-    switch (activeChain?.id) {
-      case chainId.polygon:
+    switch (chain?.id) {
+      case polygon.id:
         const errorWithData = error as ErrorWithData
         errorMessage = errorWithData.data.message
         break
-      case chainId.goerli && chainId.rinkeby:
+      case goerli.id:
         errorMessage = error.message
         break
     }

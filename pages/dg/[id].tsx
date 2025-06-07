@@ -1,10 +1,4 @@
-import {
-  Heading,
-  Text,
-  SimpleGrid,
-  Button,
-  Box
-} from '@chakra-ui/react'
+import { Heading, Text, SimpleGrid, Button, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import { useFetchTokenURIJSON } from '@/hooks/badge/useFetchMetaData'
@@ -23,12 +17,12 @@ const DAlabBadge = () => {
   const router = useRouter()
   const { id } = router.query
   const tokenID = parseInt(id as string)
-  const { activeChain } = useNetwork()
+  const { chain } = useNetwork()
   const { t } = useTranslation('dg')
   const { data } = useAccount()
   const henkakuBadge = getContractAddress({
     name: 'dgPoap',
-    chainId: activeChain?.id
+    chainId: chain?.id
   })
   const { badge } = useBadge(henkakuBadge, tokenID)
   const { tokenURIJSON } = useFetchTokenURIJSON(badge?.tokenURI)
